@@ -1,6 +1,8 @@
 import express from "express";
-import { createUser, getAllUser, loginUser, logoutUser } from "../controller/userController.js";
+import { createUser, deleteUser, getAllUser, getCrUser, loginUser, logoutUser, updateCrUser } from "../controller/userController.js";
 import admin from "../middlewares/admin.js";
+import verifyuser from "../middlewares/verifyuser.js";
+import validId from "../middlewares/validId.js";
 
 const router = express.Router()
 
@@ -12,8 +14,10 @@ router.post('/login', loginUser)
 router.post('/logout', logoutUser)
 // 4.  get all users (admin only)
 router.get("/users", admin, getAllUser);
-//  ,(req,res)=>{
-//     User.find({},"-__v")
-//         .then((users)=> res.json(users))
-// })
+// 6.delete user
+router.delete("/users/:id",[validId,admin],deleteUser)
+
+// 5. get current user
+router.route("/user").get(verifyuser,getCrUser).put(verifyuser,updateCrUser);
+
 export default router;

@@ -1,8 +1,7 @@
 import Jwt from "jsonwebtoken";
-import serverHandler from "./serverhandler";
 
-const verfyuser = serverHandler(async (req, res, next) => {
-    const token = res.cookies.authToken;
+const verifyuser = async (req, res, next) => {
+    const token = req.cookies.authToken
     if (!token) {
         return res.status(401).json({ message: "You are not logged in!" });
     } else {
@@ -17,6 +16,6 @@ const verfyuser = serverHandler(async (req, res, next) => {
         }
 
     }
-})
+}
 
-export default verfyuser;
+export default verifyuser;

@@ -45,6 +45,29 @@ export const logoutUser = serverhandler(async (req, res) => {
     res.send({ message: 'logged out ' });
 })
 
+export const getCrUser = serverhandler(async (req, res) => {
+    const user = await User.findById(req.user._id).select('-password -__v')
+    if (!user) { res.status(404); throw new Error("user with id is not found") }
+    res.status(200).send({ data: user })
+})
+
+export const updateCrUser = serverhandler(async (req, res) => {
+    const user = await User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true }).select('-password -__v');
+    res.status(200).send({ data: user })
+})
+
+export const deleteUser = serverhandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+    if (!user) {
+        res.status(404);
+        throw new Error("No user with this id");
+    }
+    if (user.role === "admin") { res.status(400); throw new Error("can not delete admin user") }
+    await User.deleteOne({_id:user._id})
+    res.status(200).send({ message: "Deleted Successfully" });
+})
+
+// admin
 export const getAllUser = serverhandler(async (req, res) => {
     const users = await User.find().select("-password -__v")
     if (!users) return res.status(400).send({ message: 'no such user found' });
