@@ -1,5 +1,6 @@
 import express from "express";
-import { createUser,loginUser } from "../controller/userController.js";
+import { createUser, getAllUser, loginUser, logoutUser } from "../controller/userController.js";
+import admin from "../middlewares/admin.js";
 
 const router = express.Router()
 
@@ -7,8 +8,11 @@ const router = express.Router()
 router.post('/createuser', createUser)
 // 2. login user
 router.post('/login', loginUser)
-// 3.  get all users (admin only)
-// router.get("/", isAuthenticated ,(req,res)=>{
+// 3.logout user
+router.post('/logout', logoutUser)
+// 4.  get all users (admin only)
+router.get("/users", admin, getAllUser);
+//  ,(req,res)=>{
 //     User.find({},"-__v")
 //         .then((users)=> res.json(users))
 // })
