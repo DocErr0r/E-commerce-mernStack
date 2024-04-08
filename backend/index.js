@@ -4,6 +4,7 @@ import connectTODB from './config/db.js';
 import userRouter from './routes/authuser.js';
 import cookieParser from 'cookie-parser';
 dotenv.config({ path: '../.env' });
+// dotenv.config();
 const port = process.env.PORT || 5000
 
 const app = express()

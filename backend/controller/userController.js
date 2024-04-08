@@ -3,6 +3,7 @@ import { User, validate } from "../models/user.js";
 import bcrypt from "bcrypt";
 import setCookies from "../utils/setCookies.js";
 import Joi from "joi";
+import PasswordComplexity from "joi-password-complexity";
 
 
 export const createUser = serverhandler(async (req, res) => {
@@ -68,8 +69,49 @@ export const updateCrUser = serverhandler(async (req, res) => {
     const object = {}
     Object.assign(object, req.body)
     const user = await User.findByIdAndUpdate(req.user._id, { $set: object }, { new: true }).select('-password -__v');
+    if (!user) {
+        res.status(404);
+        throw new Error("No user with this id");
+    }
     res.status(200).send({ data: user })
 })
+
+export const updatePassword = serverhandler(async (req, res) => {
+    const obj = Joi.object({
+        password: Joi.string().required(),
+        newPassword: PasswordComplexity().required(),
+        confirmPass: PasswordComplexity().required()
+    })
+    const { error } = obj.validate(req.body);
+    if (error) return res.status(400).send({ message: error.message });
+
+    let user = await User.findOne({ _id: req.user._id });
+    if (!user) {
+        res.status(404);
+        throw new Error("No user with this id");
+    }
+
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) {
+        res.status(400);
+        throw new Error("Invalid password");
+    }
+    if (req.body.newPassword !== req.body.confirmPass) {
+        res.status(400);
+        throw new Error('password not match');
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(Number(process.env.SALT));
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, salt)
+        user.password = hashedPassword;
+        
+        await user.save();
+        res.status(200).send({ message: 'Password updated successfully' });
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating password' });
+    }
+});
 
 
 // admin controls
@@ -99,7 +141,12 @@ export const getUserById = serverhandler(async (req, res) => {
 export const updateUserById = serverhandler(async (req, res) => {
     const userEx = await User.findOne({ email: req.body.email })
     if (userEx) return res.status(403).send({ message: "user already exist with this email" });
-    
+
+    let user = await User.findById(req.params.id)
+    if (!user) {
+        res.status(404);
+        throw new Error("No user with this id");
+    }
     const obj = Joi.object({
         name: Joi.string().min(5).max(12),
         email: Joi.string().email(),
@@ -107,14 +154,12 @@ export const updateUserById = serverhandler(async (req, res) => {
     })
     const { error } = obj.validate(req.body);
     if (error) return res.status(400).send({ message: error.message });
-    
+
     const object = {}
     Object.assign(object, req.body)
 
-    const user = await User.findByIdAndUpdate(req.params.id, { $set: object }, { new: true }).select('-password -__v');
-    if (!user) {
-        res.status(404);
-        throw new Error("No user with this id");
-    }
+    if (user.role === "admin") { object.role = undefined }
+
+    user = await User.findByIdAndUpdate({ _id: user.id }, { $set: object }, { new: true }).select('-password -__v');
     res.status(200).send({ data: user })
 });
