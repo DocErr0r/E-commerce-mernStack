@@ -1,0 +1,8 @@
+.home{
+ display: none;
+ transition:opacity 0.2ms ease-in-out;
+}
+#navContainer:hover .home{
+    display: block;
+    opacity: 1;
+}
