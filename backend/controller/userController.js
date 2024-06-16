@@ -11,7 +11,7 @@ export const createUser = serverhandler(async (req, res) => {
     if (error) return res.status(400).send({ message: error.message })
 
     const user = await User.findOne({ email: req.body.email })
-    if (user) return res.status(403).send({ message: "user already exits with this emial" });
+    if (user) return res.status(403).send({ message: "user already exits with this email" });
 
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashPass = await bcrypt.hash(req.body.password, salt)
@@ -30,14 +30,18 @@ export const createUser = serverhandler(async (req, res) => {
 
 export const loginUser = serverhandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(401).send({ message: "Email or Password is incorrect!" });
+    if (!user) {
+        // return res.status(401).send({ message: "Email or Password is incorrect!" });
+        res.status(401);
+        throw new Error("Email or Password is incorrect!");
+    }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(401).send({ auth: false, token: null, message: "Email or Password is incorrect!" });
 
     const token = user.generateAuthToken();
     setCookies(res, token)
 
-    res.send({ date: token, massaege: 'signing in please wait' });
+    res.send({ data: token, message: 'signing in please wait' });
 })
 
 export const logoutUser = serverhandler(async (req, res) => {
@@ -105,13 +109,61 @@ export const updatePassword = serverhandler(async (req, res) => {
         const salt = await bcrypt.genSalt(Number(process.env.SALT));
         const hashedPassword = await bcrypt.hash(req.body.newPassword, salt)
         user.password = hashedPassword;
-        
+
         await user.save();
         res.status(200).send({ message: 'Password updated successfully' });
     } catch (error) {
         res.status(500).send({ message: 'Error updating password' });
     }
 });
+
+export const forgotPassword = serverhandler(async (req, res) => {
+    const email = req.body.email;
+    const user = await User.findOne({ email })
+    if (!user) {
+        throw new Error("This Email is Not Registered");
+    }
+    //generate a reset token and save it to the database
+    const resetToken = user.getResetPasswordToken();
+    //onboard the user with the link
+    const resetUrl = `http://localhost:3000/resetpassword/${user.resetPasswordToken}`;
+
+    try {
+        await user.save({ resetPasswordExpireToken: resetToken });
+        // send the mail
+        // Mailer.sendPasswordReset(email,resetUrl);
+
+        res.status(200).json({ message: 'Email has been sent', url: resetUrl })
+    } catch {
+        console.log(err);
+        res.status(400).json({ message: 'Failed To Send The Email.' })
+    }
+});
+
+export const resetPassword = serverhandler(async (req, res) => {
+    const resetToken = req.params.token;
+    const user = await User.findOne({
+        resetPasswordToken: resetToken,
+        resetPasswordTokenExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        return res.status(400).json({ message: 'Invalid or Expired Token' })
+    }
+
+    const password = req.body.password;
+    const confirmPassword = req.body.confirm_password;
+
+    if (!password || !confirmPassword) {
+        return res.status(400).json({ message: "Please Fill All Field" })
+    }
+    if (password !== confirmPassword) {
+        throw new Error("password not match")
+    }
+    // todo
+
+    res.status(200).send({ message: 'Password updated successfully' });
+})
 
 
 // admin controls

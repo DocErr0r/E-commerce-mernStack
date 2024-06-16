@@ -14,7 +14,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true, },
     // mobile: { type: String, required: true, unique: true, },
     password: { type: String, required: true, },
-    role: { type: String, default: "user", require: true }
+    role: { type: String, default: "user", require: true },
+
+    resetPasswordToken: { type: String, },
+    resetPasswordTokenExpire: { type: Date }
 }, { timestamps: true });
 
 userSchema.methods.generateAuthToken = function () {
@@ -25,6 +28,15 @@ userSchema.methods.generateAuthToken = function () {
     )
     return token;
 }
+
+userSchema.methods.getResetPasswordToken = function () {
+    const resetToken = '123456'
+    const expireTime = Date.now() + (60 * 1000); // seconds
+    this.resetPasswordToken = resetToken;
+    this.resetPasswordTokenExpire = expireTime;
+    return resetToken;
+}
+
 const validate = (user) => {
     const Schema = Joi.object({
         name: Joi.string().min(5).max(12).required(),
