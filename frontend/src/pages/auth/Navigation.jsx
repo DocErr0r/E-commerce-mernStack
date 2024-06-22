@@ -3,11 +3,18 @@ import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiO
 import { FaHeart } from 'react-icons/fa';
 
 import './a.css';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/features/auth/userThunk';
 
 const Navigation = () => {
-    const {userInfo}=useSelector((state)=>state.user)
+    const { userInfo } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+
+    // console.log(userInfo)
+    const navigate = useNavigate();
 
     const [drowpDown, setDrowpDown] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
@@ -21,7 +28,23 @@ const Navigation = () => {
     function closeSidebar() {
         setShowSidebar(!showSidebar);
     }
-    
+    async function logoutHandler() {
+        try {
+            const result = await dispatch(logout());
+            console.log(result);
+            if (result.error) {
+                // console.log('error');
+                // console.log(result.payload)
+                toast.error(result.payload);
+            } else {
+                navigate('/');
+                // console.log(res)
+                toast('logged out successfully.');
+            }
+        } catch (error) {
+            toast.error(error);
+        }
+    }
 
     return (
         <div className={`${showSidebar ? 'hidden' : 'flex'} xl:flex lg:flex md:hidden sm:hidden flex-col justify-between text-white bg-black p-4 w-[4%] hover:w-[15%] h-[100vh] fixed transition-[width] ease-in-out duration-300 overflow-hidden`} id="navContainer">
@@ -46,24 +69,78 @@ const Navigation = () => {
 
             <div className="relative">
                 <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
-                    {userInfo ? <span className='text-white'>{userInfo.name}</span> : <></>}
+                    {userInfo ? (
+                        <>
+                            <span className="text-white">{userInfo.name}</span>{' '}
+                            <span>
+                                <i>U</i>
+                            </span>{' '}
+                        </>
+                    ) : (
+                        <></>
+                    )}{' '}
                 </button>
+                {drowpDown && userInfo && (
+                    <ul className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-700  ${!(userInfo.role === 'admin') ? '-top-20' : '-top-80'}`}>
+                        {userInfo.role === 'admin' && (
+                            <>
+                                <li>
+                                    <Link to={'/admin/dashboard'} className="block py-2 px-4 hover:bg-gray-300">
+                                        Dashboard
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={'/admin/users'} className="block py-2 px-4 hover:bg-gray-300">
+                                        Users
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={'/admin/prducts'} className="block py-2 px-4 hover:bg-gray-300">
+                                        Products
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={'/admin/orders'} className="block py-2 px-4 hover:bg-gray-300">
+                                        Order
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to={'/admin/catogory'} className="block py-2 px-4 hover:bg-gray-300">
+                                        Catogory
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                        <li>
+                            <Link to={'/v1/me'} className="block py-2 px-4 hover:bg-gray-300">
+                                Profile
+                            </Link>
+                        </li>
+                        <li>
+                            <button to={'/'} onClick={logoutHandler} className="block py-2 px-4 hover:bg-gray-300">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                )}
             </div>
 
-            <ul>
-                <li>
-                    <Link to={'/login'} className="flex items-center transition-transform transform hover:translate-x-2">
-                        <AiOutlineLogin className="mr-2 mt-[3rem]" size={26} />
-                        <span className="mt-[3rem] hidden home">Login</span>{' '}
-                    </Link>
-                </li>
-                <li>
-                    <Link to={'/register'} className="flex items-center transition-transform transform hover:translate-x-2">
-                        <AiOutlineUserAdd className="mr-2 mt-[3rem]" size={26} />
-                        <span className="mt-[3rem] hidden home">Register</span>{' '}
-                    </Link>
-                </li>
-            </ul>
+            {!userInfo && (
+                <ul>
+                    <li>
+                        <Link to={'/login'} className="flex items-center transition-transform transform hover:translate-x-2">
+                            <AiOutlineLogin className="mr-2 mt-[3rem]" size={26} />
+                            <span className="mt-[3rem] hidden home">Login</span>{' '}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={'/register'} className="flex items-center transition-transform transform hover:translate-x-2">
+                            <AiOutlineUserAdd className="mr-2 mt-[3rem]" size={26} />
+                            <span className="mt-[3rem] hidden home">Register</span>{' '}
+                        </Link>
+                    </li>
+                </ul>
+            )}
         </div>
     );
 };

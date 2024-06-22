@@ -1,11 +1,14 @@
 {
-  "name": "ecommerce",
-  "version": "1.0.0",
-  "description": "shopping website ",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Nitin",
-  "license": "ISC"
+    "name": "ecommerce",
+    "version": "1.0.0",
+    "description": "shopping website ",
+    "main": "index.js",
+    "scripts": {
+        "backend": "nodemon backend/index.js",
+        "frontend": "npm run dev --prefix frontend",
+        "both": "concurrently \"npm run dev --prefix frontend\" \"nodemon backend/index.js\"",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Nitin",
+    "license": "ISC"
 }

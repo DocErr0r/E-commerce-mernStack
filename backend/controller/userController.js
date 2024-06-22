@@ -36,17 +36,18 @@ export const loginUser = serverhandler(async (req, res) => {
         throw new Error("Email or Password is incorrect!");
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(401).send({ auth: false, token: null, message: "Email or Password is incorrect!" });
+    if (!validPassword) return res.status(401).send("Email or Password is incorrect!" );
 
     const token = user.generateAuthToken();
     setCookies(res, token)
-
-    res.send({ data: token, message: 'signing in please wait' });
+    user.password = undefined
+    user.__v = undefined;
+    res.send({ data: user, token, message: 'signing in please wait' });
 })
 
 export const logoutUser = serverhandler(async (req, res) => {
-    res.cookie('authToken', '', {
-        httpOnly: true, expires: new Date(0)
+    res.clearCookie('authToken', '', {
+        httpOnly: true, secure: false, sameSite: 'strict', expires: new Date(0)
     })
     res.send({ message: 'logged out ' });
 })

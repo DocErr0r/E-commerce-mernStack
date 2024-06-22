@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/features/auth/authSlice';
+import { login } from '../../redux/features/auth/userThunk';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -17,18 +17,19 @@ export default function Login() {
 
     useEffect(() => {
         if (userInfo) {
-            console.log(userInfo); 
-            toast.info(userInfo.message);
+            toast('login successfully');
             navigate('/');
         }
-    }, [userInfo]);
+    }, [userInfo, navigate]);
 
     const submitHandeler = async (e) => {
         e.preventDefault();
         try {
             const result = await dispatch(login({ email, password }));
-
+            console.log(result);
             if (result.error) {
+                console.log(error);
+                // console.log(result.payload)
                 toast.error(result.payload);
             }
         } catch (error) {
@@ -51,13 +52,13 @@ export default function Login() {
                             <label htmlFor="email" className="text-sm font-medium block">
                                 Email address
                             </label>
-                            <input type="email" id="email" className="border rounded w-full mt-1 p-2" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input type="email" id="email" className="border rounded w-full mt-1 p-2" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="true" />
                         </div>
                         <div className="my-[2rem]">
                             <label htmlFor="password" className="text-sm font-medium block">
                                 Password
                             </label>
-                            <input type="password" id="password" className="border rounded w-full mt-1 p-2" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="password" id="password" placeholder="Enter Password" className="border rounded w-full mt-1 p-2" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <button disabled={!(email && password)} type="submit" className="bg-pink-500 px-4 py-2 cursor-pointer rounded my-4 disabled:bg-pink-700">
                             {'Sign In'}
