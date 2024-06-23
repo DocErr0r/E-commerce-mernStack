@@ -14,7 +14,7 @@ export const login = createAsyncThunk('userlogin', async ({ email, password }, {
 
 export const register = createAsyncThunk('userregister', async ({ name, email, password }, { rejectWithValue }) => {
     try {
-        const { data } = await registerUser({name, email, password });
+        const { data } = await registerUser({ name, email, password });
         // console.log(data)
         localStorage.setItem('userInfo', JSON.stringify(data.data));
         return data.data;

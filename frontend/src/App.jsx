@@ -7,7 +7,7 @@ import 'react-toastify/ReactToastify.css'
 function App() {
     return (
         <>
-            <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={2000}/>
+            <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={1000}/>
             <Navigation />
             <main className="py-3">
                 <Outlet />
