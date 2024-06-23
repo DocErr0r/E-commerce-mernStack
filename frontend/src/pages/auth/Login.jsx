@@ -17,7 +17,7 @@ export default function Login() {
 
     useEffect(() => {
         if (userInfo) {
-            toast('login successfully');
+            toast.success('login successfully');
             navigate('/');
         }
     }, [userInfo, navigate]);
