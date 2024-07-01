@@ -36,7 +36,7 @@ export const loginUser = serverhandler(async (req, res) => {
         throw new Error("Email or Password is incorrect!");
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(401).send("Email or Password is incorrect!" );
+    if (!validPassword) return res.status(401).send("Email or Password is incorrect!");
 
     const token = user.generateAuthToken();
     setCookies(res, token)
@@ -60,7 +60,7 @@ export const getCrUser = serverhandler(async (req, res) => {
 
 export const updateCrUser = serverhandler(async (req, res) => {
     const userEx = await User.findOne({ email: req.body.email });
-    if (userEx) {
+    if (userEx && userEx._id.toString() !== req.user._id) {
         res.status(403);
         throw new Error("user already exist with this email");
     }
