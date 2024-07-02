@@ -11,8 +11,10 @@ import Login from './pages/auth/Login.jsx';
 import Signup from './pages/auth/Signup.jsx';
 import store from './redux/store.js';
 
-import PrivateRoute from './components/PrivateRoute.jsx';
+import PrivateRoute from './pages/users/PrivateRoute.jsx';
 import Profile from './pages/users/Profile.jsx';
+import EditProfile from './pages/users/EditProfile.jsx';
+import ChangePassword from './pages/users/ChangePassword.jsx';
 
 import AdminRoutes from './pages/admin/AdminRoutes.jsx';
 import Dashboard from './pages/admin/Dashboard.jsx';
@@ -24,8 +26,10 @@ const router = createBrowserRouter(
             <Route path="/register" element={<Signup />} />
             <Route path="/about" element={<h1 style={{ marginTop: '100px' }}> home</h1>} />
 
-            <Route path="" element={<PrivateRoute />}>
-                <Route path="/v1/me" element={<Profile />} />
+            <Route path="/v1" element={<PrivateRoute />}>
+                <Route path="me" element={<Profile />} />
+                <Route path="change-password" element={<ChangePassword />} />
+                <Route path="edit-profile" element={<EditProfile />} />
             </Route>
 
             {/* <Route path="/admin" element={<AdminRoutes />}>

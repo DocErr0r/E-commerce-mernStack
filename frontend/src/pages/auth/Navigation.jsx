@@ -81,43 +81,48 @@ const Navigation = () => {
                     )}{' '}
                 </button>
                 {drowpDown && userInfo && (
-                    <ul className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-700  ${!(userInfo.role === 'admin') ? '-top-20' : '-top-80'}`}>
+                    <ul className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-700  ${!(userInfo.role === 'admin') ? '-top-36' : '-top-96'}`}>
                         {userInfo.role === 'admin' && (
                             <>
                                 <li>
-                                    <Link to={'/admin/dashboard'} className="block py-2 px-4 hover:bg-gray-300">
+                                    <Link to={'/admin/dashboard'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Dashboard
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/users'} className="block py-2 px-4 hover:bg-gray-300">
+                                    <Link to={'/admin/users'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Users
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/prducts'} className="block py-2 px-4 hover:bg-gray-300">
+                                    <Link to={'/admin/prducts'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/orders'} className="block py-2 px-4 hover:bg-gray-300">
+                                    <Link to={'/admin/orders'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Order
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/catogory'} className="block py-2 px-4 hover:bg-gray-300">
+                                    <Link to={'/admin/catogory'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Catogory
                                     </Link>
                                 </li>
                             </>
                         )}
                         <li>
-                            <Link to={'/v1/me'} className="block py-2 px-4 hover:bg-gray-300">
+                            <Link to={'/v1/me'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                 Profile
                             </Link>
                         </li>
                         <li>
-                            <button to={'/'} onClick={logoutHandler} className="block py-2 px-4 hover:bg-gray-300">
+                            <Link to={'/v1/change-password'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                Change Password
+                            </Link>
+                        </li>
+                        <li>
+                            <button to={'/'} onClick={logoutHandler} className="block py-2 px-4 w-full hover:bg-gray-300">
                                 Logout
                             </button>
                         </li>
