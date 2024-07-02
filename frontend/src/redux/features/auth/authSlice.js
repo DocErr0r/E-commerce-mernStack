@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout, register } from "./userThunk";
+import { login, logout, register, updatePass, updatecr } from "./userThunk";
 
 const initialState = {
     userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
@@ -10,13 +10,7 @@ const initialState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        // logout: (state) => {
-        //     state.userInfo = null;
-        //     localStorage.clear();
-        //     logouting();
-        // },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => { state.lodding = true })
@@ -32,6 +26,17 @@ const authSlice = createSlice({
             .addCase(register.pending, (state) => { state.lodding = true })
             .addCase(register.fulfilled, (state, action) => { state.lodding = false, state.userInfo = action.payload })
             .addCase(register.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
+
+        builder
+            .addCase(updatecr.pending, (state) => { state.lodding = true })
+            .addCase(updatecr.fulfilled, (state, action) => { state.lodding = false, state.userInfo = action.payload })
+            .addCase(updatecr.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
+
+        builder
+            .addCase(updatePass.pending, (state) => { state.lodding = true })
+            .addCase(updatePass.fulfilled, (state, action) => { state.lodding = false,state.error=null})
+            .addCase(updatePass.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
+
     }
 })
 
