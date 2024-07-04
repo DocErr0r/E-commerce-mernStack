@@ -21,3 +21,14 @@ export const updatePassword = ({ password,newPassword,confirmPass }) => {
 //     return axiosInstace.post(`${USER_URL}/login`, { email, password },)
 // }
 
+
+// admin apis
+export const getUsers = () => {
+    return axiosInstace.get(`${USER_URL}/users`,)
+}
+export const deleteUserById = (id) => {
+    return axiosInstace.delete(`${USER_URL}/users/${id}`,)
+}
+export const updateUserById = (id,body) => {
+    return axiosInstace.put(`${USER_URL}/users/${id}`,body)
+}
