@@ -26,11 +26,11 @@ export default function Login() {
         e.preventDefault();
         try {
             const result = await dispatch(login({ email, password }));
-            console.log(result);
+            // console.log(result);
             if (result.error) {
                 console.log(error);
                 // console.log(result.payload)
-                toast.error(result.payload);
+                toast.error(result.payload.message);
             }
         } catch (error) {
             toast.error(error);
@@ -43,11 +43,11 @@ export default function Login() {
     };
 
     return (
-        <div>
-            <section className="pl-[10rem] flex flex-wrap">
-                <div className="mr-[4rem] mt-[5rem]">
+        <div className="w-[100vw]">
+            <section className="flex flex-wrap justify-center ">
+                <div className="mr-[4rem] mt-[5rem] bg-purple-700 p-4 rounded-3xl ">
                     <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
-                    <form onSubmit={submitHandeler} className="container w-[40rem]">
+                    <form onSubmit={submitHandeler} className="container w-[25rem]">
                         <div className="my-[2rem]">
                             <label htmlFor="email" className="text-sm font-medium block">
                                 Email address

@@ -16,9 +16,12 @@ function ChangePassword() {
         e.preventDefault()
         // console.log(oldPassword,newPassword,confirmPassword)
         const res= await dispatch(updatePass({password,newPassword,confirmPass}))
-        console.log(res)
+        // console.log(res)
         if(!res.error){
             toast.success('password change successfully')
+            setPassword('')
+            setNewPassword('')
+            setConfirmPass('')
         }
         
     }

@@ -36,7 +36,7 @@ export const loginUser = serverhandler(async (req, res) => {
         throw new Error("Email or Password is incorrect!");
     }
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(401).send("Email or Password is incorrect!");
+    if (!validPassword) return res.status(401).send({ message: "Email or Password is incorrect!" });
 
     const token = user.generateAuthToken();
     setCookies(res, token)
@@ -85,7 +85,7 @@ export const updatePassword = serverhandler(async (req, res) => {
     const obj = Joi.object({
         password: Joi.string().required(),
         newPassword: PasswordComplexity().required(),
-        confirmPass: PasswordComplexity().required()
+        confirmPass: Joi.string().required()
     })
     const { error } = obj.validate(req.body);
     if (error) return res.status(400).send({ message: error.message });
@@ -192,9 +192,11 @@ export const getUserById = serverhandler(async (req, res) => {
 });
 
 export const updateUserById = serverhandler(async (req, res) => {
-    const userEx = await User.findOne({ email: req.body.email })
-    if (userEx) return res.status(403).send({ message: "user already exist with this email" });
-
+    const userEx = await User.findOne({ email: req.body.email });
+    if (userEx && userEx._id.toString() !== req.params.id) {
+        res.status(403);
+        throw new Error("user already exist with this email");
+    }
     let user = await User.findById(req.params.id)
     if (!user) {
         res.status(404);
@@ -214,5 +216,5 @@ export const updateUserById = serverhandler(async (req, res) => {
     if (user.role === "admin") { object.role = undefined }
 
     user = await User.findByIdAndUpdate({ _id: user.id }, { $set: object }, { new: true }).select('-password -__v');
-    res.status(200).send({ data: user })
+    res.status(200).send({ data: user ,message:`user with ${req.params.id} has been updated`})
 });
