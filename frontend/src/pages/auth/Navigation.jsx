@@ -90,7 +90,7 @@ const Navigation = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/users'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/user-list'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Users
                                     </Link>
                                 </li>

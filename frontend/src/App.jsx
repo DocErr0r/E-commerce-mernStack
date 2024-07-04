@@ -14,7 +14,7 @@ function App() {
     
     return (
         <>
-            <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={1000}/>
+            <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={1500}/>
             <Navigation />
             <main className="py-3">
                 <Outlet />

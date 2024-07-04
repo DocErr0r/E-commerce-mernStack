@@ -18,6 +18,7 @@ import ChangePassword from './pages/users/ChangePassword.jsx';
 
 import AdminRoutes from './pages/admin/AdminRoutes.jsx';
 import Dashboard from './pages/admin/Dashboard.jsx';
+import UsersList from './pages/admin/UsersList.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -32,9 +33,10 @@ const router = createBrowserRouter(
                 <Route path="edit-profile" element={<EditProfile />} />
             </Route>
 
-            {/* <Route path="/admin" element={<AdminRoutes />}>
+            <Route path="/admin" element={<AdminRoutes />}>
                 <Route path="dashboard" element={<Dashboard />} />
-            </Route> */}
+                <Route path="user-list" element={<UsersList />} />
+            </Route>
         </Route>,
     ),
 );
