@@ -181,8 +181,8 @@ export const deleteUserById = serverhandler(async (req, res) => {
         throw new Error("No user with this id");
     }
     if (user.role === "admin") { res.status(400); throw new Error("can not delete admin user") }
-    await User.deleteOne({ _id: user._id })
-    res.status(200).send({ message: "Deleted Successfully" });
+    const deleteUser=await User.deleteOne({ _id: user._id })
+    res.status(200).send({data:deleteUser ,message: "Deleted Successfully" });
 })
 
 export const getUserById = serverhandler(async (req, res) => {
