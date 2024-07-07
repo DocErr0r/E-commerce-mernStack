@@ -24,7 +24,10 @@ export const updateCategory = serverHandler(async (req, res) => {
         if (!category) {
             return res.status(400).send({ message: "category not found" })
         }
-
+        const exist = await Category.findOne({ name })
+        if (exist) {
+            return res.status(400).send({ message: "category already exist" })
+        }
         // category.name=name
         const newCategory = await Category.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true })
 
@@ -37,7 +40,6 @@ export const updateCategory = serverHandler(async (req, res) => {
 
 export const removeCategory = serverHandler(async (req, res) => {
     try {
-        const { name } = req.body
         const category = await Category.findById(req.params.id)
         if (!category) {
             return res.status(400).send({ message: "category not found" })
