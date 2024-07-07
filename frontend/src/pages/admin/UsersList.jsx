@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { deleteUserById, getUsers, updateUserById } from '../../redux/api/userApiSlice';
-import { useDispatch } from 'react-redux';
 // import { getAllUser } from '../../redux/features/auth/userThunk';
 import { toast } from 'react-toastify';
 import { FaCheck, FaEdit, FaTrash } from 'react-icons/fa';
@@ -13,8 +12,6 @@ export default function UsersList() {
     const [editableEmail, setEditableEmail] = useState('');
     const [editableRole, setEditableRole] = useState('');
 
-    const dispatch = useDispatch();
-
     useEffect(() => {
         const fetchusers = async () => {
             try {
@@ -26,9 +23,12 @@ export default function UsersList() {
             }
         };
         fetchusers();
-    }, [users]);
+    }, []);
 
-    const toggleEdit = (id, name, email,role) => {
+    console.log(users);
+    
+
+    const toggleEdit = (id, name, email, role) => {
         setEditableId(id);
         setEditableName(name);
         setEditableEmail(email);
@@ -48,7 +48,7 @@ export default function UsersList() {
     };
 
     const updateHandler = async (id) => {
-        const body = { name: editableName, email: editableEmail,role:editableRole };
+        const body = { name: editableName, email: editableEmail, role: editableRole };
         try {
             const { data } = await updateUserById(id, body);
             // console.log(data);
@@ -91,7 +91,7 @@ export default function UsersList() {
                                     ) : (
                                         <div className="flex items-center justify-between">
                                             <div className="truncate">{user.name}</div>
-                                            <button className="ml-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => toggleEdit(user._id, user.name, user.email,user.role)}>
+                                            <button className="ml-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => toggleEdit(user._id, user.name, user.email, user.role)}>
                                                 <FaEdit />
                                             </button>
                                         </div>
@@ -108,7 +108,7 @@ export default function UsersList() {
                                     ) : (
                                         <div className="flex items-center justify-between">
                                             <div className="truncate">{user.email}</div>
-                                            <button className="ml-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => toggleEdit(user._id, user.name, user.email,user.role)}>
+                                            <button className="ml-2 p-1 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => toggleEdit(user._id, user.name, user.email, user.role)}>
                                                 <FaEdit />
                                             </button>
                                         </div>
@@ -117,7 +117,7 @@ export default function UsersList() {
                                 <td className="px-4 py-3">
                                     {editableId === user._id ? (
                                         <div className="flex items-center">
-                                            <select value={editableRole} onChange={e=>setEditableRole(e.target.value)}>
+                                            <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)}>
                                                 <option value="user">User</option>
                                                 <option value="admin">Admin</option>
                                                 <option value="vender">Vender</option>

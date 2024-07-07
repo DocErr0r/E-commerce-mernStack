@@ -6,11 +6,6 @@ import 'react-toastify/ReactToastify.css'
 import { useEffect } from 'react';
 
 function App() {
-    // const expire=localStorage.getItem('expire')
-    // console.log(expire)
-    // useEffect(() => {
-      
-    // }, []);
     
     return (
         <>

@@ -71,9 +71,9 @@ const Navigation = () => {
                 <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
                     {userInfo ? (
                         <>
-                            <span className="text-white">{userInfo.name}</span>{' '}
+                            <span className="text-white mx-2">{userInfo.name}</span>{" "}
                             <span>
-                                <i>U</i>
+                                ▽
                             </span>{' '}
                         </>
                     ) : (
@@ -105,7 +105,7 @@ const Navigation = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/catogory'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/category'} className="block py-2 px-4 text-center hover:bg-gray-300">
                                         Catogory
                                     </Link>
                                 </li>

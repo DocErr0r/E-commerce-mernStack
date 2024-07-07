@@ -26,7 +26,7 @@ const EditProfile = () => {
             const res = await dispatch(updatecr({name,email}));
             console.log(res);
             if (res.error) {
-                toast.error(error);
+                toast.error(res.payload.message);
             } else {
                 toast.success('profile update successfully');
             }
