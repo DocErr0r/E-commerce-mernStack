@@ -11,19 +11,20 @@ function CategoryList() {
     const [newName, setNewName] = useState('');
     const [selectCategory, setSelectCategory] = useState(null);
     const [modalShow, setModalShow] = useState(false);
-
+    const [changes, setChanges] = useState(false);
+    
+    const fetchCategory = async () => {
+        try {
+            const data = await getAllCategory();
+            // console.log(data.data);
+            setCategoryData(data.data);
+        } catch (error) {
+            toast.error(error.response.data.message || error.message);
+        }
+    };
     useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-                const data = await getAllCategory();
-                // console.log(data.data);
-                setCategoryData(data.data);
-            } catch (error) {
-                toast.error(error.response.data.message || error.message);
-            }
-        };
         fetchCategory();
-    },[]);
+    },[changes]);
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -39,6 +40,7 @@ function CategoryList() {
             } else {
                 setName('');
                 toast.success('categort created');
+                setChanges(!changes)
             }
         } catch (error) {
             console.log(error);
@@ -62,6 +64,7 @@ function CategoryList() {
                 setSelectCategory(null);
                 setNewName('');
                 setModalShow(false);
+                setChanges(!changes);
             }
         } catch (error) {
             console.log(error);
@@ -80,6 +83,7 @@ function CategoryList() {
                 toast.success('category deleted');
                 setModalShow(false);
                 setSelectCategory(null);
+                setChanges(!changes);
             }
         } catch (error) {
             console.log(error);

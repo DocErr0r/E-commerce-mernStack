@@ -11,19 +11,23 @@ export default function UsersList() {
     const [editableName, setEditableName] = useState('');
     const [editableEmail, setEditableEmail] = useState('');
     const [editableRole, setEditableRole] = useState('');
+    const [changeUser, setChangeUser] = useState(false);
+    
 
+    const fetchusers = async () => {
+        try {
+            const { data } = await getUsers();
+            // console.log(data.data);
+            setUsers(data.data);
+        } catch (error) {
+            toast.error(error.response.data.message || error.message);
+        }
+    };
     useEffect(() => {
-        const fetchusers = async () => {
-            try {
-                const { data } = await getUsers();
-                // console.log(data.data);
-                setUsers(data.data);
-            } catch (error) {
-                toast.error(error.response.data.message || error.message);
-            }
-        };
+        console.log("runnig useeffect");
+        
         fetchusers();
-    }, []);
+    }, [changeUser]);
 
     console.log(users);
     
@@ -41,6 +45,7 @@ export default function UsersList() {
                 const { data } = await deleteUserById(id);
                 // console.log(data);
                 toast.success(data.message);
+                setChangeUser(!changeUser)
             } catch (error) {
                 toast.error(error.response.data.message || error.message);
             }
@@ -54,6 +59,7 @@ export default function UsersList() {
             // console.log(data);
             toast.success(data.message);
             setEditableId(null);
+            setChangeUser(!changeUser);
         } catch (error) {
             toast.error(error.response.data.message || error.message);
         }
