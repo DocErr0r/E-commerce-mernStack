@@ -1,16 +1,18 @@
 import express from "express";
 import admin from "../middlewares/admin.js";
 import validId from "../middlewares/validId.js"
-import verifyuser from "../middlewares/validId.js"
+import verifyuser from "../middlewares/verifyuser.js"
 import formidable from "express-formidable";
-import { createProduct, getProduct, getProducts, removeProduct, searchProducts, updateProduct } from "../controller/productController.js";
+import { addReview, createProduct, getNewProducts, getProduct, getProducts, getTopProducts, removeProduct, searchProducts, updateProduct } from "../controller/productController.js";
 const router = express.Router();
 
-router.route('/create').post([admin], formidable(), createProduct);
-router.get('/', getProducts);
 router.get('/search', searchProducts);
-router.route('/:id').put([admin, validId], updateProduct).delete([admin, validId], removeProduct).get(getProduct);
+router.get('/', getProducts);
+router.get('/top', getTopProducts);
+router.get('/new', getNewProducts);
 
-// router.route('/:id/review').post([verifyuser], createProduct);
+router.route('/create').post([admin], formidable(), createProduct);
+router.route('/:id/review').post([verifyuser, validId], addReview);
+router.route('/:id').put([admin, validId], updateProduct).delete([admin, validId], removeProduct).get(validId, getProduct);
 
 export default router
