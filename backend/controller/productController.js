@@ -79,12 +79,9 @@ export const createProduct = serverHandler(async (req, res) => {
 })
 
 export const updateProduct = serverHandler(async (req, res) => {
-    const { name, image, description, price, category, brand, quantity } = req.body;
+    const { name, description, price, category, brand, quantity } = req.body;
     if (!name) {
         return res.send({ message: 'Name is requried' })
-    }
-    if (!image) {
-        return res.send({ message: 'Image is requried' })
     }
     if (!description) {
         return res.send({ message: 'Description is requried' })
