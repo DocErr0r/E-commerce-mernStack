@@ -142,7 +142,7 @@ export const forgotPassword = serverhandler(async (req, res) => {
 });
 
 export const resetPassword = serverhandler(async (req, res) => {
-    const resetToken = req.params.token;
+    const resetToken = req.params.token; // encrypt token because token is encypted
     const user = await User.findOne({
         resetPasswordToken: resetToken,
         resetPasswordTokenExpire: { $gt: Date.now() }
@@ -161,9 +161,20 @@ export const resetPassword = serverhandler(async (req, res) => {
     if (password !== confirmPassword) {
         throw new Error("password not match")
     }
-    // todo
 
-    res.status(200).send({ message: 'Password updated successfully' });
+    try {
+        const salt = await bcrypt.genSalt(Number(process.env.SALT));
+        const hashedPassword = await bcrypt.hash(password, salt)
+        user.password = hashedPassword;
+
+        await user.save();
+        user.resetPasswordToken = undefined;
+        user.resetPasswordTokenExpire = undefined;
+
+        res.status(200).send({ message: 'Password updated successfully' });
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating password' });
+    }
 })
 
 
@@ -181,8 +192,8 @@ export const deleteUserById = serverhandler(async (req, res) => {
         throw new Error("No user with this id");
     }
     if (user.role === "admin") { res.status(400); throw new Error("can not delete admin user") }
-    const deleteUser=await User.deleteOne({ _id: user._id })
-    res.status(200).send({data:deleteUser ,message: "Deleted Successfully" });
+    const deleteUser = await User.deleteOne({ _id: user._id })
+    res.status(200).send({ data: deleteUser, message: "Deleted Successfully" });
 })
 
 export const getUserById = serverhandler(async (req, res) => {
@@ -216,5 +227,5 @@ export const updateUserById = serverhandler(async (req, res) => {
     if (user.role === "admin") { object.role = undefined }
 
     user = await User.findByIdAndUpdate({ _id: user.id }, { $set: object }, { new: true }).select('-password -__v');
-    res.status(200).send({ data: user ,message:`user with ${req.params.id} has been updated`})
+    res.status(200).send({ data: user, message: `user with ${req.params.id} has been updated` })
 });

@@ -12,9 +12,9 @@ const userSchema = new mongoose.Schema({
         index: true,
     },
     email: { type: String, required: true, unique: true, },
-    // mobile: { type: String, required: true, unique: true, },
     password: { type: String, required: true, },
     role: { type: String, default: "user", required: true },
+    // mobile: { type: String, required: true, unique: true, },
 
     resetPasswordToken: { type: String, },
     resetPasswordTokenExpire: { type: Date }
@@ -31,8 +31,8 @@ userSchema.methods.generateAuthToken = function () {
 
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = '123456'
-    const expireTime = Date.now() + (60 * 1000); // seconds
-    this.resetPasswordToken = resetToken;
+    const expireTime = Date.now() + (5 * 60 * 1000); // seconds
+    this.resetPasswordToken = resetToken; //save this using encryption technique
     this.resetPasswordTokenExpire = expireTime;
     return resetToken;
 }
