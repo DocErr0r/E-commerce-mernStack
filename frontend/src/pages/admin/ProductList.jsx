@@ -8,17 +8,7 @@ import { FaPlus } from 'react-icons/fa';
 
 function ProductList() {
     const { loading, getProducts } = useGetProducts();
-
-    const [productData, setProductData] = useState({
-        name: '',
-        image: '',
-        description: '',
-        price: 0,
-        category: '',
-        quantity: 0,
-        brand: '',
-    });
-    const [imageurl, setImageurl] = useState('');
+    
     const navigate = useNavigate();
 
     const [products, setProducts] = useState(null);
@@ -40,19 +30,6 @@ function ProductList() {
     return loading ? (
         <Loder />
     ) : (
-        // <div className="container">
-        //     <div className="md:w-3/4 bg-slate-700">
-        //         <h1 className="text-3xl">create products</h1>
-        //         {imageurl && <div>image show</div>}
-        //         <div className="mb-3">
-        //             <label htmlFor="image" className="border block w-full text-center cursor-pointer p-4 ">
-        //                 {productData.image ? image.name :'Upload image'}
-        //             <input type="file" name='image' accept='image/*' className={!productData.image?"hidden":"text-white"} />
-        //             </label>
-        //         </div>
-        //     </div>
-        // </div>
-
         <div className="container p-4 mx-auto  bg-gray-900 ">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-semibold mb-6">products ({products?.length})</h1>

@@ -61,13 +61,13 @@ export const removeProduct = serverHandler(async (req, res) => {
 
 export const createProduct = serverHandler(async (req, res) => {
     const { name, image, description, price, category, brand, quantity } = req.fields;
-    if (!name) return res.send({ message: 'Name is requried' })
-    if (!image) return res.send({ message: 'Image is requried' })
-    if (!description) return res.send({ message: 'Description is requried' })
-    if (!price) return res.send({ message: 'Price is requried' })
-    if (!category) return res.send({ message: 'Category is requried' })
-    if (!brand) return res.send({ message: 'Brand is requried' })
-    if (!quantity) return res.send({ message: 'Quantity is requried' })
+    if (!name) throw new Error('Name is requried')
+    if (!image) throw new Error('Image is requried')
+    if (!description) throw new Error('Description is requried')
+    if (!price) throw new Error('Price is requried')
+    if (!category) throw new Error('Category is requried')
+    if (!brand) throw new Error('Brand is requried')
+    if (!quantity) throw new Error('Quantity is requried')
     try {
         const product = new Product({ ...req.fields })
         await product.save()
@@ -81,22 +81,22 @@ export const createProduct = serverHandler(async (req, res) => {
 export const updateProduct = serverHandler(async (req, res) => {
     const { name, description, price, category, brand, quantity } = req.body;
     if (!name) {
-        return res.send({ message: 'Name is requried' })
+        throw new Error('Name is requried')
     }
     if (!description) {
-        return res.send({ message: 'Description is requried' })
+        throw new Error('Description is requried')
     }
     if (!price) {
-        return res.send({ message: 'Price is requried' })
+        throw new Error('Price is requried')
     }
     if (!category) {
-        return res.send({ message: 'Category is requried' })
+        throw new Error('Category is requried')
     }
     if (!brand) {
-        return res.send({ message: 'Brand is requried' })
+        throw new Error('Brand is requried')
     }
     if (!quantity) {
-        return res.send({ message: 'Quantity is requried' })
+        throw new Error('Quantity is requried')
     }
     try {
         const product = await Product.findById(req.params.id);

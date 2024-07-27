@@ -12,7 +12,7 @@ function App() {
         <>
             <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={1500}/>
             <Navigation />
-            <main className="py-5 ml-44">
+            <main className="py-5 md:ml-44">
                 <Outlet />
             </main>
         </>

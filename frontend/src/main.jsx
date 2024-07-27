@@ -42,7 +42,7 @@ const router = createBrowserRouter(
                 <Route path="user-list" element={<UsersList />} />
                 <Route path="category" element={<CategoryList />} />
                 <Route path="productlist" element={<ProductList />} />
-                <Route path="addproduct" component={<AddProduct />} />
+                <Route path="addproduct" element={<AddProduct />} />
             </Route>
         </Route>,
     ),
