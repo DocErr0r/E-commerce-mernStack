@@ -20,6 +20,9 @@ import AdminRoutes from './pages/admin/AdminRoutes.jsx';
 import Dashboard from './pages/admin/Dashboard.jsx';
 import UsersList from './pages/admin/UsersList.jsx';
 import CategoryList from './pages/admin/CategoryList.jsx';
+import ProductList from './pages/admin/ProductList.jsx';
+import { ThemeProvider } from '@material-tailwind/react';
+import AddProduct from './pages/admin/AddProduct.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,6 +41,8 @@ const router = createBrowserRouter(
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="user-list" element={<UsersList />} />
                 <Route path="category" element={<CategoryList />} />
+                <Route path="productlist" element={<ProductList />} />
+                <Route path="addproduct" component={<AddProduct />} />
             </Route>
         </Route>,
     ),
@@ -45,8 +50,10 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <Provider store={store}>
-            <RouterProvider router={router} />
-        </Provider>
+        <ThemeProvider>
+            <Provider store={store}>
+                <RouterProvider router={router} />
+            </Provider>
+        </ThemeProvider>
     </React.StrictMode>,
 );

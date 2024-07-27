@@ -1,0 +1,89 @@
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
+import { useGetProducts } from '../../hooks/productApicall';
+import Loder from '../../components/Loder';
+import { Button } from '@material-tailwind/react';
+import { FaPlus } from 'react-icons/fa';
+
+function ProductList() {
+    const { loading, getProducts } = useGetProducts();
+
+    const [productData, setProductData] = useState({
+        name: '',
+        image: '',
+        description: '',
+        price: 0,
+        category: '',
+        quantity: 0,
+        brand: '',
+    });
+    const [imageurl, setImageurl] = useState('');
+    const navigate = useNavigate();
+
+    const [products, setProducts] = useState(null);
+
+    const fetchProducts = async () => {
+        try {
+            const result = await getProducts();
+            // console.log(result);
+            setProducts(result.data);
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response.message || error.message);
+        }
+    };
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    return loading ? (
+        <Loder />
+    ) : (
+        // <div className="container">
+        //     <div className="md:w-3/4 bg-slate-700">
+        //         <h1 className="text-3xl">create products</h1>
+        //         {imageurl && <div>image show</div>}
+        //         <div className="mb-3">
+        //             <label htmlFor="image" className="border block w-full text-center cursor-pointer p-4 ">
+        //                 {productData.image ? image.name :'Upload image'}
+        //             <input type="file" name='image' accept='image/*' className={!productData.image?"hidden":"text-white"} />
+        //             </label>
+        //         </div>
+        //     </div>
+        // </div>
+
+        <div className="container p-4 mx-auto  bg-gray-900 ">
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-semibold mb-6">products ({products?.length})</h1>
+                <Link to={"/admin/addproduct"} className='bg-purple-800 text-center flex items-center gap-1 rounded-xl px-4 py-2'><FaPlus/> Add product</Link>
+            </div>
+            <div className="flex flex-wrap justify-around items-center">
+                {products?.map((product) => (
+                    <Link key={product._id} className="hover:bg-gray-700 hover:rounded-lg block overflow-hidden my-2">
+                        <div className="flex rounded-lg p-2 bg-slate-950">
+                            <img src={product.image} alt={product.name} className="w-[10rem] object-cover" />
+                            <div className="flex flex-col p-4 justify-around">
+                                <div className="flex justify-between">
+                                    <h3 className="text-xl font-semibold">{product.name}</h3>
+                                    <p className="text-sm">{new Date(product.createdAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</p>
+                                </div>
+                                <div className="flex justify-between xl:w-[25rem] md:w-[15rem] sm:w-[10rem] mb-4">
+                                    <p className="text-sm">{product.description?.substring(0, 120)}...</p>
+                                    <span className="font-bold">₹ {product.price}</span>
+                                </div>
+
+                                <div className="flex justify-end xl:w-[25rem] md:w-[15rem] sm:w-[10rem]">
+                                    <Link className="bg-pink-700 rounded-lg px-3 py-2 text-sm font-medium hover:bg-pink-800">Update product</Link>
+                                    {/* <Button className="bg-red-600 rounded-lg px-3 py-2 text-sm font-medium hover:bg-red-800">Delete product</Button> */}
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+export default ProductList;

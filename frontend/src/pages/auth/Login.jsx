@@ -43,9 +43,9 @@ export default function Login() {
     };
 
     return (
-        <div className="w-[100vw]">
-            <section className="flex flex-wrap justify-center ">
-                <div className="mr-[4rem] mt-[5rem] bg-purple-700 p-4 rounded-3xl ">
+        <div className="min-w-max">
+            <section className="flex flex-wrap justify-center items-center h-[100vh]">
+                <div className="bg-purple-700 p-4 rounded-3xl ">
                     <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
                     <form onSubmit={submitHandeler} className="container w-[25rem]">
                         <div className="my-[2rem]">

@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/features/auth/userThunk';
+import { Menu, MenuHandler, MenuList } from '@material-tailwind/react';
 
 const Navigation = () => {
     const { userInfo } = useSelector((state) => state.user);
@@ -20,7 +21,7 @@ const Navigation = () => {
     const [showSidebar, setShowSidebar] = useState(false);
     // Dropdown Menu Functions
     function toggleDropdown() {
-        setDrowpDown(!drowpDown);
+        // setDrowpDown(!drowpDown);
     }
     function toggleSidebar() {
         setShowSidebar(!showSidebar);
@@ -67,70 +68,74 @@ const Navigation = () => {
                 </Link>
             </div>
 
-            <div className="relative">
-                <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
-                    {userInfo ? (
-                        <>
-                            <span className="text-white mx-2">{userInfo.name}</span>{" "}
-                            <span>
-                                ▽
-                            </span>{' '}
-                        </>
-                    ) : (
-                        <></>
-                    )}{' '}
-                </button>
-                {drowpDown && userInfo && (
-                    <ul className={`absolute right-0 mt-2 mr-14 space-y-2 bg-white text-gray-700  ${!(userInfo.role === 'admin') ? '-top-36' : '-top-96'}`}>
+            <Menu>
+                {/* <div className="relative"> */}
+                <MenuHandler>
+                    <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
+                        {userInfo ? (
+                            <>
+                                <span className="text-white mx-2">{userInfo.name}</span> <span>▽</span>{' '}
+                            </>
+                        ) : (
+                            <></>
+                        )}{' '}
+                    </button>
+                </MenuHandler>
+                { userInfo && (
+                <MenuList>
+                    <ul className="mt-2 space-y-2 bg-white text-gray-700 border-none">
                         {userInfo.role === 'admin' && (
                             <>
                                 <li>
-                                    <Link to={'/admin/dashboard'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/dashboard'} className="block py-2 px-4  hover:bg-gray-300">
                                         Dashboard
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/user-list'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/user-list'} className="block py-2 px-4 hover:bg-gray-300">
                                         Users
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/prducts'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/productlist'} className="block py-2 px-4 hover:bg-gray-300">
                                         Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/orders'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/orders'} className="block py-2 px-4 r hover:bg-gray-300">
                                         Order
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/admin/category'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                                    <Link to={'/admin/category'} className="block py-2 px-4  hover:bg-gray-300">
                                         Catogory
                                     </Link>
                                 </li>
                             </>
                         )}
                         <li>
-                            <Link to={'/v1/me'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                            <Link to={'/v1/me'} className="block py-2 px-4 hover:bg-gray-300">
                                 Profile
                             </Link>
                         </li>
                         <li>
-                            <Link to={'/v1/change-password'} className="block py-2 px-4 text-center hover:bg-gray-300">
+                            <Link to={'/v1/change-password'} className="block py-2 px-4 hover:bg-gray-300">
                                 Change Password
                             </Link>
                         </li>
                         <li>
-                            <button to={'/'} onClick={logoutHandler} className="block py-2 px-4 w-full hover:bg-gray-300">
+                            <button to={'/'} onClick={logoutHandler} className="block py-2 text-left px-4 w-full hover:bg-gray-300">
                                 Logout
                             </button>
                         </li>
                     </ul>
-                )}
-            </div>
+                </MenuList>
+                 )} 
+                {/* </div> */}
+            </Menu>
 
             {!userInfo && (
+            
                 <ul>
                     <li>
                         <Link to={'/login'} className="flex items-center transition-transform transform hover:translate-x-2">

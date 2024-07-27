@@ -6,12 +6,13 @@ import 'react-toastify/ReactToastify.css'
 import { useEffect } from 'react';
 
 function App() {
-    
+    // useEffect(()=>{
+    // })    
     return (
         <>
             <ToastContainer position='bottom-center' pauseOnHover={false} autoClose={1500}/>
             <Navigation />
-            <main className="py-3">
+            <main className="py-5 ml-44">
                 <Outlet />
             </main>
         </>

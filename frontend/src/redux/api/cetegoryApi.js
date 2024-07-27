@@ -2,18 +2,18 @@ import { CATEGORY_URL } from "../contsants";
 import axiosInstace from "./apiSlice";
 
 // create category 
-export const createCategory = (body) => {
+export const create = (body) => {
     return axiosInstace.post(`${CATEGORY_URL}/create`, body)
 }
-// export const createCategory = async (body) => {
-//     try {
-//         const { data } = await create(body);
-//         // console.log(data)
-//         return data;
-//     } catch (error) {
-//         return error
-//     }
-// }
+export const createCategory = async (body) => {
+    try {
+        const { data } = await create(body);
+        // console.log(data)
+        return data;
+    } catch (error) {
+        throw error
+    }
+}
 
 // update category
 export const updateCategory = (id, body) => {
@@ -53,7 +53,7 @@ export const getAllCategory = async () => {
         // console.log(data)
         return data;
     } catch (error) {
-        return (error.response.data.message || error.message);
+        throw error;
     }
 }
 
@@ -67,6 +67,6 @@ export const getCategory = async (id) => {
         // console.log(data)
         return data;
     } catch (error) {
-        return (error.response.data.message || error.message);
+        throw error;
     }
 }

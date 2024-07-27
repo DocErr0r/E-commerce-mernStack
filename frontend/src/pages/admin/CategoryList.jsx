@@ -12,7 +12,7 @@ function CategoryList() {
     const [selectCategory, setSelectCategory] = useState(null);
     const [modalShow, setModalShow] = useState(false);
     const [changes, setChanges] = useState(false);
-    
+
     const fetchCategory = async () => {
         try {
             const data = await getAllCategory();
@@ -24,7 +24,7 @@ function CategoryList() {
     };
     useEffect(() => {
         fetchCategory();
-    },[changes]);
+    }, [changes]);
 
     const handleCreate = async (e) => {
         e.preventDefault();
@@ -34,14 +34,10 @@ function CategoryList() {
         }
         try {
             const result = await createCategory({ name });
-            if (result.error) {
-                console.log(result);
-                toast.error(res.error.message);
-            } else {
-                setName('');
-                toast.success('categort created');
-                setChanges(!changes)
-            }
+            console.log(result);
+            setName('');
+            toast.success('categort created');
+            setChanges(!changes);
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message || error.message);
@@ -56,16 +52,11 @@ function CategoryList() {
         }
         try {
             const result = await updateCategory(selectCategory, { name: newName });
-            if (result.error) {
-                console.log(result);
-                toast.error(res.error.message);
-            } else {
-                toast.success('categort updated');
-                setSelectCategory(null);
-                setNewName('');
-                setModalShow(false);
-                setChanges(!changes);
-            }
+            toast.success('categort updated');
+            setSelectCategory(null);
+            setNewName('');
+            setModalShow(false);
+            setChanges(!changes);
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.message || error.message);
@@ -73,7 +64,7 @@ function CategoryList() {
     };
 
     const handleDeleteCategory = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
             const result = await deleteCategory(selectCategory);
             if (result.error) {
@@ -91,7 +82,7 @@ function CategoryList() {
         }
     };
 
-    console.log(categoryData);
+    // console.log(categoryData);
 
     return (
         <div className="ml-[10rem] felx flex-col md:flex-row">
