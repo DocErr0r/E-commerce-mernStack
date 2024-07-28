@@ -52,7 +52,7 @@ export const removeProduct = serverHandler(async (req, res) => {
             return res.status(400).send({ message: "product not found" })
         }
         await Product.findByIdAndDelete(req.params.id)
-        res.status(200).send({ message: "product is deleted" });
+        res.status(200).send({ message: `${product.name} product is deleted` });
     }
     catch (error) {
         res.status(400).send({ message: error.message });
@@ -79,9 +79,12 @@ export const createProduct = serverHandler(async (req, res) => {
 })
 
 export const updateProduct = serverHandler(async (req, res) => {
-    const { name, description, price, category, brand, quantity } = req.body;
+    const { name,image, description, price, category, brand, quantity } = req.body;
     if (!name) {
         throw new Error('Name is requried')
+    }
+    if (image) {
+        throw new Error('Image not allow to be change')
     }
     if (!description) {
         throw new Error('Description is requried')

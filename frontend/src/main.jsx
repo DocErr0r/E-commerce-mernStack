@@ -23,6 +23,7 @@ import CategoryList from './pages/admin/CategoryList.jsx';
 import ProductList from './pages/admin/ProductList.jsx';
 import { ThemeProvider } from '@material-tailwind/react';
 import AddProduct from './pages/admin/AddProduct.jsx';
+import UpdateProduct from './pages/admin/UpdateProduct.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -43,6 +44,7 @@ const router = createBrowserRouter(
                 <Route path="category" element={<CategoryList />} />
                 <Route path="productlist" element={<ProductList />} />
                 <Route path="addproduct" element={<AddProduct />} />
+                <Route path="Updateproduct/:id" element={<UpdateProduct />} />
             </Route>
         </Route>,
     ),
