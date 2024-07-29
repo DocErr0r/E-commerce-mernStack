@@ -30,15 +30,17 @@ function ProductList() {
     return loading ? (
         <Loder />
     ) : (
-        <div className="container p-4 mx-auto  bg-gray-900 ">
+        <div className="mx-auto max-w-7xl p-4 bg-gray-900 ">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-semibold mb-6">products ({products?.length})</h1>
-                <Link to={"/admin/addproduct"} className='bg-purple-800 text-center flex items-center gap-1 rounded-xl px-4 py-2'><FaPlus/> Add product</Link>
+                <Link to={'/admin/addproduct'} className="bg-purple-800 text-center flex items-center gap-1 rounded-xl px-4 py-2">
+                    <FaPlus /> Add product
+                </Link>
             </div>
             <div className="flex flex-wrap justify-around items-center">
                 {products?.map((product) => (
                     <Link key={product._id} className="hover:bg-gray-700 hover:rounded-lg block overflow-hidden my-2">
-                        <div className="flex rounded-lg p-2 bg-slate-950">
+                        <div className="flex flex-wrap rounded-lg p-2 bg-slate-950">
                             <img src={product.image} alt={product.name} className="w-[10rem] object-cover" />
                             <div className="flex flex-col p-4 justify-around">
                                 <div className="flex justify-between">
@@ -51,7 +53,9 @@ function ProductList() {
                                 </div>
 
                                 <div className="flex justify-end xl:w-[25rem] md:w-[15rem] sm:w-[10rem]">
-                                    <Link to={`/admin/updateproduct/${product._id}`} className="bg-pink-700 rounded-lg px-3 py-2 text-sm font-medium hover:bg-pink-800">Update product</Link>
+                                    <Link to={`/admin/updateproduct/${product._id}`} className="bg-pink-700 rounded-lg px-3 py-2 text-sm font-medium hover:bg-pink-800">
+                                        Update product
+                                    </Link>
                                     {/* <Button className="bg-red-600 rounded-lg px-3 py-2 text-sm font-medium hover:bg-red-800">Delete product</Button> */}
                                 </div>
                             </div>

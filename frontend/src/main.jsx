@@ -24,13 +24,18 @@ import ProductList from './pages/admin/ProductList.jsx';
 import { ThemeProvider } from '@material-tailwind/react';
 import AddProduct from './pages/admin/AddProduct.jsx';
 import UpdateProduct from './pages/admin/UpdateProduct.jsx';
+import Home from './pages/Home/Home.jsx';
+import Shop from './pages/Shoping/Shop.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
+            <Route index element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/about" element={<h1 style={{ marginTop: '100px' }}> home</h1>} />
+            <Route path="/contact-us" element={<h>connact us page</h>} />
 
             <Route path="/v1" element={<PrivateRoute />}>
                 <Route path="me" element={<Profile />} />

@@ -3,6 +3,8 @@ import { deleteUserById, getUsers, updateUserById } from '../../redux/api/userAp
 // import { getAllUser } from '../../redux/features/auth/userThunk';
 import { toast } from 'react-toastify';
 import { FaCheck, FaEdit, FaTrash } from 'react-icons/fa';
+import UserModal from '../../components/UserModal';
+import Modal from '../../components/Modal';
 
 export default function UsersList() {
     const [users, setUsers] = useState([]);
@@ -12,7 +14,9 @@ export default function UsersList() {
     const [editableEmail, setEditableEmail] = useState('');
     const [editableRole, setEditableRole] = useState('');
     const [changeUser, setChangeUser] = useState(false);
-    
+
+    const [openModal, setOpenModal] = useState(false);
+    const [userDetail, setUserDetail] = useState(null);
 
     const fetchusers = async () => {
         try {
@@ -24,13 +28,12 @@ export default function UsersList() {
         }
     };
     useEffect(() => {
-        console.log("runnig useeffect");
-        
+        // console.log("runnig useeffect");
+
         fetchusers();
     }, [changeUser]);
 
-    console.log(users);
-    
+    // console.log(users);
 
     const toggleEdit = (id, name, email, role) => {
         setEditableId(id);
@@ -45,7 +48,7 @@ export default function UsersList() {
                 const { data } = await deleteUserById(id);
                 // console.log(data);
                 toast.success(data.message);
-                setChangeUser(!changeUser)
+                setChangeUser(!changeUser);
             } catch (error) {
                 toast.error(error.response.data.message || error.message);
             }
@@ -83,7 +86,11 @@ export default function UsersList() {
                     </thead>
                     <tbody>
                         {users.map((user, index) => (
-                            <tr key={user._id} className="hover:bg-gray-700">
+                            <tr
+                                key={user._id}
+                                className="hover:bg-gray-700"
+                                // onClick={() => {setOpenModal(true),setUserDetail(user)}}
+                            >
                                 <td className="px-4 py-3">{index + 1}</td>
                                 <td className="px-4 py-3">{user._id}</td>
                                 <td className="px-4 py-3">
@@ -145,6 +152,11 @@ export default function UsersList() {
                     </tbody>
                 </table>
             </div>
+            {openModal && (
+                <Modal isopen={openModal} onclose={() => setOpenModal(false)}>
+                    <UserModal user={userDetail} />
+                </Modal>
+            )}
         </div>
     );
 }

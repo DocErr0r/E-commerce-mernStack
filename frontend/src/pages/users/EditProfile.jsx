@@ -36,7 +36,7 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 mt-[10rem]">
+        <div className="mx-auto max-w-7xl p-4 mt-10">
             <div className="flex justify-center items-center md:flex md:space-x-4">
                 <div className="md:w-1/3">
                     <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
@@ -71,7 +71,7 @@ const EditProfile = () => {
                                 </div> */}
                             </div>
                             {/* Add more form fields for other profile information */}
-                            <div className="flex justify-between px-4 py-4 sm:px-6">
+                            <div className="flex justify-between gap-4 px-4 py-4 sm:px-6">
                                 <Link to="/v1/me" className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded">
                                     Back Profile{' '}
                                 </Link>{' '}

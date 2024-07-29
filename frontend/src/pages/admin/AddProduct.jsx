@@ -87,8 +87,8 @@ const AddProduct = () => {
     }
 
     return (
-        <div className="container mx-auto">
-            <div className="md:w-3/4 bg-slate-950 p-4">
+        <div className="mx-auto max-w-7xl ">
+            <div className="md:w-3/4 mx-auto bg-slate-800 p-4">
                 <button onClick={() => navigate(-1)}>
                     <FaArrowLeft />
                 </button>

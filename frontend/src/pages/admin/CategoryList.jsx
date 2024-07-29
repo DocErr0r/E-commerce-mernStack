@@ -85,8 +85,8 @@ function CategoryList() {
     // console.log(categoryData);
 
     return (
-        <div className="ml-[10rem] felx flex-col md:flex-row">
-            <div className="p-3 md:w-3/4">
+        <div className=" mx-auto max-w-7xl felx flex-col md:flex-row">
+            <div className="p-3 md:w-3/4 mx-auto">
                 <div className="h-12">Manage Category</div>
                 <CategoryForm value={name} setValue={setName} handleSubmit={handleCreate} />
                 <div className="flex flex-wrap">

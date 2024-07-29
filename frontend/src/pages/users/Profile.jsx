@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 export default function Profile() {
     const { userInfo } = useSelector((state) => state.user);
     return (
-        <div className="container mx-auto p-4 mt-[10rem]">
+        <div className="mx-auto max-w-7xl p-4 mt-10">
             <div className="flex justify-center align-middle md:flex md:space-x-4">
                 <div className="md:w-1/3">
-                        <h2 className="text-2xl font-semibold mb-4">Your Profile</h2>
-                        {/* if profile contains img */}
+                    <h2 className="text-2xl font-semibold mb-4">Your Profile</h2>
+                    {/* if profile contains img */}
                     {/* <div className="px-4 py-5 sm:px-6">
                         <h3 className="text-lg font-medium leading-6 text-gray-200">Your Profile</h3>
                         <p className="mt-1 max-w-2xl text-sm text-gray-400">Manage your profile information</p>

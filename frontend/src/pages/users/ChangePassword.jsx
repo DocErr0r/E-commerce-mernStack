@@ -26,9 +26,9 @@ function ChangePassword() {
         
     }
     return (
-        <div className="container mx-auto mt-[10rem]">
+        <div className="mx-auto max-w-7xl mt-10">
             <div className="flex justify-center align-middle md:flex md:space-x-4">
-                <div className="md:w-1/3 bg-purple-700 p-4 rounded-2xl">
+                <div className=" bg-purple-700 p-4 rounded-2xl">
                     <h2 className="text-2xl text-center font-semibold mb-4">Change Password</h2>
                     <form onSubmit={handelSubmit}>
                         <div className="p-4">
@@ -67,7 +67,7 @@ function ChangePassword() {
                             </Link>
                         </div>
                     </form>
-            {error&& <div className='m-2 text-red-500 text-center'>{error}</div> }
+                    {error && <div className="m-2 text-red-500 text-center">{error}</div>}
                 </div>
                 {loading && <Loder />}
             </div>
