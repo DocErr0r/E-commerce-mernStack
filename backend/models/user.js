@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'; // Erase if already required
+import mongoose, { Schema } from 'mongoose'; // Erase if already required
 import Jwt from "jsonwebtoken";
 import Joi from 'joi';
 import PasswordComplexity from "joi-password-complexity";
@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true, },
     role: { type: String, default: "user", required: true },
     // mobile: { type: String, required: true, unique: true, },
+
+    wishlist: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
 
     resetPasswordToken: { type: String, },
     resetPasswordTokenExpire: { type: Date }

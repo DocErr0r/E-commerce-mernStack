@@ -10,6 +10,7 @@ const reviewSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 const productSchema = new mongoose.Schema({
+    User: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
     name: { type: String, required: true },
     image: { type: String, required: true },
     brand: { type: String, required: true },

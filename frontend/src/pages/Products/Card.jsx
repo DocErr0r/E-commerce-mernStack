@@ -7,7 +7,7 @@ function Card({ product }) {
         product && (
             <div className="bg-gray-500 text-white md:w-1/4 sm:w-2/5 lg:w-1/5 shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 ease-in-out relative">
                 <Link to={`/product/${product._id}`}>
-                    <img src={product.image} alt={product.name} className="h-40 object-cover hover:opacity-80" />
+                    <img src={product.image} alt={product.name} className="w-full h-40 object-cover hover:opacity-80" />
                 </Link>
                 <div className="absolute top-0 right-0 p-4" onClick={(e) => e.preventDefault()}>
                     <AiOutlineHeart size={20} />

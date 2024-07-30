@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Loder from '../../components/Loder';
 import { Button } from '@material-tailwind/react';
 import { FaPlus } from 'react-icons/fa';
-import { getProducts } from '../../redux/api/ProductApi';
+import { getAdminProducts } from '../../redux/api/ProductApi';
 import myContext from '../../contexts/myContext';
 
 function ProductList() {
@@ -16,7 +16,7 @@ function ProductList() {
 
     const fetchProducts = async () => {
         try {
-            const result = await getProducts();
+            const result = await getAdminProducts();
             // console.log(result);
             setProducts(result.data);
         } catch (error) {

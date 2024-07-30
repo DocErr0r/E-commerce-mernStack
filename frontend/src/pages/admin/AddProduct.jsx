@@ -102,7 +102,14 @@ const AddProduct = () => {
                     <FaArrowLeft />
                 </button>
                 <h1 className="text-3xl">create products</h1>
-                {imageurl && (
+                <div className="flex flex-col">
+                    <label htmlFor="name" className="block">
+                        Image Url
+                    </label>
+                    <input type="text" name="image" className="rounded-lg p-3 border w-full bg-gray-900" value={productData.image} onChange={changehandler} />
+                </div>
+
+                {/* {imageurl && (
                     <div>
                         <img src={imageurl} alt="product" className="block mx-auto max-h=[200px]" />
                     </div>
@@ -112,7 +119,7 @@ const AddProduct = () => {
                         {productData.image ? productData?.image.name : 'Upload image'}
                         <input type="file" name="image" accept="image/*" onChange={uploadFilehandler} className={!productData?.image ? '' : 'text-white'} />
                     </label>
-                </div>
+                </div> */}
                 <div className="p-3">
                     <div className="flex flex-wrap gap-5 ">
                         <div className="flex flex-col">

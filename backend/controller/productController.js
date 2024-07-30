@@ -14,6 +14,19 @@ export const getProducts = serverHandler(async (req, res) => {
     }
 })
 
+export const getAdminProducts = serverHandler(async (req, res) => {
+    try {
+        const products = await Product.find({ User: req.user._id }).populate('category').limit(12).sort({ createdAt: -1 })
+        if (!products) {
+            return res.status(400).send({ message: "products not found" })
+        }
+        res.status(200).send(products);
+    }
+    catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+})
+
 export const searchProducts = serverHandler(async (req, res) => {
     const pageSize = 5
     try {
@@ -70,6 +83,7 @@ export const createProduct = serverHandler(async (req, res) => {
     if (!quantity) throw new Error('Quantity is requried')
     try {
         const product = new Product({ ...req.fields })
+        product.User = req.user._id
         await product.save()
 
         res.send(product)
@@ -79,7 +93,7 @@ export const createProduct = serverHandler(async (req, res) => {
 })
 
 export const updateProduct = serverHandler(async (req, res) => {
-    const { name,image, description, price, category, brand, quantity } = req.body;
+    const { name, image, description, price, category, brand, quantity } = req.body;
     if (!name) {
         throw new Error('Name is requried')
     }
@@ -148,11 +162,11 @@ export const addReview = serverHandler(async (req, res) => {
             res.status(400)
             throw new Error("product not found")
         }
-        const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())
-        if (alreadyReviewed) {
-            res.status(403)
-            throw new Error("you already reviewed on this product")
-        }
+        // const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())
+        // if (alreadyReviewed) {
+        //     res.status(403)
+        //     throw new Error("you already reviewed on this product")
+        // }
         const review = { user: req.user._id, name: req.user.name, rating: Number(rating), comment }
         product.reviews.push(review)
         product.numOfReviews = product.reviews.length

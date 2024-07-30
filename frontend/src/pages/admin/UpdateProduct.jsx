@@ -123,7 +123,7 @@ function UpdateProduct() {
                 <h1 className="text-3xl">create products</h1>
                 {productData?.image && (
                     <div>
-                        <img src={productData.image.image} alt="product" className="block mx-auto max-h=[200px]" />
+                        <img src={productData.image} alt="product" className="block mx-auto max-h=[200px]" />
                     </div>
                 )}
                 <div className="p-3">

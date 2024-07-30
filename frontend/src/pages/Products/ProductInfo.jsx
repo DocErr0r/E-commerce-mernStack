@@ -63,7 +63,7 @@ const ProductDetail = () => {
         return <Loader />;
     }
 
-    // console.log(reviews);
+    // console.log(product);
 
     // Calculate average rating for the product
     const averageRating = () => {
@@ -77,7 +77,7 @@ const ProductDetail = () => {
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <div className="flex flex-wrap -mx-2">
                 <div className="w-full px-2 mb-4">
-                    <img src={product.image} alt={product.name} className="rounded-lg shadow-md" />
+                    <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full h-[600px] object-cover" />
                 </div>
                 <div className="w-full md:w-1/2 px-2 mb-4">
                     <p className="mb-2">{product.description}</p>
