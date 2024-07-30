@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -6,8 +6,10 @@ import { Button } from '@material-tailwind/react';
 import Loder from '../../components/Loder';
 import { createProduct, uploadImageFile } from '../../redux/api/ProductApi';
 import { getAllCategory } from '../../redux/api/cetegoryApi';
+import myContext from '../../contexts/myContext';
 
 const AddProduct = () => {
+    const { loading, setLoading } = useContext(myContext);
     const [productData, setProductData] = useState({
         name: '',
         image: '',
@@ -16,7 +18,7 @@ const AddProduct = () => {
         category: '',
         quantity: 0,
         brand: '',
-        countInStoke: '0',
+        countInStock: '0',
     });
     const [categories, setCategories] = useState(null);
 
@@ -28,7 +30,8 @@ const AddProduct = () => {
         setProductData({ ...productData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async () => {
-        console.log(productData)
+        setLoading(true);
+        console.log(productData);
         const formdata = new FormData();
         formdata.append('name', productData.name);
         formdata.append('image', productData.image);
@@ -37,28 +40,34 @@ const AddProduct = () => {
         formdata.append('category', productData.category);
         formdata.append('quantity', productData.quantity);
         formdata.append('brand', productData.brand);
-        formdata.append('countInStock', productData.countInStoke);
+        formdata.append('countInStock', productData.countInStock);
         try {
             const res = await createProduct(productData);
             // console.log(res);
-            toast.success(`${res.data.name} is created succesfully`)
-            navigate('/')
+            toast.success(`${res.data.name} is created succesfully`);
+            setLoading(false);
+            navigate('/');
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || error.message);
+            setLoading(false);
         }
     };
 
     const getCategories = async () => {
+        setLoading(true);
         try {
             const res = await getAllCategory();
             setCategories(res.data);
+            setLoading(false);
         } catch (error) {
             console.log(error);
             toast.error(error.response.message || error.message);
+            setLoading(false);
         }
     };
     const uploadFilehandler = async (e) => {
+        setLoading(true);
         const formData = new FormData();
         formData.append('image', e.target.files[0]);
         console.log(formData);
@@ -68,9 +77,11 @@ const AddProduct = () => {
             toast.success(res.data.message);
             setProductData({ ...productData, image: res.data.image });
             setImageurl(res.data.image);
+            setLoading(false);
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || error.message);
+            setLoading(false);
         }
     };
 
@@ -80,7 +91,7 @@ const AddProduct = () => {
     // console.log(categories);
     console.log(imageurl);
 
-    if (loading || productLoading) {
+    if (loading) {
         return <Loder />;
     }
 
@@ -138,7 +149,7 @@ const AddProduct = () => {
                             <label htmlFor="stock" className="block">
                                 Count in Stock
                             </label>
-                            <input type="number" name="countInStoke" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.countInStoke} onChange={changehandler} />
+                            <input type="number" name="countInStock" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.countInStock} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="category" className="block">

@@ -26,11 +26,14 @@ import AddProduct from './pages/admin/AddProduct.jsx';
 import UpdateProduct from './pages/admin/UpdateProduct.jsx';
 import Home from './pages/Home/Home.jsx';
 import Shop from './pages/Shoping/Shop.jsx';
+import MyState from './contexts/MyState.jsx';
+import ProductInfo from './pages/Products/ProductInfo.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route index element={<Home />} />
+            <Route path="/product/:id" element={<ProductInfo />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
@@ -59,7 +62,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <ThemeProvider>
             <Provider store={store}>
-                <RouterProvider router={router} />
+                <MyState>
+                    <RouterProvider router={router} />
+                </MyState>
             </Provider>
         </ThemeProvider>
     </React.StrictMode>,

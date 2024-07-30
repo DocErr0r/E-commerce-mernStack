@@ -49,28 +49,28 @@ const Navigation = () => {
     }
 
     return (
-        <div className={`w-full text-white bg-black fixed `}>
-            <div className="max-w-screen-xl mx-auto flex flex-wrap justify-between items-center p-4">
-                 <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" onClick={toggleSidebar}>
-                        <AiOutlineMenu size={22} />
-                    </button>
+        <div className={`w-full min-h-20 text-white bg-black fixed z-50`}>
+            <div className="max-w-screen-xl  mx-auto flex flex-wrap justify-between items-center p-4">
+                <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" onClick={toggleSidebar}>
+                    <AiOutlineMenu size={22} />
+                </button>
                 <Link to={'/'} className="">
                     <h1 className="font-bold font-mono text-3xl text-cyan-700">ESHOP</h1>
                 </Link>
-                <div className={`md:flex gap-5  md:w-auto w-full md:order-none order-1 items-center ${showSidebar ? '' : 'hidden'} `}>
-                    <Link to={'/'} className="flex items-center transition-transform m-2 transform hover:translate-x-2 ">
+                <div className={`md:flex md:flex-row gap-5 md:w-auto w-full md:order-none order-1 items-center md:static absolute top-[80px] transition-all duration-500  ${showSidebar ? 'left-0 bg-black' : '-left-[100%]'} `}>
+                    <Link to={'/'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2 ">
                         <AiOutlineHome className="mr-2  " size={22} />
                         <span>HOME</span>{' '}
                     </Link>
-                    <Link to={'/shop'} className="flex items-center transition-transform m-2 transform hover:translate-x-2">
+                    <Link to={'/shop'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">SHOPPING</span>{' '}
                     </Link>
-                    <Link to={'/about'} className="flex items-center transition-transform m-2 transform hover:translate-x-2">
+                    <Link to={'/about'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">About Us</span>{' '}
                     </Link>
-                    <Link to={'/contact-us'} className="flex items-center transition-transform m-2 transform hover:translate-x-2">
+                    <Link to={'/contact-us'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlinePhone className="mr-2 rotate-90 " size={22} />
                         <span className="">Contact Us</span>{' '}
                     </Link>
@@ -98,7 +98,7 @@ const Navigation = () => {
                         </div>
                         {/* )}{' '} */}
                     </button>
-                   
+
                     {/* </MenuHandler> */}
                     <div className="relative mt-14 items-center">
                         {userInfo
@@ -172,6 +172,7 @@ const Navigation = () => {
                     {/* </Menu> */}
                 </div>
             </div>
+            {/* <div className={`absolute md:hidden w-[50%]  bg-red-600 transition-all duration-300 ${showSidebar ? 'left-0' : '-left-[60%]'} `}>this is menu</div> */}
         </div>
     );
 };

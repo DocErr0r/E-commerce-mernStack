@@ -54,9 +54,9 @@ function ProductList() {
                                 </div>
 
                                 <div className="flex justify-end xl:w-[25rem] md:w-[15rem] sm:w-[10rem]">
-                                    <Link to={`/admin/updateproduct/${product._id}`} className="bg-pink-700 rounded-lg px-3 py-2 text-sm font-medium hover:bg-pink-800">
+                                    <button onClick={() => navigate(`/admin/updateproduct/${product._id}`)} className="bg-pink-700 rounded-lg px-3 py-2 text-sm font-medium hover:bg-pink-800">
                                         Update product
-                                    </Link>
+                                    </button>
                                     {/* <Button className="bg-red-600 rounded-lg px-3 py-2 text-sm font-medium hover:bg-red-800">Delete product</Button> */}
                                 </div>
                             </div>

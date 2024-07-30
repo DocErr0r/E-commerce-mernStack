@@ -1,5 +1,6 @@
 import React from 'react';
 import { AiFillFacebook, AiOutlineFacebook, AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 function Footer() {
     return (
@@ -12,25 +13,25 @@ function Footer() {
                     </div>
                 </div>
                 <div>
-                    <div className="mt-3 text-xl font-semibold uppercase text-center">Direct Links</div>
-                    <nav className="flex flex-col items-center sm:flex-row sm:space-x-6">
-                        <a href="/about" className="hover:underline">
+                    <div className="mt-3 text-xl font-semibold  uppercase text-center">Direct Links</div>
+                    <nav className="flex flex-col items-centerlg:flex-row text-center">
+                        <Link href="/about" className="hover:underline">
                             About Us
-                        </a>
-                        <a href="/contact-us" className="hover:underline">
+                        </Link>
+                        <Link href="/contact-us" className="hover:underline ">
                             Contact Us
-                        </a>
-                        <a href="/" className="hover:underline">
+                        </Link>
+                        <Link href="/" className="hover:underline">
                             Privacy Policy
-                        </a>
-                        <a href="/" className="hover:underline">
+                        </Link>
+                        <Link href="/" className="hover:underline">
                             Terms of Service
-                        </a>
+                        </Link>
                     </nav>
                 </div>
                 <div>
                     <h2 className=" mt-3 text-xl font-semibold text-center uppercase">Socials</h2>
-                    <div className=" flex space-x-4">
+                    <div className=" flex space-x-4 items-center">
                         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:underline">
                             <AiOutlineFacebook size={22} />
                         </a>

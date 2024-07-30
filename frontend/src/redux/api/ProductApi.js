@@ -37,5 +37,10 @@ export const uploadImageFile = (body) => {
             'Content-Type': 'multipart/form-data'
         }
     }
-    )
+)
+}
+
+// give review of product
+export const addReview = ({id,body}) => {
+    return axiosInstace.post(`${PRODUCT_URL}/${id}/review`,body)
 }

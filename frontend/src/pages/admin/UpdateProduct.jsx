@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loder from '../../components/Loder';
 import { FaArrowLeft } from 'react-icons/fa';
@@ -6,9 +6,11 @@ import { Button } from '@material-tailwind/react';
 import { getAllCategory } from '../../redux/api/cetegoryApi';
 import { toast } from 'react-toastify';
 import { deleteProductById, getProductById, updateProductById } from '../../redux/api/ProductApi';
+import myContext from '../../contexts/myContext';
 
 function UpdateProduct() {
     const prams = useParams();
+    const { loading, setLoading } = useContext(myContext);
 
     const navigate = useNavigate();
 
@@ -29,12 +31,15 @@ function UpdateProduct() {
     };
 
     const getCategories = async () => {
+        setLoading(true);
         try {
             const res = await getAllCategory();
             setCategories(res.data);
+            setLoading(false);
         } catch (error) {
             // console.log(error);
             toast.error(error.response.message || error.message);
+            setLoading(false);
         }
     };
 
@@ -42,60 +47,70 @@ function UpdateProduct() {
         console.log(productData);
         const formdata = new FormData();
         formdata.append('name', productData.name);
-        formdata.append('decription', productData.description);
+        formdata.append('description', productData.description);
         formdata.append('price', productData.price);
         formdata.append('category', productData.category);
         formdata.append('quantity', productData.quantity);
         formdata.append('brand', productData.brand);
         formdata.append('countInStock', productData.countInStock);
+        setLoading(true);
         try {
-            const res = await updateProductById({ id: prams.id, body: productData });
+            const res = await updateProductById({ id: prams.id, body: formdata });
             // console.log(res);
             toast.success(`${res.data.name} is updated succesfully`);
+            setLoading(false);
             navigate('/');
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || error.message);
+            setLoading(false);
         }
     };
 
     const handleDelete = async () => {
+        setLoading(true);
         try {
             const res = await deleteProductById(prams.id);
             // console.log(res);
             toast.success(res.data.message);
+            setLoading(false);
             navigate(-1);
         } catch (error) {
             // console.log(error);
             toast.error(error?.response?.data?.message || error.message);
+            setLoading(false);
+        }
+    };
+
+    const setling = async () => {
+        setLoading(true);
+        try {
+            const { data } = await getProductById(prams.id);
+            setProductData({
+                name: data.name || '',
+                image: data.image || '',
+                description: data.description || '',
+                price: data.price || 100,
+                category: data.category || '',
+                quantity: data.quantity || 0,
+                brand: data.brand || '',
+                countInStock: data.countInStock || '0',
+            });
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || error.message);
+            setLoading(false);
         }
     };
     useEffect(() => {
-        const setling = async () => {
-            try {
-                const { data } = await getProductById(prams.id);
-                setProductData({
-                    name: data.name || '',
-                    image: data.image || '',
-                    description: data.description || '',
-                    price: data.price || 100,
-                    category: data.category || '',
-                    quantity: data.quantity || 0,
-                    brand: data.brand || '',
-                    countInStock: data.countInStock || '0',
-                });
-            } catch (error) {
-                console.log(error);
-                toast.error(error?.response?.data?.message || error.message);
-            }
-        };
         setling();
         getCategories();
     }, []);
 
     console.log(productData);
 
-    if (loading || deleteloading || updateloading) {
+    if (loading) {
         return <Loder />;
     }
 
@@ -113,7 +128,7 @@ function UpdateProduct() {
                 )}
                 <div className="p-3">
                     <div className="flex flex-wrap gap-5 ">
-                        <div className="flex flex-col6">
+                        <div className="flex flex-col">
                             <label htmlFor="name" className="block">
                                 Name
                             </label>
