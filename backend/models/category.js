@@ -8,7 +8,8 @@ const categorySchema = new mongoose.Schema({
         unique: true,
         maxLenght: 32,
         required: true
-    }
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
 });
 
 //Export the model

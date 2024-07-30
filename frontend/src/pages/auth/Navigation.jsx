@@ -51,7 +51,7 @@ const Navigation = () => {
     return (
         <div className={`w-full min-h-20 text-white bg-black fixed z-50`}>
             <div className="max-w-screen-xl  mx-auto flex flex-wrap justify-between items-center p-4">
-                <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" onClick={toggleSidebar}>
+                <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" aria-label='menu' onClick={toggleSidebar}>
                     <AiOutlineMenu size={22} />
                 </button>
                 <Link to={'/'} className="">

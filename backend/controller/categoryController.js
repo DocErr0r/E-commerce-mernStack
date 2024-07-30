@@ -9,7 +9,9 @@ export const creactCategory = serverHandler(async (req, res) => {
         if (exist) {
             return res.status(400).send({ message: "category already exist" })
         }
-        const category = await new Category(req.body).save()
+        const category = new Category(req.body)
+        category.user=req.user._id
+        await category.save()
         res.status(200).send({ date: category })
     } catch (error) {
         console.log(error);
@@ -23,6 +25,9 @@ export const updateCategory = serverHandler(async (req, res) => {
         const category = await Category.findById(req.params.id)
         if (!category) {
             return res.status(400).send({ message: "category not found" })
+        }
+        if(req.user._id.toString()!==category.user.toString()){
+            return res.status(400).send({ message: "This category is not create by you" })
         }
         const exist = await Category.findOne({ name })
         if (exist) {
@@ -43,6 +48,9 @@ export const removeCategory = serverHandler(async (req, res) => {
         const category = await Category.findById(req.params.id)
         if (!category) {
             return res.status(400).send({ message: "category not found" })
+        }
+        if (req.user._id.toString() !== category.user.toString()) {
+            return res.status(400).send({ message: "This category is not create by you" })
         }
 
         const remove = await Category.findByIdAndDelete(req.params.id)
