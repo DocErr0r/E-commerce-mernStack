@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loder from '../../components/Loder';
-import { useDeleteProductById, useGetProductById, usUpdateProductById } from '../../hooks/productApicall';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Button } from '@material-tailwind/react';
 import { getAllCategory } from '../../redux/api/cetegoryApi';
 import { toast } from 'react-toastify';
+import { deleteProductById, getProductById, updateProductById } from '../../redux/api/ProductApi';
 
 function UpdateProduct() {
     const prams = useParams();
-    const { deleteProductById, deleteloading } = useDeleteProductById();
-    const { updateProductById, updateloading } = usUpdateProductById();
-    const { loading, getProductById } = useGetProductById();
 
     const navigate = useNavigate();
 
@@ -116,7 +113,7 @@ function UpdateProduct() {
                 )}
                 <div className="p-3">
                     <div className="flex flex-wrap gap-5 ">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col6">
                             <label htmlFor="name" className="block">
                                 Name
                             </label>

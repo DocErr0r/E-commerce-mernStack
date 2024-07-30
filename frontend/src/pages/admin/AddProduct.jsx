@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getAllCategory } from '../../redux/api/cetegoryApi';
 import { Button } from '@material-tailwind/react';
-import { useCreateProduct, useUploadfile } from '../../hooks/productApicall';
 import Loder from '../../components/Loder';
+import { createProduct, uploadImageFile } from '../../redux/api/ProductApi';
+import { getAllCategory } from '../../redux/api/cetegoryApi';
 
 const AddProduct = () => {
-    const { loading, uploadImageFile } = useUploadfile();
-    const { productLoading, createProduct } = useCreateProduct();
     const [productData, setProductData] = useState({
         name: '',
         image: '',

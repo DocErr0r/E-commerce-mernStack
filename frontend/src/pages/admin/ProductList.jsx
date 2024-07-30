@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
-import { useGetProducts } from '../../hooks/productApicall';
 import Loder from '../../components/Loder';
 import { Button } from '@material-tailwind/react';
 import { FaPlus } from 'react-icons/fa';
+import { getProducts } from '../../redux/api/ProductApi';
+import myContext from '../../contexts/myContext';
 
 function ProductList() {
-    const { loading, getProducts } = useGetProducts();
+    const {loading,setLoading}=useContext(myContext)
     
     const navigate = useNavigate();
 
