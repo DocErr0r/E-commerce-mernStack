@@ -3,13 +3,14 @@ import admin from "../middlewares/admin.js";
 import validId from "../middlewares/validId.js"
 import verifyuser from "../middlewares/verifyuser.js"
 import formidable from "express-formidable";
-import { addReview, createProduct, getAdminProducts, getNewProducts, getProduct, getProducts, getTopProducts, removeProduct, searchProducts, updateProduct } from "../controller/productController.js";
+import { addReview, addWishList, createProduct, getAdminProducts, getNewProducts, getProduct, getProducts, getTopProducts, removeProduct, searchProducts, updateProduct } from "../controller/productController.js";
 const router = express.Router();
 
 router.get('/search', searchProducts);
 router.get('/', getProducts);
 router.get('/top', getTopProducts);
 router.get('/new', getNewProducts);
+router.put('/wishlist', [verifyuser], addWishList);
 
 router.route('/create').post([admin], formidable(), createProduct);
 router.route('/me/products').get([admin], getAdminProducts);

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     role: { type: String, default: "user", required: true },
     // mobile: { type: String, required: true, unique: true, },
 
-    wishlist: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 
     resetPasswordToken: { type: String, },
     resetPasswordTokenExpire: { type: Date }

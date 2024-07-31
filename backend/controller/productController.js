@@ -1,5 +1,6 @@
 import serverHandler from "../middlewares/serverhandler.js";
 import Product from "../models/product.js";
+import { User } from "../models/user.js";
 
 export const getProducts = serverHandler(async (req, res) => {
     try {
@@ -28,16 +29,26 @@ export const getAdminProducts = serverHandler(async (req, res) => {
 })
 
 export const searchProducts = serverHandler(async (req, res) => {
-    const pageSize = 5
+    const { page, limit } = req.body
+    const queryObj = { ...req.query }
+    const exclude = ['page', "sort", "limit", "fileds"]
+    exclude.forEach(el => delete queryObj[el]);
+    // console.log(queryObj);
+
     try {
         const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {}
 
         const count = await Product.countDocuments({ ...keyword })
-        const products = await Product.find({ ...keyword }).populate('category').limit(pageSize)
+        const skip = (page - 1) * limit
+        let products = await Product.find({ ...keyword }).populate('category').sort("name").limit(limit)
         if (!products) {
             return res.status(400).send({ message: "products not found" })
         }
-        res.status(200).send({ products, page: 1, pages: Math.ceil(count / pageSize), hasMore: false });
+        if (req.query.sort) {
+            const sortby = req.query.sort.replace(",", " ")
+            // products = products.sort("createdAt")
+        }
+        res.status(200).send({ products, page: 1, pages: Math.ceil(count / limit), hasMore: false });
     }
     catch (error) {
         console.log(error);
@@ -120,6 +131,9 @@ export const updateProduct = serverHandler(async (req, res) => {
         if (!product) {
             return res.status(400).send({ message: "product not found" })
         }
+        if (product.User.toString() !== req.user._id.toString()) {
+            return res.status(400).send({ message: "you are unauthrize for this product" })
+        }
         const newproduct = await Product.findByIdAndUpdate(req.params.id, { $set: { ...req.body } }, { new: true })
         res.send(newproduct)
     } catch (error) {
@@ -181,17 +195,21 @@ export const addReview = serverHandler(async (req, res) => {
 
 export const addWishList = serverHandler(async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id)
+        const user = await User.findById(req.user._id)
+        const product = await Product.findById(req.body.id)
         if (!product) {
             res.status(400)
             throw new Error("product not found")
         }
-        const review = { user: req.user._id, name: req.user.name, rating: Number(rating), comment }
-        product.reviews.push(review)
-        product.numOfReviews = product.reviews.length
-        product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
-        await product.save()
-        res.status(201).send({ message: "review added successfully", review })
+        const alreadyAdded = user.wishlist.find(id => id.toString() === product._id.toString())
+        if (alreadyAdded) {
+            let user = await User.findByIdAndUpdate(req.user._id, { $pull: { wishlist: req.body.id } }, { new: true })
+            res.status(201).send({ message: "product remove from wishlist", user })
+        }
+        else {
+            let user = await User.findByIdAndUpdate(req.user._id, { $push: { wishlist: req.body.id } }, { new: true })
+            res.status(201).send({ message: "product added to wishlist", user })
+        }
     } catch (error) {
         console.log(error);
         res.status(400).send({ message: error.message })
