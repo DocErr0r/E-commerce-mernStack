@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { addReview, getProductById } from '../../redux/api/ProductApi';
-import { FaStar, FaCartPlus } from 'react-icons/fa'; // Importing star and cart icons from react-icons
+import { FaStar, FaCartPlus, FaStore, FaBox, FaClock } from 'react-icons/fa'; // Importing star and cart icons from react-icons
 import myContext from '../../contexts/myContext';
 import Loader from '../../components/Loder';
 import { toast } from 'react-toastify';
@@ -65,37 +65,42 @@ const ProductDetail = () => {
 
     // console.log(product);
 
-    // Calculate average rating for the product
-    const averageRating = () => {
-        if (reviews.length === 0) return 0;
-        const totalRating = reviews.reduce((acc, curr) => acc + curr.rating, 0);
-        return (totalRating / reviews.length).toFixed(1);
-    };
-
     return (
         <div className="max-w-4xl mx-auto px-4 py-6">
             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
             <div className="flex flex-wrap -mx-2">
                 <div className="w-full px-2 mb-4">
-                    <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full mdh-[600px] md:object-cover" />
+                    <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full md:h-[600px] md:object-cover" />
                 </div>
+                    <p className="mb-4 border-b w-full px-2 py-4">{product.description}</p>
                 <div className="w-full md:w-1/2 px-2 mb-4">
-                    <p className="mb-2">{product.description}</p>
-                    <p className="mb-2">Price: ₹ {product.price}</p>
-                    <div className="flex items-center mb-2">
-                        <p className="mr-2">Average Rating:</p>
-                        {Array.from(Array(parseInt(averageRating())), (e, i) => (
+                    <p className="mb-2 font-semibold text-xl">Price: ₹ {product.price}</p>
+                    <div className="flex items-center gap-2 my-2">
+                        <FaStore size={20} />
+                        <p>Brand: {product.brand}</p>
+                    </div>
+                    <div className="flex items-center gap-2 my-2">
+                        <FaClock size={20} />
+                        <p>Added:{new Date(product.createdAt).toLocaleDateString()}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 my-2">
+                        <FaBox size={20} />
+                        <p>Available Stock: {product.countInStock}</p>
+                    </div>
+                    <div className="flex items-center gap-2 my-2">
+                        <FaStar size={20} />
+                        <p>Number of Reviews: {reviews.length}</p>
+                    </div>
+                    <div className="flex items-center my-4">
+                        <p className="mr-2">Rating:</p>
+                        {Array.from(Array(parseInt(product.rating.toFixed(1))), (e, i) => (
                             <FaStar key={i} className="text-yellow-500" />
                         ))}
                         <span className="ml-2">
-                            {averageRating()} ({reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'})
+                            {product.rating.toFixed(1)} ({reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'})
                         </span>
                     </div>
-
-                    <p className="mb-2">Brand: {product.brand}</p>
-                    <p className="mb-2">Added: {new Date(product.createdAt).toLocaleDateString()}</p>
-                    <p className="mb-2">Number of Reviews: {reviews.length}</p>
-                    <p className="mb-2">Available Stock: {product.countInStock}</p>
                     {product.countInStock > 0 && (
                         <div className="flex items-center">
                             <label className="mr-2">Quantity:</label>
@@ -112,7 +117,7 @@ const ProductDetail = () => {
 
             {/* Review Form */}
             <form onSubmit={handleReviewSubmit} className="mt-8">
-                <textarea value={newReview} onChange={(e) => setNewReview(e.target.value)} placeholder="Write a review..." className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2" rows="4"></textarea>
+                <textarea value={newReview} onChange={(e) => setNewReview(e.target.value)} placeholder="Write a review..." className="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2" rows="3"></textarea>
                 <div className="flex items-center mb-2">
                     <p className="mr-2">Your Rating:</p>
                     {[...Array(5)].map((_, i) => (

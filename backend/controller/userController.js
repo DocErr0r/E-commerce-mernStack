@@ -58,6 +58,12 @@ export const getCrUser = serverhandler(async (req, res) => {
     res.status(200).send({ data: user })
 })
 
+export const getCrUserWishlist = serverhandler(async (req, res) => {
+    const wishlist = await User.findById(req.user._id).select('wishlist')
+    if (!wishlist) { res.status(404); throw new Error("user with id is not found") }
+    res.status(200).send({ data: wishlist })
+})
+
 export const updateCrUser = serverhandler(async (req, res) => {
     const userEx = await User.findOne({ email: req.body.email });
     if (userEx && userEx._id.toString() !== req.user._id) {

@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, deleteUserById, forgotPassword, getAllUser, getCrUser, getUserById, loginUser, logoutUser, resetPassword, updateCrUser, updatePassword, updateUserById } from "../controller/userController.js";
+import { createUser, deleteUserById, forgotPassword, getAllUser, getCrUser, getCrUserWishlist, getUserById, loginUser, logoutUser, resetPassword, updateCrUser, updatePassword, updateUserById } from "../controller/userController.js";
 import admin from "../middlewares/admin.js";
 import verifyuser from "../middlewares/verifyuser.js";
 import validId from "../middlewares/validId.js";
@@ -23,6 +23,8 @@ router.post('/logout', logoutUser)
 router.route("/v1/me").get(verifyuser, getCrUser).put(verifyuser, updateCrUser);
 // change password
 router.route("/v1/me/updatepassword").put(verifyuser,updatePassword)
+// get wishlists
+router.route("/v1/me/wishlist").get(verifyuser,getCrUserWishlist)
 
 // ----login required as admin-------
 // 5.  get all users (admin only)

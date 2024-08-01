@@ -1,4 +1,4 @@
-import { PRODUCT_URL, UPLOADS } from "../contsants"
+import { PRODUCT_URL, UPLOADS, USER_URL } from "../contsants"
 import axiosInstace from "./apiSlice"
 
 // create category 
@@ -14,6 +14,21 @@ export const createProduct = (body) => {
 // get products
 export const getProducts = () => {
     return axiosInstace.get(`${PRODUCT_URL}`)
+}
+
+// get Top products
+export const getTopProducts = () => {
+    return axiosInstace.get(`${PRODUCT_URL}/top`)
+}
+
+// get Top products
+export const getNewProducts = () => {
+    return axiosInstace.get(`${PRODUCT_URL}/new`)
+}
+
+// get admin products
+export const getAdminProducts = () => {
+    return axiosInstace.get(`${PRODUCT_URL}/me/products`)
 }
 // get product by id
 export const getProductById = (id) => {
@@ -43,4 +58,14 @@ export const uploadImageFile = (body) => {
 // give review of product
 export const addReview = ({id,body}) => {
     return axiosInstace.post(`${PRODUCT_URL}/${id}/review`,body)
+}
+
+// give handle wishlist of product
+export const handleWishlist = (body) => {
+    return axiosInstace.put(`${PRODUCT_URL}/wishlist`,body)
+}
+
+// give get wishlist of product
+export const getWishlist = () => {
+    return axiosInstace.get(`${USER_URL}/v1/me/wishlist`)
 }
