@@ -59,7 +59,7 @@ export const getCrUser = serverhandler(async (req, res) => {
 })
 
 export const getCrUserWishlist = serverhandler(async (req, res) => {
-    const wishlist = await User.findById(req.user._id).select('wishlist')
+    const wishlist = await User.findById(req.user._id).select('wishlist').populate('wishlist')
     if (!wishlist) { res.status(404); throw new Error("user with id is not found") }
     res.status(200).send({ data: wishlist })
 })

@@ -28,6 +28,7 @@ import Home from './pages/Home/Home.jsx';
 import Shop from './pages/Shoping/Shop.jsx';
 import MyState from './contexts/MyState.jsx';
 import ProductInfo from './pages/Products/ProductInfo.jsx';
+import Favorite from './pages/Products/UserFav/Favorite.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
                 <Route path="me" element={<Profile />} />
                 <Route path="change-password" element={<ChangePassword />} />
                 <Route path="edit-profile" element={<EditProfile />} />
+                <Route path="favorite" element={<Favorite />} />
             </Route>
 
             <Route path="/admin" element={<AdminRoutes />}>

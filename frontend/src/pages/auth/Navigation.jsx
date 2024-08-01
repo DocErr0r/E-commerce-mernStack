@@ -51,7 +51,7 @@ const Navigation = () => {
     return (
         <div className={`w-full min-h-20 text-white bg-black fixed z-50`}>
             <div className="max-w-screen-xl  mx-auto flex flex-wrap justify-between items-center p-4">
-                <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" aria-label='menu' onClick={toggleSidebar}>
+                <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" aria-label="menu" onClick={toggleSidebar}>
                     <AiOutlineMenu size={22} />
                 </button>
                 <Link to={'/'} className="">
@@ -80,7 +80,7 @@ const Navigation = () => {
                         <AiOutlineShoppingCart className="mr-2 " size={22} />
                         {/* <span className="max-md:hidden ">CART</span>{' '} */}
                     </Link>
-                    <Link to={'/'} className="flex items-center transition-transform transform hover:translate-x-1">
+                    <Link to={'/v1/favorite'} className="flex items-center transition-transform transform hover:translate-x-1">
                         <FaHeart className="mr-2 " size={22} />
                         {/* <span className="max-md:hidden ">FAVORITE</span>{' '} */}
                     </Link>

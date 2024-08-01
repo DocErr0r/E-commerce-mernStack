@@ -203,12 +203,12 @@ export const addWishList = serverHandler(async (req, res) => {
         }
         const alreadyAdded = user.wishlist.find(id => id.toString() === product._id.toString())
         if (alreadyAdded) {
-            let user = await User.findByIdAndUpdate(req.user._id, { $pull: { wishlist: req.body.id } }, { new: true })
-            res.status(201).send({ message: "product remove from wishlist", user })
+            let user = await User.findByIdAndUpdate(req.user._id, { $pull: { wishlist: req.body.id } }, { new: true }).populate('wishlist')
+            res.status(201).send({ message: "product remove from wishlist", wishlist: user.wishlist })
         }
         else {
-            let user = await User.findByIdAndUpdate(req.user._id, { $push: { wishlist: req.body.id } }, { new: true })
-            res.status(201).send({ message: "product added to wishlist", user })
+            let user = await User.findByIdAndUpdate(req.user._id, { $push: { wishlist: req.body.id } }, { new: true }).populate('wishlist')
+            res.status(201).send({ message: "product added to wishlist", wishlist: user.wishlist })
         }
     } catch (error) {
         console.log(error);

@@ -3,10 +3,11 @@ import { Outlet } from 'react-router-dom';
 import Navigation from './pages/auth/Navigation';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
-import { useEffect } from 'react';
 import Footer from './components/Footer/Footer';
+import useFavoriate from './hooks/useFavoriate';
 
 function App() {
+    useFavoriate();
     // useEffect(()=>{
     // })
     return (
