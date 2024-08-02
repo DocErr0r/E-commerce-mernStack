@@ -173,9 +173,9 @@ export const resetPassword = serverhandler(async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt)
         user.password = hashedPassword;
 
-        await user.save();
         user.resetPasswordToken = undefined;
         user.resetPasswordTokenExpire = undefined;
+        await user.save();
 
         res.status(200).send({ message: 'Password updated successfully' });
     } catch (error) {

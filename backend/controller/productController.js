@@ -1,4 +1,5 @@
 import serverHandler from "../middlewares/serverhandler.js";
+import Category from "../models/category.js";
 import Product from "../models/product.js";
 import { User } from "../models/user.js";
 
@@ -29,26 +30,43 @@ export const getAdminProducts = serverHandler(async (req, res) => {
 })
 
 export const searchProducts = serverHandler(async (req, res) => {
-    const { page, limit } = req.body
-    const queryObj = { ...req.query }
-    const exclude = ['page', "sort", "limit", "fileds"]
-    exclude.forEach(el => delete queryObj[el]);
+    let { page, limit } = req.query
+    // default
+    page = page ? page : 1
+    limit = limit ? limit : 5
+    // const queryObj = { ...req.query }
+    // const exclude = ['page', "sort", "limit", "fileds"]
+    // exclude.forEach(el => delete queryObj[el]);
     // console.log(queryObj);
 
     try {
-        const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {}
 
+        // const category = await Category.findOne({ name: req.query.category })
+        // search by name
+        const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: "i" } } : {}
+        // intance
+        let API = Product.find({ ...keyword }).populate('category')
+        // start pagination
         const count = await Product.countDocuments({ ...keyword })
+        // skip items based on limit
         const skip = (page - 1) * limit
-        let products = await Product.find({ ...keyword }).populate('category').sort("name").limit(limit)
+        // end pagination
+
+        if (req.query.sort) {
+            const sortby = req.query.sort.replace(",", " ")
+            API = API.sort(sortby)
+        }
+        // run instance
+        const products = await API.skip(skip).limit(limit)
         if (!products) {
             return res.status(400).send({ message: "products not found" })
         }
-        if (req.query.sort) {
-            const sortby = req.query.sort.replace(",", " ")
-            // products = products.sort("createdAt")
+
+        if (!products.length) {
+            return res.status(403).send({ message: "No more products found" })
         }
-        res.status(200).send({ products, page: 1, pages: Math.ceil(count / limit), hasMore: false });
+
+        res.status(200).send({ products, page: Number(page), pages: Math.ceil(count / limit) });
     }
     catch (error) {
         console.log(error);

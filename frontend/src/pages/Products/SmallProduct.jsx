@@ -11,7 +11,7 @@ function SmallProduct({ product }) {
     // const { fav } = useSelector((state) => state.favoriat);
     // // console.log(fav);
 
-    // const isliked = fav.some((id) => id === product._id);
+    // const isliked = fav.some((p) => p._id === product._id);
     // console.log(isliked);
 
     const handleLike = async () => {
@@ -26,13 +26,13 @@ function SmallProduct({ product }) {
     };
     return (
         product && (
-            <div className="shadow-md w-[15rem] md:[18rem] max-md:mx-auto hover:shadow-lg transition-shadow duration-300 ease-in-out relative">
+            <div className="shadow-md max-md:mx-auto hover:shadow-lg transition-shadow duration-300 ease-in-out relative">
                 <Link to={`/product/${product._id}`}>
                     <img src={product.image} alt={product.name} className="h-52 md:h-56 md:w-[18rem] w-[15rem] object-cover rounded-md hover:opacity-80" />
                 </Link>
                 <div className="absolute top-0 right-0 p-4" onClick={handleLike}>
                     <AiOutlineHeart size={20} />
-                    {/* {isliked ? <AiOutlineHeart size={20} /> : <AiFillHeart size={20} />} */}
+                    {/* {!isliked ? <AiOutlineHeart size={20} /> : <AiFillHeart size={20} />} */}
                 </div>
                 <div className="p-4 md:w-[18rem] w-[15rem]">
                     <div className="flex items-center justify-between mt-4">

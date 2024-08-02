@@ -3,10 +3,10 @@ import { creactCategory, getCategories, getCategory, removeCategory, updateCateg
 import admin from "../middlewares/admin.js";
 import validId from "../middlewares/validId.js";
 
-const router=express.Router()
+const router = express.Router()
 
-router.route("/create").post(admin,creactCategory)
+router.route("/create").post(admin, creactCategory)
 router.route("/categories").get(getCategories)
-router.route("/categories/:id").get(getCategory).put(admin,updateCategory).delete([validId,admin],removeCategory)
+router.route("/categories/:id").get(validId, getCategory).put([validId, admin], updateCategory).delete([validId, admin], removeCategory)
 
 export default router;
