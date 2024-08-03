@@ -108,11 +108,8 @@ export const updatePassword = serverhandler(async (req, res) => {
     }
 
     try {
-        const salt = await bcrypt.genSalt(Number(process.env.SALT));
-        const hashedPassword = await bcrypt.hash(req.body.newPassword, salt)
-        user.password = hashedPassword;
-
-        await user.save();
+        user.password = req.body.newPassword
+        await user.save({ validateBeforeSave: true });
         res.status(200).send({ message: 'Password updated successfully' });
     } catch (error) {
         res.status(500).send({ message: 'Error updating password' });

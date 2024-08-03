@@ -133,7 +133,7 @@ export default function UsersList() {
                                             <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)}>
                                                 <option value="user">User</option>
                                                 <option value="admin">Admin</option>
-                                                <option value="vender">Vender</option>
+                                                <option value="vendor">Vendor</option>
                                             </select>
                                         </div>
                                     ) : (

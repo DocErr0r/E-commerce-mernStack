@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-function AdminRoutes() {
+function VendorRoutes() {
     const { userInfo } = useSelector((state) => state.user);
     const navigate = useNavigate();
     useEffect(() => {
-        if (!(userInfo.role === 'admin')) {
+        if (!(userInfo.role === 'admin' || 'vendor')) {
             toast.warning('plaese login as admin...');
             navigate('/');
         }
     }, [userInfo]);
 
-    return userInfo && userInfo.role === 'admin' ? <Outlet /> : <Navigate to={'/login'} replace />;
+    return userInfo && (userInfo.role === 'admin' || 'vendor') ? <Outlet /> : <Navigate to={'/login'} replace />;
 }
 
-export default AdminRoutes;
+export default VendorRoutes;

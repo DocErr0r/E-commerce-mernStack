@@ -29,6 +29,7 @@ import Shop from './pages/Shoping/Shop.jsx';
 import MyState from './contexts/MyState.jsx';
 import ProductInfo from './pages/Products/ProductInfo.jsx';
 import Favorite from './pages/Products/UserFav/Favorite.jsx';
+import VendorRoutes from './pages/admin/VendorRoutes.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -51,6 +52,8 @@ const router = createBrowserRouter(
             <Route path="/admin" element={<AdminRoutes />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="user-list" element={<UsersList />} />
+            </Route>
+            <Route path="/admin" element={<VendorRoutes />}>
                 <Route path="category" element={<CategoryList />} />
                 <Route path="productlist" element={<ProductList />} />
                 <Route path="addproduct" element={<AddProduct />} />
