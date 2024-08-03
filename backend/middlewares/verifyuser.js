@@ -1,4 +1,5 @@
 import Jwt from "jsonwebtoken";
+import { User } from "../models/user";
 
 const verifyuser = async (req, res, next) => {
     const token = req.cookies.authToken
@@ -6,15 +7,14 @@ const verifyuser = async (req, res, next) => {
         return res.status(401).json({ message: "You are not logged in!" });
     } else {
         try {
-            Jwt.verify(token, process.env.PRIVATEKEY, (err, validToken) => {
+            Jwt.verify(token, process.env.PRIVATEKEY, async (err, validToken) => {
                 if (err) return res.status(403).send({ err, message: "token not valid" });
-                req.user = validToken;
+                req.user = await User.findById(validToken).select('-password');
                 next();
             })
         } catch (error) {
             return res.status(403).send({ auth: false, message: 'Auth failed' })
         }
-
     }
 }
 

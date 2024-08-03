@@ -22,9 +22,9 @@ router.post('/logout', logoutUser)
 // 4. get/update current user
 router.route("/v1/me").get(verifyuser, getCrUser).put(verifyuser, updateCrUser);
 // change password
-router.route("/v1/me/updatepassword").put(verifyuser,updatePassword)
+router.route("/v1/me/updatepassword").put(verifyuser, updatePassword)
 // get wishlists
-router.route("/v1/me/wishlist").get(verifyuser,getCrUserWishlist)
+router.route("/v1/me/wishlist").get(verifyuser, getCrUserWishlist)
 
 // ----login required as admin-------
 // 5.  get all users (admin only)

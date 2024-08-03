@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose'; // Erase if already required
 import Jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import Joi from 'joi';
 import PasswordComplexity from "joi-password-complexity";
 
@@ -13,7 +14,7 @@ const userSchema = new mongoose.Schema({
     },
     email: { type: String, required: true, unique: true, },
     password: { type: String, required: true, },
-    role: { type: String, default: "user", required: true },
+    role: { type: String, default: "user", required: true, enum: ['user', 'vendor', 'admin'] },
     // mobile: { type: String, required: true, unique: true, },
 
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
@@ -22,9 +23,17 @@ const userSchema = new mongoose.Schema({
     resetPasswordTokenExpire: { type: Date }
 }, { timestamps: true });
 
+userSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        const salt = await bcrypt.genSalt(Number(process.env.SALT));
+        this.password = await bcrypt.hash(this.password, salt)
+    }
+    next()
+})
+
 userSchema.methods.generateAuthToken = function () {
     const token = Jwt.sign(
-        { _id: this._id, name: this.name, role: this.role },
+        { _id: this._id },
         process.env.PRIVATEKEY,
         { expiresIn: "3d" }
     )
