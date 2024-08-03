@@ -1,7 +1,7 @@
 import Jwt from "jsonwebtoken";
 import { User } from "../models/user";
 
-const admin = (req, res, next) => {
+const isVendor = (req, res, next) => {
     const token = req.cookies.authToken
     // console.log(req.cookies.authToken)
     if (!token) return res.status(403).send({ message: "access denied token not provided" });
@@ -15,4 +15,4 @@ const admin = (req, res, next) => {
     })
 }
 
-export default admin;
+export default isVendor;
