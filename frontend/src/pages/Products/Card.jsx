@@ -1,26 +1,36 @@
 import React from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-function Card({ product }) {
+function Card({ product, view }) {
     return (
         product && (
-            <div className="bg-gray-500 text-white md:w-1/4 sm:w-2/5 lg:w-1/5 shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 ease-in-out relative">
-                <Link to={`/product/${product._id}`}>
-                    <img src={product.image} alt={product.name} className="w-full md:h-40 object-cover hover:opacity-80" />
-                </Link>
-                <div className="absolute top-0 right-0 p-4" onClick={(e) => e.preventDefault()}>
-                    <AiOutlineHeart size={20} />
-                    {/* <AiFillHeart size={20} /> */}
-                </div>
-                <div className="p-4">
-                    <h3 className="text-lg font-semibold ">{product.name}</h3>
-                    <div className="flex items-center justify-between mt-4">
-                        <span className="text-xl font-bold ">${product.price}</span>
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">Add to Cart</button>
+            <Link to={'/product/' + product._id} className="sm:w-[15rem] mx-auto">
+                <div className={`${view ? '' : 'flex'} shadow-xl mb-3 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out`}>
+                    <div className="relative">
+                        <div className="p-2">
+                            <img src={product.image} alt={product.name} className="sm:w-60 w-full h-56 rounded-md object-cover hover:opacity-80" />
+                        </div>
+                        <div className="absolute top-0 right-0 p-4" onClick={(e) => e.preventDefault()}>
+                            <AiOutlineHeart size={20} />
+                            {/* <AiFillHeart size={20} /> */}
+                        </div>
+                    </div>
+                    <div className="p-4 w-full">
+                        <h3 className="text-lg font-semibold ">{product.name}</h3>
+                        <p className=" text-gray-300">{product.description.length > 52 ? product.description.slice(0, 52) + '...' : product.description}</p>
+                        <div className="flex gap-2 items-center my-2">
+                            <FaStar color="yellow" />
+                            <p className="font-semibold">{product.rating.toFixed(1)}</p>
+                        </div>
+                        <div className="flex items-center justify-between mt-4">
+                            <span className="text-xl font-bold">₹ {product.price}</span>
+                            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         )
     );
 }

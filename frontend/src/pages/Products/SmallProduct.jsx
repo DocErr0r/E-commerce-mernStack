@@ -5,6 +5,7 @@ import { handleWishlist } from '../../redux/api/ProductApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFavirates } from '../../redux/features/product/favoritesSlice';
 import { toast } from 'react-toastify';
+import { FaStar } from 'react-icons/fa';
 
 function SmallProduct({ product }) {
     const dispatch = useDispatch();
@@ -37,9 +38,13 @@ function SmallProduct({ product }) {
                 <div className="p-4 md:w-[18rem] w-[15rem]">
                     <div className="flex items-center justify-between mt-4">
                         <h3 className="text-lg font-semibold ">{product.name}</h3>
-                        <span className="text-xl font-bold ">₹ {product.price}</span>
+                        <div className="flex gap-2 items-center my-2">
+                            <FaStar color="yellow" />
+                            <p className="font-semibold text-gray-300">{product.rating.toFixed(1)}</p>
+                        </div>
                         {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">Add to Cart</button> */}
                     </div>
+                    <span className="text-xl font-bold ">₹ {product.price}</span>
                 </div>
             </div>
         )

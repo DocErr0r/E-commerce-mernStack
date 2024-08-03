@@ -12,7 +12,7 @@ export const createProduct = (body) => {
 }
 
 // // get products
-export const getAllProducts = (keyword = "", sortBy = "", page = 1, limit = 10) => {
+export const getAllProducts = (keyword = "", sortBy = "", page = 1, limit = 15) => {
     return axiosInstace.get(`${PRODUCT_URL}/search?keyword=${keyword}&limit=${Number(limit)}&page=${Number(page)}&sort=${sortBy}`)
 }
 

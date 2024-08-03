@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineUser, AiOutlineMenu } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
+import useFavoriate from '../../hooks/useFavoriate';
 
 import './a.css';
 import { toast } from 'react-toastify';
@@ -11,6 +12,7 @@ import { logout } from '../../redux/features/auth/userThunk';
 import { Menu, MenuHandler, MenuList } from '@material-tailwind/react';
 
 const Navigation = () => {
+    useFavoriate();
     const { userInfo } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     // console.log(userInfo)
