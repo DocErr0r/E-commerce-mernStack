@@ -5,7 +5,7 @@ import { User } from "../models/user.js";
 
 export const getProducts = serverHandler(async (req, res) => {
     try {
-        const products = await Product.find().populate('category').limit(12).sort({ createdAt: -1 })
+        const products = await Product.find().populate('category').sort({ createdAt: -1 })
         if (!products) {
             return res.status(400).send({ message: "products not found" })
         }
@@ -18,7 +18,7 @@ export const getProducts = serverHandler(async (req, res) => {
 
 export const getAdminProducts = serverHandler(async (req, res) => {
     try {
-        const products = await Product.find({ User: req.user._id }).populate('category').limit(12).sort({ createdAt: -1 })
+        const products = await Product.find({ User: req.user._id }).populate('category').limit(20).sort({ createdAt: -1 })
         if (!products) {
             return res.status(400).send({ message: "products not found" })
         }
@@ -92,6 +92,9 @@ export const removeProduct = serverHandler(async (req, res) => {
         const product = await Product.findById(req.params.id);
         if (!product) {
             return res.status(400).send({ message: "product not found" })
+        }
+        if (product.User.toString() !== req.user._id.toString()) {
+            return res.status(400).send({ message: "you are unauthrize for this product" })
         }
         await Product.findByIdAndDelete(req.params.id)
         res.status(200).send({ message: `${product.name} product is deleted` });

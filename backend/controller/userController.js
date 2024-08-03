@@ -215,7 +215,7 @@ export const updateUserById = serverhandler(async (req, res) => {
     const obj = Joi.object({
         name: Joi.string().min(5).max(12),
         email: Joi.string().email(),
-        role: Joi.string().valid("user", "vender", "admin")
+        role: Joi.string().valid("user", "vendor", "admin")
     })
     const { error } = obj.validate(req.body);
     if (error) return res.status(400).send({ message: error.message });
