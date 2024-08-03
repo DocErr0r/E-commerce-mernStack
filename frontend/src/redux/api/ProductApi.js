@@ -11,6 +11,11 @@ export const createProduct = (body) => {
     })
 }
 
+// // get products
+export const getAllProducts = (keyword = "", sortBy = "", page = 1, limit = 10) => {
+    return axiosInstace.get(`${PRODUCT_URL}/search?keyword=${keyword}&limit=${Number(limit)}&page=${Number(page)}&sort=${sortBy}`)
+}
+
 // get products
 export const getProducts = () => {
     return axiosInstace.get(`${PRODUCT_URL}`)
@@ -41,8 +46,8 @@ export const deleteProductById = (id) => {
 }
 
 // update product by id
-export const updateProductById = ({id,body}) => {
-    return axiosInstace.put(`${PRODUCT_URL}/${id}`,body)
+export const updateProductById = ({ id, body }) => {
+    return axiosInstace.put(`${PRODUCT_URL}/${id}`, body)
 }
 
 // upload file
@@ -52,17 +57,17 @@ export const uploadImageFile = (body) => {
             'Content-Type': 'multipart/form-data'
         }
     }
-)
+    )
 }
 
 // give review of product
-export const addReview = ({id,body}) => {
-    return axiosInstace.post(`${PRODUCT_URL}/${id}/review`,body)
+export const addReview = ({ id, body }) => {
+    return axiosInstace.post(`${PRODUCT_URL}/${id}/review`, body)
 }
 
 // give handle wishlist of product
 export const handleWishlist = (body) => {
-    return axiosInstace.put(`${PRODUCT_URL}/wishlist`,body)
+    return axiosInstace.put(`${PRODUCT_URL}/wishlist`, body)
 }
 
 // give get wishlist of product

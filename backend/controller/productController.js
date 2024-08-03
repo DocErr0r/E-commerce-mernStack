@@ -62,9 +62,9 @@ export const searchProducts = serverHandler(async (req, res) => {
             return res.status(400).send({ message: "products not found" })
         }
 
-        if (!products.length) {
-            return res.status(403).send({ message: "No more products found" })
-        }
+        // if (!products.length) {
+        //     return res.status(403).send({ message: "No more products found" })
+        // }
 
         res.status(200).send({ products, page: Number(page), pages: Math.ceil(count / limit) });
     }
