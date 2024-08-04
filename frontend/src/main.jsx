@@ -30,6 +30,7 @@ import MyState from './contexts/MyState.jsx';
 import ProductInfo from './pages/Products/ProductInfo.jsx';
 import Favorite from './pages/Products/UserFav/Favorite.jsx';
 import VendorRoutes from './pages/admin/VendorRoutes.jsx';
+import Cart from './pages/Cart/Cart.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
             <Route index element={<Home />} />
             <Route path="/product/:id" element={<ProductInfo />} />
             <Route path="/shop" element={<Shop />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/about" element={<h1 style={{ marginTop: '100px' }}> home</h1>} />

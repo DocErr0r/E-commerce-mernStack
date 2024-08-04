@@ -30,12 +30,12 @@ function AllProducts() {
     // console.log(topPorducts);
     return (
         <div className="max-w-screen-xl mx-auto p-4">
-            <div className="flex justify-between ">
+            {/* <div className="flex justify-between ">
                 <h2>home page for showing produsts</h2>
-            </div>
+            </div> */}
             {/* <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center p-4 gap-4"> */}
             <h2 className="text-2xl font-semibold">New products</h2>
-            <div className="flex gap-4 p-4 overflow-x-auto">
+            <div className="flex gap-4 p-4 overflow-x-auto ">
                 {/* <marquee> */}
                 {newPorducts.map((item) => (
                     <SmallProduct key={item._id} product={item} />

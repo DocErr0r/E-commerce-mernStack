@@ -6,14 +6,15 @@ import useFavoriate from '../../hooks/useFavoriate';
 import './a.css';
 import { toast } from 'react-toastify';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/features/auth/userThunk';
-import { Menu, MenuHandler, MenuList } from '@material-tailwind/react';
+import { Menu, MenuHandler, MenuList, Badge } from '@material-tailwind/react';
 
 const Navigation = () => {
     useFavoriate();
     const { userInfo } = useSelector((state) => state.user);
+    const { cartItems } = useSelector((state) => state.carts);
     const dispatch = useDispatch();
     // console.log(userInfo)
 
@@ -57,33 +58,56 @@ const Navigation = () => {
                     <AiOutlineMenu size={22} />
                 </button>
                 <Link to={'/'} className="">
-                    <h1 className="font-bold font-mono text-3xl text-cyan-700">ESHOP</h1>
+                    <h1 className="font-bold font-mono text-3xl text-pink-600">ESHOP</h1>
                 </Link>
-                <div className={`md:flex md:flex-row gap-5 md:w-auto w-full md:order-none order-1 items-center md:static absolute top-[80px] transition-all duration-500  ${showSidebar ? 'left-0 bg-black' : '-left-[100%]'} `}>
-                    <Link to={'/'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2 ">
+                <div className={`navbar md:flex md:flex-row gap-5 md:w-auto w-full md:order-none order-1 items-center md:static absolute top-[80px] transition-all duration-500  ${showSidebar ? 'left-0 bg-black' : '-left-[100%]'} `}>
+                    <NavLink
+                        to={'/'}
+                        style={({ isActive }) => ({
+                            color: isActive ? 'hotpink' : '',
+                        })}
+                        className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2 ">
                         <AiOutlineHome className="mr-2  " size={22} />
                         <span>HOME</span>{' '}
-                    </Link>
-                    <Link to={'/shop'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
+                    </NavLink>
+                    <NavLink
+                        to={'/shop'}
+                        style={({ isActive }) => ({
+                            color: isActive ? 'hotpink' : '',
+                        })}
+                        className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">SHOPPING</span>{' '}
-                    </Link>
-                    <Link to={'/about'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
+                    </NavLink>
+                    <NavLink
+                        style={({ isActive }) => ({
+                            color: isActive ? 'hotpink' : '',
+                        })}
+                        to={'/about'}
+                        className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">About Us</span>{' '}
-                    </Link>
-                    <Link to={'/contact-us'} className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
+                    </NavLink>
+                    <NavLink
+                        style={({ isActive }) => ({
+                            color: isActive ? 'hotpink' : '',
+                        })}
+                        to={'/contact-us'}
+                        className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlinePhone className="mr-2 rotate-90 " size={22} />
                         <span className="">Contact Us</span>{' '}
-                    </Link>
+                    </NavLink>
                 </div>
                 <div className="flex gap-2 items-center">
-                    <Link to={'/'} className="flex items-center transition-transform transform hover:translate-x-1">
-                        <AiOutlineShoppingCart className="mr-2 " size={22} />
+                    <Link to={'/cart'} className="flex items-center transition-transform transform hover:translate-x-1">
+                        <div className="relative">
+                            <AiOutlineShoppingCart className="mr-2 " size={22} />
+                            {cartItems.length > 0 && <span className="absolute -top-2 right-0 bg-pink-500 rounded-full px-1 text-xs">{cartItems.length}</span>}
+                        </div>
                         {/* <span className="max-md:hidden ">CART</span>{' '} */}
                     </Link>
                     <Link to={'/v1/favorite'} className="flex items-center transition-transform transform hover:translate-x-1">
-                        <FaHeart className="mr-2 " size={22} />
+                        <FaHeart className="mr-2 text-pink-500" size={22} />
                         {/* <span className="max-md:hidden ">FAVORITE</span>{' '} */}
                     </Link>
 

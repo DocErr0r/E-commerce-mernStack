@@ -42,6 +42,7 @@ export default function Shop() {
                     <option value="">Sort-By</option>
                     <option value="name">A-Z</option>
                     <option value="-name">Z-A</option>
+                    <option value="-rating">Popularty</option>
                     <option value="price">price:- Low-High</option>
                     <option value="-price">price:- High-Low</option>
                 </select>

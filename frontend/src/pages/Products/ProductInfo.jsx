@@ -5,8 +5,11 @@ import { FaStar, FaCartPlus, FaStore, FaBox, FaClock } from 'react-icons/fa'; //
 import myContext from '../../contexts/myContext';
 import Loader from '../../components/Loder';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../redux/features/Cart/cartSlice';
 
 const ProductDetail = () => {
+    const dispatch = useDispatch();
     const { id: productId } = useParams();
     const { loading, setLoading } = useContext(myContext);
     const [product, setProduct] = useState(null);
@@ -57,6 +60,8 @@ const ProductDetail = () => {
     // Function to handle adding product to cart
     const handleAddToCart = () => {
         console.log(`Added ${quantity} ${product.name} to cart`);
+        dispatch(addToCart({ ...product, qty: quantity }));
+        toast.info(product.name + ' sucessfully added to cart');
     };
 
     if (loading || !product) {
@@ -67,12 +72,12 @@ const ProductDetail = () => {
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-6">
-            <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
+            <div className="w-full px-2 mb-4">
+                <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full  md:object-cover" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-50">{product.name}</h1>
             <div className="flex flex-wrap -mx-2">
-                <div className="w-full px-2 mb-4">
-                    <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full  md:object-cover" />
-                </div>
-                    <p className="mb-4 border-b w-full px-2 py-4">{product.description}</p>
+                <p className="mb-4 border-b w-full px-2 py-4">{product.description}</p>
                 <div className="w-full md:w-1/2 px-2 mb-4">
                     <p className="mb-2 font-semibold text-xl">Price: ₹ {product.price}</p>
                     <div className="flex items-center gap-2 my-2">
@@ -89,7 +94,7 @@ const ProductDetail = () => {
                         <p>Available Stock: {product.countInStock}</p>
                     </div>
                     <div className="flex items-center gap-2 my-2">
-                        <FaStar size={20} />
+                        <FaStar color="yellow" size={20} />
                         <p>Number of Reviews: {reviews.length}</p>
                     </div>
                     <div className="flex items-center my-4">
