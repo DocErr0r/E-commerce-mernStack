@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { deleteUserById, getUsers, updateUserById } from '../../redux/api/userApiSlice';
 // import { getAllUser } from '../../redux/features/auth/userThunk';
 import { toast } from 'react-toastify';
 import { FaCheck, FaEdit, FaTrash } from 'react-icons/fa';
 import UserModal from '../../components/UserModal';
 import Modal from '../../components/Modal';
+import myContext from '../../contexts/myContext';
 
 export default function UsersList() {
     const [users, setUsers] = useState([]);
+    const { updateUser, setUpdateUser } = useContext(myContext);
 
     const [editableId, setEditableId] = useState(null);
     const [editableName, setEditableName] = useState('');
     const [editableEmail, setEditableEmail] = useState('');
     const [editableRole, setEditableRole] = useState('');
-    const [changeUser, setChangeUser] = useState(false);
 
     const [openModal, setOpenModal] = useState(false);
     const [userDetail, setUserDetail] = useState(null);
@@ -31,7 +32,7 @@ export default function UsersList() {
         // console.log("runnig useeffect");
 
         fetchusers();
-    }, [changeUser]);
+    }, [updateUser]);
 
     // console.log(users);
 
@@ -48,7 +49,7 @@ export default function UsersList() {
                 const { data } = await deleteUserById(id);
                 // console.log(data);
                 toast.success(data.message);
-                setChangeUser(!changeUser);
+                setUpdateUser(!updateUser);
             } catch (error) {
                 toast.error(error.response.data.message || error.message);
             }
@@ -62,9 +63,9 @@ export default function UsersList() {
             // console.log(data);
             toast.success(data.message);
             setEditableId(null);
-            setChangeUser(!changeUser);
+            setUpdateUser(!updateUser);
         } catch (error) {
-            toast.error(error.response.data.message || error.message);
+            toast.error(error?.response?.data?.message || error.message);
         }
     };
 

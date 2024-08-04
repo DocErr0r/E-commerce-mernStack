@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { getAllProducts, getProducts } from '../../redux/api/ProductApi';
 import { toast } from 'react-toastify';
 // import SmallProduct from '../Products/SmallProduct';
@@ -6,8 +6,11 @@ import Card from '../Products/Card';
 // import FilterSection from '../../components/FilterSection';
 import { IoGrid, IoMenu } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
+import myContext from '../../contexts/myContext';
+import Loder from '../../components/Loder';
 
 export default function Shop() {
+    const { loading, setLoading } = useContext(myContext);
     const [allProducts, setAllProducts] = useState(null);
     const [change, setChange] = useState(false);
     // const [category, setCategory] = useState('');
@@ -19,13 +22,16 @@ export default function Shop() {
 
     useEffect(() => {
         const getProducts = async () => {
+            setLoading(true);
             try {
                 const { data } = await getAllProducts(keyword, sortBy, page);
                 console.log(data);
                 setAllProducts(data.products);
                 setCount(data.pages);
+                setLoading(false);
             } catch (error) {
                 console.log(error);
+                setLoading(false);
             }
         };
         getProducts();
@@ -47,7 +53,9 @@ export default function Shop() {
                     <option value="-price">price:- High-Low</option>
                 </select>
             </div>
-            {allProducts?.length ? (
+            {loading ? (
+                <Loder />
+            ) : allProducts?.length ? (
                 <>
                     <div className="flex justify-between">
                         <h1 className="text-xl mb-4">Products({allProducts.length})</h1>
@@ -60,7 +68,7 @@ export default function Shop() {
                             </button>
                         </div>
                     </div>
-                    {keyword && <p className='text-gray-300 mx-4'>your search result for '{keyword}'</p>}
+                    {keyword && <p className="text-gray-300 mx-4">your search result for '{keyword}'</p>}
                     <div className="">
                         {/* <div className="w-[15rem] bg-red-300"><FilterSection setSortby={setSortby} sortby={sortBy} category={category} setCategory={setCategory} /></div> */}
                         <div className={`${view ? 'flex' : ''} flex-wrap gap-1`}>

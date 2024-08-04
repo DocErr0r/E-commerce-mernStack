@@ -50,7 +50,8 @@ function Cart() {
                                     <label className="mr-2 block">Quantity:</label>
                                     <input type="number" value={i.qty} onChange={(e) => dispatch(addToCart({ ...i, qty: Number(e.target.value) }))} min="1" max={i.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
                                     <button className="mx-2 flex items-center" onClick={() => dispatch(removeFormCart(i._id))}>
-                                        <FaTrash size={20} className="text-red-500" />
+                                        {/* Remove Item */}
+                                        <FaTrash size={20} className="text-red-50" />
                                     </button>
                                 </div>
                             </div>
