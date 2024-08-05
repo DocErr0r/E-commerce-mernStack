@@ -4,6 +4,7 @@ import connectTODB from './config/db.js';
 import userRouter from './routes/authuser.js';
 import categoryRouter from "./routes/categoryRouts.js";
 import productRouter from './routes/productRoutes.js';
+import orderRouter from "./routes/orderRoutes.js";
 import uploadRoute from './routes/uploadRoute.js';
 import cookieParser from 'cookie-parser';
 // import path from "path";
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/products', productRouter)
+app.use('/api/order', orderRouter)
 app.use('/api/uploads', uploadRoute)
 
 // app.use(express.static(path.resolve(fileURLToPath(import.meta.url), 'public')));

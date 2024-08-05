@@ -9,7 +9,7 @@ function Footer() {
                 <div className="text-center sm:text-left">
                     <h2 className="text-2xl font-bold uppercase text-center">ESHOP</h2>
                     <div className="text-center flex flex-wrap">
-                        <p>&copy; 2024 ESHOP. All rights reserved.</p>
+                        <p>&copy; {new Date(Date.now()).getFullYear()} ESHOP. All rights reserved.</p>
                     </div>
                 </div>
                 <div>

@@ -1,69 +1,69 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { addToCart, clearCart, removeFormCart } from '../../redux/features/Cart/cartSlice';
 import { Button } from '@material-tailwind/react';
-import { FaTrash, FaTrashAlt } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 
 function Cart() {
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.carts);
     const { cartItems } = cart;
-    console.log(cart);
-    const navigate = useNavigate();
 
     const checkoutHandle = () => {
-        console.log('cheching out');
+        console.log('checking out');
     };
 
     return (
-        <div className="max-w-screen-xl mx-auto p-4">
+        <div className="max-w-screen-lg mx-auto p-4">
             {cartItems.length === 0 ? (
-                <div className="justify-center m-10 flex items-center">
-                    your Cart is empty{' '}
-                    <Link to={'/shop'} className="ml-4 bg-pink-600 py-2 px-4 rounded-md">
-                        continue shopping
+                <div className="flex flex-col items-center justify-center mt-10">
+                    <p className="text-lg">Your Cart is empty</p>
+                    <Link to={'/shop'} className="mt-4 bg-pink-600 text-white py-2 px-4 rounded-md">
+                        Continue Shopping
                     </Link>
                 </div>
             ) : (
                 <div className="flex flex-col">
-                    <div className="flex justify-between">
-                        <h1 className="text-2xl font-semibold uppercase">Shopping cart</h1>
-                        <button className="text-red-300 rounded-md mx-2 py-1 px-3 bg-gray-700" onClick={() => dispatch(clearCart())}>
-                            Remove All Itmes
+                    <div className="flex flex-row flex-wrap justify-between items-center">
+                        <h1 className="text-2xl font-semibold uppercase mb-4 sm:mb-0">Shopping Cart</h1>
+                        <button className="text-red-300 rounded-md py-2 px-4 bg-gray-700" onClick={() => dispatch(clearCart())}>
+                            Remove All Items
                         </button>
                     </div>
-                    <div className="w-[80%] mx-auto my-4">
+                    <div className="w-full mx-auto my-4">
                         {cartItems?.map((i) => (
-                            <div key={i._id} className="flex items-center justify-between mb-4 shadow-md rounded-lg hover:shadow-xl transition-all duration-300 ease-in-out">
-                                <div className="flex gap-4">
+                            <div key={i._id} className="flex flex-col sm:flex-row items-center justify-between mb-4 shadow-md rounded-lg hover:shadow-xl transition-all duration-300 ease-in-out p-4">
+                                <div className="flex items-center max-sm:w-full mb-4 sm:mb-0">
                                     <img src={i.image} alt={i.name} className="h-20 w-20 rounded-md object-cover" />
-                                    <div>
-                                        <Link to={'/product/' + i._id} className="text-sm text-pink-400">
+                                    <div className="ml-4">
+                                        <Link to={'/product/' + i._id} className="text-sm text-pink-400 block">
                                             {i.name}
                                         </Link>
                                         <div className="text-sm">{i.brand}</div>
                                         <div className="text-sm font-semibold">₹ {i.price}</div>
                                     </div>
                                 </div>
-                                <div className="flex items-cente">
-                                    <label className="mr-2 block">Quantity:</label>
-                                    <input type="number" value={i.qty} onChange={(e) => dispatch(addToCart({ ...i, qty: Number(e.target.value) }))} min="1" max={i.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
-                                    <button className="mx-2 flex items-center" onClick={() => dispatch(removeFormCart(i._id))}>
-                                        {/* Remove Item */}
-                                        <FaTrash size={20} className="text-red-50" />
+                                <div className="flex flex-row max-sm:justify-between max-sm:w-full items-center">
+                                    <div className="flex">
+                                        <label className="mr-2 block">Quantity:</label>
+                                        <input type="number" value={i.qty} onChange={(e) => dispatch(addToCart({ ...i, qty: Number(e.target.value) }))} min="1" max={i.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
+                                    </div>
+                                    <button className="ml-2 flex items-center gap-1 rounded-md py-2 px-4 bg-gray-700 text-blue-300" onClick={() => dispatch(removeFormCart(i._id))}>
+                                        <FaTrash size={20} className="text-red-500" />
+                                        Remove Item
                                     </button>
                                 </div>
                             </div>
                         ))}
                         <div>
                             <div>
-                                <h2 className="text-2xl font-semibold">Items({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h2>
+                                <h2 className="text-2xl font-semibold mb-4">Items({cartItems.reduce((acc, item) => acc + item.qty, 0)})</h2>
                             </div>
-                            <div className="flex justify-between flex-wrap items-center">
-                                <h2 className="text-xl font-semibold">Totle Price: ₹ {cart.itemsPrice}</h2>
-                                <Button className="px-8 bg-pink-600 rounded-full max-sm:mt-4 w-full sm:w-auto" disabled={cartItems.length === 0} onClick={checkoutHandle}>
-                                    Process to checkout
+                            <div className="flex flex-col sm:flex-row justify-between items-center">
+                                <h2 className="text-xl font-semibold">Total Price: ₹ {cart.itemsPrice}</h2>
+                                <Button className="mt-4 sm:mt-0 px-8 bg-pink-600 rounded-full w-full sm:w-auto" disabled={cartItems.length === 0} onClick={checkoutHandle}>
+                                    Proceed to Checkout
                                 </Button>
                             </div>
                         </div>
