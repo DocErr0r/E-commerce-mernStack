@@ -31,6 +31,9 @@ import ProductInfo from './pages/Products/ProductInfo.jsx';
 import Favorite from './pages/Products/UserFav/Favorite.jsx';
 import VendorRoutes from './pages/admin/VendorRoutes.jsx';
 import Cart from './pages/Cart/Cart.jsx';
+import Shipping from './pages/Orders/Shipping.jsx';
+import Order from './pages/Orders/Order.jsx';
+import OrderDone from './pages/Orders/OrderDone.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,11 +47,15 @@ const router = createBrowserRouter(
             <Route path="/about" element={<h1 style={{ marginTop: '100px' }}> home</h1>} />
             <Route path="/contact-us" element={<h>connact us page</h>} />
 
-            <Route path="/v1" element={<PrivateRoute />}>
-                <Route path="me" element={<Profile />} />
-                <Route path="change-password" element={<ChangePassword />} />
-                <Route path="edit-profile" element={<EditProfile />} />
-                <Route path="favorite" element={<Favorite />} />
+            <Route path="" element={<PrivateRoute />}>
+                <Route path="/v1/me" element={<Profile />} />
+                <Route path="shipping" element={<Shipping />} />
+                <Route path="order" element={<Order />} />
+                {/* <Route path="order/:id" element={<Payment />} /> */}
+                <Route path="order/:id" element={<OrderDone />} />
+                <Route path="v1/change-password" element={<ChangePassword />} />
+                <Route path="v1/edit-profile" element={<EditProfile />} />
+                <Route path="v1/favorite" element={<Favorite />} />
             </Route>
 
             <Route path="/admin" element={<AdminRoutes />}>

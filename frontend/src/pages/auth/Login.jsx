@@ -14,11 +14,13 @@ export default function Login() {
     const { lodding, error, userInfo } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
+    const serachParams = new URLSearchParams(location.search);
+    const redirect = serachParams.get('redirect') || '/';
 
     useEffect(() => {
         if (userInfo) {
             toast.success('login successfully');
-            navigate('/');
+            navigate(redirect);
         }
     }, [userInfo, navigate]);
 

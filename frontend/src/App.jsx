@@ -18,7 +18,7 @@ function App() {
         <>
             <ToastContainer position="bottom-center" pauseOnHover={false} autoClose={1500} />
             <Navigation />
-            <main className="pt-24 pb-4 min-h-screen">
+            <main className="pt-24 pb-4 min-h-[80vh]">
                 <Outlet />
             </main>
             <Footer />

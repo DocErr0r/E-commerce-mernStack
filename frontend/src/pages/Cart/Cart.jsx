@@ -1,17 +1,18 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { addToCart, clearCart, removeFormCart } from '../../redux/features/Cart/cartSlice';
 import { Button } from '@material-tailwind/react';
 import { FaTrash } from 'react-icons/fa';
 
 function Cart() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const cart = useSelector((state) => state.carts);
     const { cartItems } = cart;
 
     const checkoutHandle = () => {
-        console.log('checking out');
+        navigate('/login?redirect=/shipping');
     };
 
     return (
