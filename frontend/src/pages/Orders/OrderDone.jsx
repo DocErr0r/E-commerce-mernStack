@@ -41,7 +41,7 @@ function OrderDone() {
             {order && (
                 <>
                     <div className="p-4 md:w-2/3">
-                        <div className="overflow-auto mb-2">
+                        <div className="overflow-x-auto mb-2">
                             <table className="w-full mx-auto border">
                                 <thead className="border ">
                                     <tr>

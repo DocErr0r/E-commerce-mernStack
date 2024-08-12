@@ -34,6 +34,8 @@ import Cart from './pages/Cart/Cart.jsx';
 import Shipping from './pages/Orders/Shipping.jsx';
 import Order from './pages/Orders/Order.jsx';
 import OrderDone from './pages/Orders/OrderDone.jsx';
+import MyOrder from './pages/users/MyOrder.jsx';
+import OrderList from './pages/admin/OrderList.jsx';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -51,6 +53,7 @@ const router = createBrowserRouter(
                 <Route path="/v1/me" element={<Profile />} />
                 <Route path="shipping" element={<Shipping />} />
                 <Route path="order" element={<Order />} />
+                <Route path="v1/order-details" element={<MyOrder />} />
                 {/* <Route path="order/:id" element={<Payment />} /> */}
                 <Route path="order/:id" element={<OrderDone />} />
                 <Route path="v1/change-password" element={<ChangePassword />} />
@@ -61,8 +64,9 @@ const router = createBrowserRouter(
             <Route path="/admin" element={<AdminRoutes />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="user-list" element={<UsersList />} />
-            </Route>
-            <Route path="/admin" element={<VendorRoutes />}>
+            {/* </Route>
+            <Route path="/admin" element={<VendorRoutes />}> */}
+                <Route path="orders" element={<OrderList />} />
                 <Route path="category" element={<CategoryList />} />
                 <Route path="productlist" element={<ProductList />} />
                 <Route path="addproduct" element={<AddProduct />} />
