@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { addToCart, clearCart, removeFormCart } from '../../redux/features/Cart/cartSlice';
 import { Button } from '@material-tailwind/react';
 import { FaTrash } from 'react-icons/fa';
+import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
 
 function Cart() {
     const dispatch = useDispatch();
@@ -12,6 +13,7 @@ function Cart() {
     const { cartItems } = cart;
 
     const checkoutHandle = () => {
+        dispatch(setOrderProduct(cartItems));
         navigate('/login?redirect=/shipping');
     };
 
@@ -45,15 +47,24 @@ function Cart() {
                                         <div className="text-sm font-semibold">₹ {i.price}</div>
                                     </div>
                                 </div>
-                                <div className="flex flex-row max-sm:justify-between max-sm:w-full items-center">
+                                <div className="flex flex-row flex-wrap gap-2 max-sm:justify-between max-sm:w-full items-center">
                                     <div className="flex">
                                         <label className="mr-2 block">Quantity:</label>
                                         <input type="number" value={i.qty} onChange={(e) => dispatch(addToCart({ ...i, qty: Number(e.target.value) }))} min="1" max={i.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
                                     </div>
-                                    <button className="ml-2 flex items-center gap-1 rounded-md py-2 px-4 bg-gray-700 text-blue-300" onClick={() => dispatch(removeFormCart(i._id))}>
-                                        <FaTrash size={20} className="text-red-500" />
-                                        Remove Item
-                                    </button>
+                                    <div className='flex justify-between max-sm:w-full'>
+                                        <button className="ml-2 flex items-center gap-1 rounded-md py-2 px-4 bg-gray-700 text-blue-300" onClick={() => dispatch(removeFormCart(i._id))}>
+                                            <FaTrash size={20} className="text-red-500" />
+                                            Remove Item
+                                        </button>
+                                        <button
+                                            className="ml-2 flex items-center gap-1 rounded-md py-2 px-4 bg-gray-700 text-blue-300"
+                                            onClick={() => {
+                                                dispatch(setOrderProduct([i])), navigate('/login?redirect=/shipping');
+                                            }}>
+                                            Buy Now
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

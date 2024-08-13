@@ -131,22 +131,19 @@ const Navigation = () => {
                             ? drowpDown && (
                                   // <MenuList>
                                   <ul className={`absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none rounded-lg`}>
-                                      {(userInfo.role === 'admin' || 'vendor') && (
+                                      {userInfo.role === 'admin' && (
                                           <>
-                                              {userInfo.role === 'admin' && (
-                                                  <>
-                                                      <li>
-                                                          <Link to={'/admin/dashboard'} className="block p-2 hover:bg-slate-800 hover:rounded-md">
-                                                              Dashboard
-                                                          </Link>
-                                                      </li>
-                                                      <li>
-                                                          <Link to={'/admin/user-list'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
-                                                              Users
-                                                          </Link>
-                                                      </li>
-                                                  </>
-                                              )}
+                                              <li>
+                                                  <Link to={'/admin/dashboard'} className="block p-2 hover:bg-slate-800 hover:rounded-md">
+                                                      Dashboard
+                                                  </Link>
+                                              </li>
+                                              <li>
+                                                  <Link to={'/admin/user-list'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
+                                                      Users
+                                                  </Link>
+                                              </li>
+
                                               <li>
                                                   <Link to={'/admin/productlist'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Products

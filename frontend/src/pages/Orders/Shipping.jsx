@@ -10,7 +10,6 @@ import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
 function Shipping() {
     const [address, setAddress] = useState('');
     const navigate = useNavigate();
-    const cart = useSelector((state) => state.carts);
     const dispatch = useDispatch();
 
     const submitHandler = (e) => {

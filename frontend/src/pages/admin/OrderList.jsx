@@ -53,8 +53,8 @@ function OrderList() {
                                 <td className="p-2">{item.paid ? <div className="bg-green-500 text-center rounded-full p-1">Complete</div> : <div className="bg-red-500 text-center rounded-full p-1">Pendding</div>}</td>
                                 <td className="p-2">{item.delivered ? <div className="bg-green-500 text-center rounded-full p-1">Complete</div> : <div className="bg-red-500 text-center rounded-full p-1">Pendding</div>}</td>
                                 <td className="p-2 text-center">
-                                    <Link to={`/order/${item._id}`} className="bg-pink-400 py-2 px-4 rounded-md">
-                                        <span>view Details</span>
+                                    <Link to={`/order/${item._id}`} className="bg-pink-400 w-[6rem] py-2 px-4 rounded-md">
+                                        Details
                                     </Link>
                                 </td>
                             </tr>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { addReview, getProductById } from '../../redux/api/ProductApi';
 import { FaStar, FaCartPlus, FaStore, FaBox, FaClock } from 'react-icons/fa'; // Importing star and cart icons from react-icons
 import myContext from '../../contexts/myContext';
@@ -7,8 +7,10 @@ import Loader from '../../components/Loder';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/features/Cart/cartSlice';
+import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
 
 const ProductDetail = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id: productId } = useParams();
     const { loading, setLoading } = useContext(myContext);
@@ -59,9 +61,16 @@ const ProductDetail = () => {
 
     // Function to handle adding product to cart
     const handleAddToCart = () => {
-        console.log(`Added ${quantity} ${product.name} to cart`);
+        // console.log(`Added ${quantity} ${product.name} to cart`);
         dispatch(addToCart({ ...product, qty: quantity }));
         toast.info(product.name + ' sucessfully added to cart');
+    };
+
+    // Function to handle adding product to order
+    const handelBuy = () => {
+        const orderproduct = [{ ...product, qty: quantity }];
+        dispatch(setOrderProduct(orderproduct));
+        navigate('/login?redirect=/shipping');
     };
 
     if (loading || !product) {
@@ -110,9 +119,12 @@ const ProductDetail = () => {
                         <div className="flex items-center">
                             <label className="mr-2">Quantity:</label>
                             <input type="number" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value))} min="1" max={product.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
-                            <button onClick={handleAddToCart} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-lg ml-4">
+                            <button onClick={handleAddToCart} className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-1 rounded-lg ml-4">
                                 <FaCartPlus className="inline-block mr-1" />
                                 Add to Cart
+                            </button>
+                            <button onClick={handelBuy} className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-1 rounded-lg ml-4">
+                                Buy Now
                             </button>
                         </div>
                     )}
@@ -129,7 +141,7 @@ const ProductDetail = () => {
                         <FaStar key={i} className={`cursor-pointer ${i < userRating ? 'text-yellow-500' : 'text-gray-400'}`} onClick={() => setUserRating(i + 1)} />
                     ))}
                 </div>
-                <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                <button type="submit" className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg">
                     Submit Review
                 </button>
             </form>

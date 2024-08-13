@@ -4,23 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder } from '../../redux/api/orderApi';
 import { toast } from 'react-toastify';
-import { clearCart } from '../../redux/features/Cart/cartSlice';
+import { clearOrder } from '../../redux/features/order/productOrderSlice';
 
 function Order() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.carts);
+    const OProduct = useSelector((state) => state.productOrderSlice);
     const dispatch = useDispatch();
-    console.log(cart);
+    console.log(OProduct);
 
     const placeOderHandler = async (e) => {
         try {
             const { data } = await createOrder({
-                orderItems: cart.cartItems,
+                orderItems: OProduct.orderProduct,
                 address: cart.shopingAdress.address,
                 paymentMethod: 'upi',
-                itemsPrice: cart.itemsPrice,
+                itemsPrice: OProduct.itemsPrice,
             });
-            // dispatch(clearCart());
+            dispatch(clearOrder());
             console.log(data);
             toast.success(data.message);
             navigate(`/order/${data.order._id}`);
@@ -39,7 +40,7 @@ function Order() {
                     <p>{cart.shopingAdress.address}</p>
                 </div>
             </div>
-            {cart ? (
+            {OProduct ? (
                 <div className="overflow-auto mb-2">
                     <table className="w-full mx-auto border">
                         <thead className="border ">
@@ -52,7 +53,7 @@ function Order() {
                             </tr>
                         </thead>
                         <tbody>
-                            {cart.cartItems.map((item) => (
+                            {OProduct?.orderProduct.map((item) => (
                                 <tr key={item._id}>
                                     <td className="p-2">
                                         <img src={item.image} alt={item.name} className="h-20 max-w-20 rounded-md object-cover" />
@@ -73,16 +74,16 @@ function Order() {
             <div className="shadow-xl p-4 rounded-lg mb-4 flex flex-wrap gap-5 border">
                 <div className="w-full">
                     <div className="flex justify-between flex-wrap items-center">
-                        Items price:<p>₹ {cart.itemsPrice}</p>
+                        Items price:<p>₹ {OProduct.itemsPrice}</p>
                     </div>
                     <div className="flex justify-between flex-wrap items-center">
-                        shipping price: <p>₹ {cart.shippingPrice}</p>
+                        shipping price: <p>₹ {OProduct.shippingPrice}</p>
                     </div>
                     <div className="flex justify-between flex-wrap items-center">
-                        Tex price: <p>₹ {cart.tex}</p>
+                        Tex price: <p>₹ {OProduct.tex}</p>
                     </div>
                     <div className="flex justify-between flex-wrap items-center">
-                        Totel price: <p>₹ {cart.totelPrice}</p>
+                        Totel price: <p>₹ {OProduct.totelPrice}</p>
                     </div>
                 </div>
             </div>
