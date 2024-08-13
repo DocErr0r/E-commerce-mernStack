@@ -82,7 +82,7 @@ export default function UsersList() {
                             <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Name</th>
                             <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Email</th>
                             <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Role</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Actions</th>
+                            {/* <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -134,20 +134,20 @@ export default function UsersList() {
                                             <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)}>
                                                 <option value="user">User</option>
                                                 <option value="admin">Admin</option>
-                                                <option value="vendor">Vendor</option>
+                                                {/* <option value="vendor">Vendor</option> */}
                                             </select>
                                         </div>
                                     ) : (
                                         <div className="truncate">{user.role}</div>
                                     )}
                                 </td>
-                                <td className="px-4 py-3">
+                                {/* <td className="px-4 py-3">
                                     {user.role !== 'admin' && (
                                         <button className="p-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => deleteUser(user._id)}>
                                             <FaTrash />
                                         </button>
                                     )}
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>

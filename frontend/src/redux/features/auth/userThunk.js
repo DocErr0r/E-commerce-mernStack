@@ -50,7 +50,7 @@ export const updatePass = createAsyncThunk('updatePass', async ({ password, newP
 export const logout = createAsyncThunk('userlogout', async (_, { rejectWithValue }) => {
     try {
         const { data } = await logoutUser();
-        localStorage.clear();
+        localStorage.removeItem('userInfo');
         return data;
     } catch (error) {
         return rejectWithValue(error.response.data || error.message);

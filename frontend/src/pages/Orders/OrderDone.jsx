@@ -28,7 +28,7 @@ function OrderDone() {
         try {
             const res = await deliverOrder(id);
             console.log(res);
-            setChange(!change)
+            setChange(!change);
         } catch (error) {
             console.log(error);
             toast.error(error.message);
@@ -88,8 +88,9 @@ function OrderDone() {
                             </p>
                             {order.paid ? (
                                 <div className="border px-2 bg-green-600 py-2 my-4 rounded-md">
-                                    Paid on: {order.paidTime}
+                                    Paid on: {Date(order.paidTime).toString()}
                                     <div>By: {order.paymentResult.email}</div>
+                                    {order.delivered && <div>Delivered on: {Date(order.deliveredTime).toString()}</div>}
                                 </div>
                             ) : (
                                 <div className="border bg-blue-300 px-2 text-blue-700 py-2 rounded-md my-4">Not paid</div>
