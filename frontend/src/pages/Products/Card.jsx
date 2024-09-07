@@ -38,7 +38,7 @@ function Card({ product, view }) {
                 <div className={`${view ? '' : 'flex'} shadow-xl mb-3 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out`}>
                     <div className="relative">
                         <div className="p-2">
-                            <img src={product.image} alt={product.name} className="sm:w-60 w-full h-56 rounded-md object-cover hover:opacity-80" />
+                            <img src={product.image} alt={product.name} className="sm:w-72 w-full h-56 rounded-md object-cover hover:opacity-80" />
                         </div>
                         <div className="absolute top-0 right-0 p-4" onClick={handleLike}>
                             {/* <AiOutlineHeart size={20} /> */}

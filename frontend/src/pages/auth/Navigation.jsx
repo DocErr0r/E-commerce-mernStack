@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineUser, AiOutlineMenu } from 'react-icons/ai';
+import React, { useEffect, useRef, useState } from 'react';
+import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineUser, AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import useFavoriate from '../../hooks/useFavoriate';
 
@@ -12,6 +12,7 @@ import { logout } from '../../redux/features/auth/userThunk';
 import { Menu, MenuHandler, MenuList, Badge } from '@material-tailwind/react';
 
 const Navigation = () => {
+    const menuRef = useRef(null);
     useFavoriate();
     const { userInfo } = useSelector((state) => state.user);
     const { cartItems } = useSelector((state) => state.carts);
@@ -25,6 +26,9 @@ const Navigation = () => {
     // Dropdown Menu Functions
     function toggleDropdown() {
         setDrowpDown(!drowpDown);
+    }
+    function closeDropdown() {
+        setDrowpDown(false);
     }
 
     function toggleSidebar() {
@@ -50,12 +54,20 @@ const Navigation = () => {
             toast.error(error);
         }
     }
+    useEffect(() => {
+        const handler = (e) => {
+            if (!menuRef.current.contains(e.target)) setDrowpDown(false);
+        };
+
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, []);
 
     return (
         <div className={`w-full min-h-20 text-white bg-black fixed z-50`}>
             <div className="max-w-screen-xl  mx-auto flex flex-wrap justify-between items-center p-4">
                 <button className="md:hidden bg-gray-600 p-2 rounded-md hover:bg-gray-800" aria-label="menu" onClick={toggleSidebar}>
-                    <AiOutlineMenu size={22} />
+                    {!showSidebar ? <AiOutlineMenu size={22} /> : <AiOutlineClose size={22} />}
                 </button>
                 <Link to={'/'} className="">
                     <h1 className="font-bold font-mono text-3xl text-pink-600">ESHOP</h1>
@@ -126,52 +138,52 @@ const Navigation = () => {
                     </button>
 
                     {/* </MenuHandler> */}
-                    <div className="relative mt-14 items-center">
+                    <div className="relative mt-14 items-center" ref={menuRef}>
                         {userInfo
                             ? drowpDown && (
                                   // <MenuList>
                                   <ul className={`absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none rounded-lg`}>
                                       {userInfo.role === 'admin' && (
                                           <>
-                                              <li>
+                                              <li onClick={closeDropdown}>
                                                   <Link to={'/admin/dashboard'} className="block p-2 hover:bg-slate-800 hover:rounded-md">
                                                       Dashboard
                                                   </Link>
                                               </li>
-                                              <li>
+                                              <li onClick={closeDropdown}>
                                                   <Link to={'/admin/user-list'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Users
                                                   </Link>
                                               </li>
 
-                                              <li>
+                                              <li onClick={closeDropdown}>
                                                   <Link to={'/admin/productlist'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Products
                                                   </Link>
                                               </li>
-                                              <li>
+                                              <li onClick={closeDropdown}>
                                                   <Link to={'/admin/orders'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Order
                                                   </Link>
                                               </li>
-                                              <li>
+                                              <li onClick={closeDropdown}>
                                                   <Link to={'/admin/category'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Catogory
                                                   </Link>
                                               </li>
                                           </>
                                       )}
-                                      <li>
+                                      <li onClick={closeDropdown}>
                                           <Link to={'/v1/me'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                               Profile
                                           </Link>
                                       </li>
-                                      <li>
+                                      <li onClick={closeDropdown}>
                                           <Link to={'/v1/change-password'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                               Change Password
                                           </Link>
                                       </li>
-                                      <li>
+                                      <li onClick={closeDropdown}>
                                           <button to={'/'} onClick={logoutHandler} className="block text-left p-2 w-full hover:bg-gray-800 hover:rounded-md">
                                               Logout
                                           </button>
@@ -180,13 +192,13 @@ const Navigation = () => {
                               )
                             : drowpDown && (
                                   <ul className=" absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none py-2 px-3 rounded-lg">
-                                      <li>
+                                      <li onClick={closeDropdown}>
                                           <Link to={'/login'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
                                               <AiOutlineLogin className="mr-2 " size={26} />
                                               <span className="">Login</span>{' '}
                                           </Link>
                                       </li>
-                                      <li>
+                                      <li onClick={closeDropdown}>
                                           <Link to={'/register'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
                                               <AiOutlineUserAdd className="mr-2 " size={26} />
                                               <span className="">Register</span>{' '}
