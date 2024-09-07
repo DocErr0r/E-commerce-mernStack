@@ -75,10 +75,10 @@ function OrderDone() {
                                 <strong className="text-pink-500">Order:</strong> {order._id}
                             </p>
                             <p>
-                                <strong className="text-pink-500">Name:</strong> {userInfo.name}
+                                <strong className="text-pink-500">Name:</strong> {order.orderedBy.name}
                             </p>
                             <p>
-                                <strong className="text-pink-500">Email:</strong> {userInfo.email}
+                                <strong className="text-pink-500">Email:</strong> {order.orderedBy.email}
                             </p>
                             <p>
                                 <strong className="text-pink-500">Address:</strong> {order.address}
