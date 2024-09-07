@@ -26,6 +26,7 @@ function OrderList() {
 
     return (
         <div className="max-w-screen-xl mx-auto p-4">
+            <h1 className='font-bold text-xl mb-3'>Totel orders:{orders.length}</h1>
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead className="border">
