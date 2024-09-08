@@ -34,9 +34,9 @@ const Navigation = () => {
     function toggleSidebar() {
         setShowSidebar(!showSidebar);
     }
-    // function closeSidebar() {
-    //     setShowSidebar(!showSidebar);
-    // }
+    function closeSidebar() {
+        setShowSidebar(!showSidebar);
+    }
     async function logoutHandler() {
         try {
             const result = await dispatch(logout());
@@ -78,6 +78,7 @@ const Navigation = () => {
                         style={({ isActive }) => ({
                             color: isActive ? 'hotpink' : '',
                         })}
+                        onClick={closeSidebar}
                         className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2 ">
                         <AiOutlineHome className="mr-2  " size={22} />
                         <span>HOME</span>{' '}
@@ -87,6 +88,7 @@ const Navigation = () => {
                         style={({ isActive }) => ({
                             color: isActive ? 'hotpink' : '',
                         })}
+                        onClick={closeSidebar}
                         className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">SHOPPING</span>{' '}
@@ -96,6 +98,7 @@ const Navigation = () => {
                             color: isActive ? 'hotpink' : '',
                         })}
                         to={'/about'}
+                        onClick={closeSidebar}
                         className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlineShopping className="mr-2 " size={22} />
                         <span className="">About Us</span>{' '}
@@ -105,6 +108,7 @@ const Navigation = () => {
                             color: isActive ? 'hotpink' : '',
                         })}
                         to={'/contact-us'}
+                        onClick={closeSidebar}
                         className="flex items-center transition-transform md:m-2 m-4 transform hover:translate-x-2">
                         <AiOutlinePhone className="mr-2 rotate-90 " size={22} />
                         <span className="">Contact Us</span>{' '}

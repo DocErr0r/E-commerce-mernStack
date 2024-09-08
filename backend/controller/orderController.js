@@ -39,7 +39,7 @@ export const createOrder = serverHandler(async (req, res) => {
 
 export const getAllOrders = serverHandler(async (req, res) => {
     try {
-        const orders = await Order.find().populate('orderedBy', "id name email")
+        const orders = await Order.find().populate('orderedBy', "id name email").sort({ createdAt: -1 })
         res.status(200).send({ orders })
     } catch (error) {
 
