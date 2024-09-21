@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { deliverOrder, getOrderDetail } from '../../redux/api/orderApi';
+import { deliverOrder, getClientId, getOrderDetail, payOrder } from '../../redux/api/orderApi';
 import { useSelector } from 'react-redux';
 import Payment from './Payment';
 import Modal from '../../components/Modal';
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
 function OrderDone() {
     const { id } = useParams();
     const [order, setOrder] = useState(null);
     const [modal, setModel] = useState(false);
     const [change, setChange] = useState(false);
+    const [paypalId, setPaypalId] = useState('');
     const { userInfo } = useSelector((state) => state.user);
+    const getPaypalId = async () => {
+        const { data } = await getClientId();
+        setPaypalId(data.clientId);
+    };
     useEffect(() => {
         const getOrders = async () => {
             try {
@@ -22,6 +28,7 @@ function OrderDone() {
             }
         };
         getOrders();
+        getPaypalId();
     }, [id, modal, change]);
 
     const setDeliverd = async () => {
@@ -35,9 +42,73 @@ function OrderDone() {
         }
     };
 
+    const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+    const createOrder = (data, actions) => {
+        return actions.order
+            .create({
+                purchase_units: [
+                    {
+                        amount: {
+                            currency: 'USD',
+                            value: order.totelPrice,
+                        },
+                    },
+                ],
+            })
+            .then((orderID) => {
+                return orderID;
+            });
+    };
+    const onApprove = (data, actions) => {
+        return actions.order.capture().then(async (details) => {
+            try {
+                const paymentId = details.id;
+                const payer = details.payer.email_address;
+                const status = details.status;
+                // console.log(details);
+                await payOrder({ id, body: { id: paymentId, status, update_time: Date.now(), payer_email: payer } });
+                toast.success('order is paid');
+                setChange(!change);
+            } catch (error) {
+                console.log(error);
+            }
+        });
+    };
+    function onError(err) {
+        toast.error(err.message);
+    }
+
+    useEffect(() => {
+        if (paypalId) {
+            try {
+                const loadingpaypal = async () => {
+                    paypalDispatch({
+                        type: 'resetOptions',
+                        value: {
+                            'client-id': paypalId,
+                            currency: 'USD',
+                        },
+                    });
+                    paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+                };
+                if (order && !order.paid) {
+                    if (!window.paypal) {
+                        loadingpaypal();
+                    }
+                }
+            } catch (error) {
+                console.log('worng');
+            }
+        }
+    }, [order, paypalId]);
+
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="max-w-screen-xl mx-auto md:flex">
-            {modal && <Payment onclose={() => setModel(false)} productId={id} />}
+            {/* {modal && <Payment onclose={() => setModel(false)} productId={id} />} */}
             {order && (
                 <>
                     <div className="p-4 md:w-2/3">
@@ -88,7 +159,7 @@ function OrderDone() {
                             </p>
                             {order.paid ? (
                                 <div className="border px-2 bg-green-600 py-2 my-4 rounded-md">
-                                    Paid on: {Date(order.paidTime).toString()}
+                                    Paid on: {new Date(order.paidTime).toLocaleString()}
                                     <div>By: {order.paymentResult.email}</div>
                                     {order.delivered && <div>Delivered on: {Date(order.deliveredTime).toString()}</div>}
                                 </div>
@@ -112,9 +183,12 @@ function OrderDone() {
                             </div>
                         </div>
                         {userInfo._id === order.orderedBy._id && !order.paid && (
-                            <div className="border bg-pink-500 text-center py-2 my-4 rounded-full" onClick={() => setModel(true)}>
-                                Pay Now
+                            <div className="mt-3 relative z-0">
+                                <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons>
                             </div>
+                            // <div className="border bg-pink-500 text-center py-2 my-4 rounded-full" onClick={() => setModel(true)}>
+                            //     Pay Now
+                            // </div>
                         )}
                         {userInfo.role === 'admin' && order.paid && !order.delivered && (
                             <button className="border bg-pink-500 w-full text-center my-2 py-2" onClick={setDeliverd}>

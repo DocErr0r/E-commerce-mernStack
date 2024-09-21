@@ -40,7 +40,7 @@ function Card({ product, view }) {
                         <div className="p-2">
                             <img src={product.image} alt={product.name} className="sm:w-72 w-full h-56 rounded-md object-cover hover:opacity-80" />
                         </div>
-                        <div className="absolute top-0 right-0 p-4" onClick={handleLike}>
+                        <div className="absolute top-0 right-0 p-4 bg-white rounded-full m-4" onClick={handleLike}>
                             {/* <AiOutlineHeart size={20} /> */}
                             {!isliked ? <AiOutlineHeart  color='gray' size={20} /> : <AiFillHeart className='text-pink-500' size={20} />}
                         </div>

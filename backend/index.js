@@ -33,6 +33,9 @@ app.use('/api/category', categoryRouter)
 app.use('/api/products', productRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/uploads', uploadRoute)
+app.use('/api/config/paypal', (req,res)=>{
+    res.status(200).send({ clientId: process.env.PAYPAL_CLIENT_ID})
+})
 
 // app.use(express.static(path.resolve(fileURLToPath(import.meta.url), 'public')));
 

@@ -1,4 +1,4 @@
-import { ORDER_URL } from "../contsants"
+import { ORDER_URL, PAYMENT_URL } from "../contsants"
 import axiosInstace from "./apiSlice"
 
 export const createOrder = (body) => {
@@ -23,4 +23,8 @@ export const deliverOrder = (id) => {
 
 export const getAllOrders = () => {
     return axiosInstace.get(ORDER_URL)
+}
+
+export const getClientId = () => {
+    return axiosInstace.get(PAYMENT_URL)
 }

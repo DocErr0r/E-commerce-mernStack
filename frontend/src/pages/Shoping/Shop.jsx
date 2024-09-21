@@ -85,7 +85,7 @@ export default function Shop() {
                                     setPage(page - 1);
                                 }
                             }}>
-                            privoes
+                        &lt; 
                         </button>
                         <p className="flex items-center">
                             {page}/{count}
@@ -95,7 +95,7 @@ export default function Shop() {
                             onClick={() => {
                                 if (page < count) setPage(page + 1);
                             }}>
-                            next
+                             &gt;
                         </button>
                     </div>
                 </>

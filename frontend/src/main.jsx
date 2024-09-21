@@ -39,6 +39,8 @@ import OrderList from './pages/admin/OrderList.jsx';
 import AboutUs from './pages/Others/AboutUs.jsx';
 import ContactUs from './pages/Others/ContactUs.jsx';
 import ForgotPassword from './pages/auth/ForgotPassword.jsx';
+import ResetPassword from './pages/auth/ResetPassword.jsx';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -52,6 +54,7 @@ const router = createBrowserRouter(
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword/:token" element={<ResetPassword />} />
 
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/v1/me" element={<Profile />} />
@@ -84,9 +87,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <ThemeProvider>
             <Provider store={store}>
-                <MyState>
-                    <RouterProvider router={router} />
-                </MyState>
+                <PayPalScriptProvider>
+                    <MyState>
+                        <RouterProvider router={router} />
+                    </MyState>
+                </PayPalScriptProvider>
             </Provider>
         </ThemeProvider>
     </React.StrictMode>,

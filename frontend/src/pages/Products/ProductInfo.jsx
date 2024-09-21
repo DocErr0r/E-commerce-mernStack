@@ -44,8 +44,8 @@ const ProductDetail = () => {
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
 
-        if (!userRating && !newReview) {
-            console.log(userRating);
+        console.log(userRating);
+        if (!newReview && !userRating) {
             return toast.error('Please fill in all fields');
         }
         try {
