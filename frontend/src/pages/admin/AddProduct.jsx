@@ -24,26 +24,31 @@ const AddProduct = () => {
 
     const navigate = useNavigate();
 
-    const [imageurl, setImageurl] = useState('');
+    const [imageurls, setImageurls] = useState([]);
 
     const changehandler = (e) => {
         setProductData({ ...productData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async () => {
-        setLoading(true);
+        // setLoading(true);
         console.log(productData);
         const formdata = new FormData();
         formdata.append('name', productData.name);
-        formdata.append('image', productData.image);
-        formdata.append('decription', productData.description);
+        productData.image.forEach((file) => {
+            formdata.append('images', file); // Use 'images' if your backend expects an array
+        });
+        formdata.append('description', productData.description);
         formdata.append('price', productData.price);
         formdata.append('category', productData.category);
         formdata.append('quantity', productData.quantity);
         formdata.append('brand', productData.brand);
         formdata.append('countInStock', productData.countInStock);
+        for (let [key, value] of formdata.entries()) {
+            console.log(key, value);
+        }
         try {
-            const res = await createProduct(productData);
-            // console.log(res);
+            const res = await createProduct(formdata);
+            console.log(res);
             toast.success(`${res.data.name} is created succesfully`);
             setLoading(false);
             navigate('/');
@@ -76,7 +81,7 @@ const AddProduct = () => {
             // console.log(res);
             toast.success(res.data.message);
             setProductData({ ...productData, image: res.data.image });
-            setImageurl(res.data.image);
+            setImageurls(res.data.image);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -89,12 +94,16 @@ const AddProduct = () => {
         getCategories();
     }, []);
     // console.log(categories);
-    console.log(imageurl);
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
+        setImageurls(imageUrls);
+        setProductData({ ...productData, image: files });
+    };
 
     if (loading) {
         return <Loder />;
     }
-
     return (
         <div className="mx-auto max-w-7xl ">
             <div className="md:w-3/4 mx-auto bg-slate-800 p-4">
@@ -102,69 +111,60 @@ const AddProduct = () => {
                     <FaArrowLeft />
                 </button>
                 <h1 className="text-3xl">create products</h1>
-                {imageurl && (
-                    <div>
-                        <img src={imageurl} alt="product" className="block mx-auto max-h=[200px]" />
-                    </div>
-                )}
-
-                <div className="flex flex-col">
-                    <label htmlFor="name" className="block">
-                        Image Url
+                <div className="flex flex-col w-full">
+                    <label htmlFor="images" className="block text-white mb-1">
+                        Images
                     </label>
-                    <input type="text" name="image" className="rounded-lg p-3 border w-full bg-gray-900" value={productData.image} onChange={(e)=>{changehandler(e),setImageurl(e.target.value)}} />
+                    <input type="file" accept="images/*" multiple onChange={handleImageChange} className="rounded-lg p-3 border border-gray-600 w-full bg-gray-900 text-white" />
                 </div>
-
-                {/* <div className="mb-3">
-                    <label htmlFor="image" className="border block w-full text-center cursor-pointer rounded-lg font-bold p-4 ">
-                        {productData.image ? productData?.image.name : 'Upload image'}
-                        <input type="file" name="image" accept="image/*" onChange={uploadFilehandler} className={!productData?.image ? '' : 'text-white'} />
-                    </label>
-                </div> */}
+                {imageurls.length > 0 && (
+                    <>
+                        <h3>Image Preview:</h3>
+                        <div className="flex flex-wrap">
+                            {imageurls.map((image, index) => (
+                                <img key={index} src={image} alt={`Preview ${index}`} className="h-20 w-25 object-cover" />
+                            ))}
+                        </div>
+                    </>
+                )}
                 <div className="p-3">
-                    <div className="flex flex-wrap gap-5 ">
+                    <div className="grid sm:grid-cols-2 gap-4">
                         <div className="flex flex-col">
                             <label htmlFor="name" className="block">
                                 Name
                             </label>
-                            <input type="text" name="name" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.name} onChange={changehandler} />
+                            <input type="text" name="name" className="rounded-lg p-3 border bg-gray-900" value={productData.name} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="price" className="block">
                                 Price
                             </label>
-                            <input type="number" name="price" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.price} onChange={changehandler} />
+                            <input type="number" name="price" className="rounded-lg p-3 border bg-gray-900" value={productData.price} onChange={changehandler} />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                             <label htmlFor="brand" className="block">
                                 Brand
                             </label>
-                            <input type="text" name="brand" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.brand} onChange={changehandler} />
+                            <input type="text" name="brand" className="rounded-lg p-3 border bg-gray-900" value={productData.brand} onChange={changehandler} />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col  w-full">
                             <label htmlFor="quantity" className="block">
                                 Qunatity
                             </label>
-                            <input type="number" name="quantity" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.quantity} onChange={changehandler} />
+                            <input type="number" name="quantity" className="rounded-lg p-3 border bg-gray-900" value={productData.quantity} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col w-full">
-                            <label htmlFor="description" className="block">
-                                Description
-                            </label>
-                            <textarea type="text" name="description" className="rounded-lg p-3 border bg-gray-900" value={productData.description} onChange={changehandler}></textarea>
-                        </div>
-                        <div className="flex flex-col">
                             <label htmlFor="stock" className="block">
                                 Count in Stock
                             </label>
-                            <input type="number" name="countInStock" className="rounded-lg p-3 border w-[25rem] bg-gray-900" value={productData.countInStock} onChange={changehandler} />
+                            <input type="number" name="countInStock" className="rounded-lg p-3 border bg-gray-900" value={productData.countInStock} onChange={changehandler} />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                             <label htmlFor="category" className="block">
                                 Category
                             </label>
-                            <select name="category" className="rounded-lg p-3 border w-[25rem] bg-gray-900" onChange={changehandler}>
-                                <option value="">--select category--</option>
+                            <select name="category" className="rounded-lg p-3 border bg-gray-900" onChange={changehandler}>
+                                <option value="">-- select category --</option>
                                 {categories?.map((c) => (
                                     <option key={c._id} value={c._id}>
                                         {c.name}
@@ -172,6 +172,12 @@ const AddProduct = () => {
                                 ))}
                             </select>
                         </div>
+                    </div>
+                    <div className="flex flex-col my-4 w-full">
+                        <label htmlFor="description" className="block">
+                            Description
+                        </label>
+                        <textarea type="text" name="description" className="rounded-lg p-3 border bg-gray-900" value={productData.description} onChange={changehandler}></textarea>
                     </div>
                 </div>
                 <Button onClick={handleSubmit} className="bg-pink-600 px-7 py-4">

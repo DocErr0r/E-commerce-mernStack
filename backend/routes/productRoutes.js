@@ -13,7 +13,7 @@ router.get('/top', getTopProducts);
 router.get('/new', getNewProducts);
 router.put('/wishlist', [verifyuser], addWishList);
 
-router.route('/create').post([isVendor], formidable(), createProduct);
+router.route('/create').post([isVendor], createProduct);
 router.route('/me/products').get([isVendor], getAdminProducts);
 router.route('/:id/review').post([verifyuser, validId], addReview);
 router.route('/:id').put([isVendor, validId], updateProduct).delete([isVendor, validId], removeProduct).get(validId, getProduct);

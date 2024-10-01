@@ -1,7 +1,9 @@
 import serverHandler from "../middlewares/serverhandler.js";
 import Category from "../models/category.js";
 import Product from "../models/product.js";
+import fs from "fs";
 import { User } from "../models/user.js";
+import { uploadArrayImages } from "../routes/uploadRoute.js";
 
 export const getProducts = serverHandler(async (req, res) => {
     try {
@@ -105,23 +107,50 @@ export const removeProduct = serverHandler(async (req, res) => {
 })
 
 export const createProduct = serverHandler(async (req, res) => {
-    const { name, image, description, price, category, brand, quantity } = req.fields;
-    if (!name) throw new Error('Name is requried')
-    if (!image) throw new Error('Image is requried')
-    if (!description) throw new Error('Description is requried')
-    if (!price) throw new Error('Price is requried')
-    if (!category) throw new Error('Category is requried')
-    if (!brand) throw new Error('Brand is requried')
-    if (!quantity) throw new Error('Quantity is requried')
-    try {
-        const product = new Product({ ...req.fields })
-        product.User = req.user._id
-        await product.save()
+    let tempPaths = [];
+    uploadArrayImages(req, res, async (err) => {
+        if (err) {
+            res.status(400).send({ message: err.message })
+        }
+        else if (req.files.length) {
+            const { name, description, price, category, brand, quantity } = req.body;
 
-        res.send(product)
-    } catch (error) {
-        res.status(400).send({ message: error.message });
-    }
+            req.files.forEach(file => {
+                tempPaths.push(file.path)
+            });
+            // could opreation
+            // res.status(200).send({ message: "File uploaded successfully", images: tempPaths })
+            // console.log(tempPaths);
+
+            try {
+                if (!name) throw new Error('Name is requried')
+                // if (!image) throw new Error('Image is requried')
+                if (!description) throw new Error('Description is requried')
+                if (!price) throw new Error('Price is requried')
+                if (!category) throw new Error('Category is requried')
+                if (!brand) throw new Error('Brand is requried')
+                if (!quantity) throw new Error('Quantity is requried')
+
+                const product = new Product({ ...req.body })
+                product.User = req.user._id
+                product.image = tempPaths;
+                await product.save()
+
+                res.send(product)
+            } catch (error) {
+                tempPaths.forEach(filePath => {
+                    // Logic to remove the files from the server, e.g., using fs.unlink
+                    fs.unlink(filePath, (unlinkError) => {
+                        if (unlinkError) console.error('File delete error:', unlinkError);
+                    });
+                });
+                res.status(400).send({ message: error.message });
+            }
+        }
+        else {
+            res.status(404).send({ message: 'No image provided' })
+        }
+    })
 })
 
 export const updateProduct = serverHandler(async (req, res) => {

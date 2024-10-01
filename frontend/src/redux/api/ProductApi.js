@@ -3,7 +3,7 @@ import axiosInstace from "./apiSlice"
 
 // create category 
 export const createProduct = (body) => {
-    console.log(body);
+    // console.log(body);
     return axiosInstace.post(`${PRODUCT_URL}/create`, body, {
         headers: {
             'Content-Type': 'multipart/form-data'

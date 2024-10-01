@@ -1,4 +1,7 @@
 import './App.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import { Outlet, useLocation } from 'react-router-dom';
 import Navigation from './pages/auth/Navigation';
 import { ToastContainer } from 'react-toastify';
@@ -8,12 +11,12 @@ import { useEffect } from 'react';
 
 function App() {
     const { pathname } = useLocation();
+    // useUser();
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
-    // useEffect(()=>{
-    // })
+
     return (
         <>
             <ToastContainer position="bottom-center" pauseOnHover={false} autoClose={1500} />
