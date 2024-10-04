@@ -52,7 +52,7 @@ function Cart() {
                                         <label className="mr-2 block">Quantity:</label>
                                         <input type="number" value={i.qty} onChange={(e) => dispatch(addToCart({ ...i, qty: Number(e.target.value) }))} min="1" max={i.countInStock} className="border border-gray-300 rounded-lg px-3 py-1 w-16 text-center" />
                                     </div>
-                                    <div className='flex justify-between max-sm:w-full'>
+                                    <div className="flex justify-between max-sm:w-full">
                                         <button className="ml-2 flex items-center gap-1 rounded-md py-2 px-4 bg-gray-700 text-blue-300" onClick={() => dispatch(removeFormCart(i._id))}>
                                             <FaTrash size={20} className="text-red-500" />
                                             Remove Item

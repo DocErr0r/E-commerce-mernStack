@@ -5,7 +5,6 @@ import favoritesSlice from "./features/product/favoritesSlice";
 import categorySlice from "./features/category/categorySlice";
 import cartSlice from "./features/Cart/cartSlice";
 import productOrderSlice from "./features/order/productOrderSlice";
-// import userUpdateSlice from "./features/auth/userUpdateSlice";
 
 const store = configureStore({
     reducer: {
@@ -14,8 +13,7 @@ const store = configureStore({
         favoriat: favoritesSlice,
         category: categorySlice,
         carts: cartSlice,
-        productOrderSlice,
-        // userUpdater:userUpdateSlice
+        productOrderSlice
     }
 })
 export default store;

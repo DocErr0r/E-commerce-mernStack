@@ -8,8 +8,8 @@ import { getAdminProducts } from '../../redux/api/ProductApi';
 import myContext from '../../contexts/myContext';
 
 function ProductList() {
-    const {loading,setLoading}=useContext(myContext)
-    
+    const { loading, setLoading } = useContext(myContext);
+
     const navigate = useNavigate();
 
     const [products, setProducts] = useState(null);
@@ -21,7 +21,7 @@ function ProductList() {
             setProducts(result.data);
         } catch (error) {
             console.log(error);
-            toast.error(error.response.message || error.message);
+            toast.error(error.response.data.message || error.message);
         }
     };
     useEffect(() => {
@@ -42,7 +42,7 @@ function ProductList() {
                 {products?.map((product) => (
                     <Link key={product._id} className="hover:bg-gray-700 hover:rounded-lg block overflow-hidden my-2">
                         <div className="flex flex-wrap rounded-lg p-2 bg-slate-950">
-                            <img src={product.image} alt={product.name} className="w-[10rem] object-cover" />
+                            <img src={product.images[0]?.url} alt={product.name} className="w-[10rem] object-cover" />
                             <div className="flex flex-col p-4 justify-around">
                                 <div className="flex justify-between">
                                     <h3 className="text-xl font-semibold">{product.name}</h3>

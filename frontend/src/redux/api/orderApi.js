@@ -1,4 +1,4 @@
-import { ORDER_URL, PAYMENT_URL } from "../contsants"
+import { DASHBOARD_URL, ORDER_URL, PAYMENT_URL } from "../contsants"
 import axiosInstace from "./apiSlice"
 
 export const createOrder = (body) => {
@@ -27,4 +27,8 @@ export const getAllOrders = () => {
 
 export const getClientId = () => {
     return axiosInstace.get(PAYMENT_URL)
+}
+
+export const getDashboradData = () => {
+    return axiosInstace.get(DASHBOARD_URL)
 }

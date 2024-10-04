@@ -1,4 +1,4 @@
-import { PRODUCT_URL, UPLOADS, USER_URL } from "../contsants"
+import { PRODUCT_URL, USER_URL } from "../contsants"
 import axiosInstace from "./apiSlice"
 
 // create category 
@@ -7,7 +7,8 @@ export const createProduct = (body) => {
     return axiosInstace.post(`${PRODUCT_URL}/create`, body, {
         headers: {
             'Content-Type': 'multipart/form-data'
-        }
+        },
+        timeout: 60000,
     })
 }
 
@@ -51,14 +52,14 @@ export const updateProductById = ({ id, body }) => {
 }
 
 // upload file
-export const uploadImageFile = (body) => {
-    return axiosInstace.post(`${UPLOADS}`, body, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    }
-    )
-}
+// export const uploadImageFile = (body) => {
+//     return axiosInstace.post(`${UPLOADS}`, body, {
+//         headers: {
+//             'Content-Type': 'multipart/form-data'
+//         }
+//     }
+//     )
+// }
 
 // give review of product
 export const addReview = ({ id, body }) => {

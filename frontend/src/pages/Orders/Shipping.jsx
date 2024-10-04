@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { toast } from 'react-toastify';
 import { setShippingAddress } from '../../redux/features/Cart/cartSlice';
-import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
 
 function Shipping() {
     const [address, setAddress] = useState('');

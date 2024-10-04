@@ -12,6 +12,7 @@
     "author": "Nitin",
     "license": "ISC",
     "dependencies": {
+        "ag-charts-react": "^10.2.0",
         "concurrently": "^8.2.2"
     }
 }

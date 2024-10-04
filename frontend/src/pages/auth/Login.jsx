@@ -21,16 +21,16 @@ export default function Login() {
 
     useEffect(() => {
         if (userInfo) {
-            toast.success('login successfully');
             navigate(redirect);
         }
     }, [userInfo, navigate]);
-
+    
     const submitHandeler = async (e) => {
         e.preventDefault();
         try {
             const result = await dispatch(login({ email, password }));
             // console.log(result);
+            toast.success('login successfully');
             if (result.error) {
                 console.log(error);
                 // console.log(result.payload)

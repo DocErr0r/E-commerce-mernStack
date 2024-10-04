@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineUser, AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-import { FaHeart } from 'react-icons/fa';
-import useFavoriate from '../../hooks/useFavoriate';
+import { AiOutlineHome, AiOutlineShopping, AiOutlineLogin, AiOutlineUserAdd, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineUser, AiOutlineMenu, AiOutlineClose, AiOutlineLogout, AiOutlineKey, AiOutlineProfile, AiFillDashboard } from 'react-icons/ai';
+import { FaDropbox, FaHeart, FaKey } from 'react-icons/fa';
+import { BiSolidUserRectangle } from 'react-icons/bi';
 
 import './a.css';
 import { toast } from 'react-toastify';
@@ -13,7 +13,6 @@ import { Menu, MenuHandler, MenuList, Badge } from '@material-tailwind/react';
 
 const Navigation = () => {
     const menuRef = useRef(null);
-    useFavoriate();
     const { userInfo } = useSelector((state) => state.user);
     const { cartItems } = useSelector((state) => state.carts);
     const dispatch = useDispatch();
@@ -129,36 +128,38 @@ const Navigation = () => {
 
                     {/* <Menu> */}
                     {/* <MenuHandler> */}
-                    <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
-                        {/* {userInfo ? (
+                    <div className="flex" ref={menuRef}>
+                        <button onClick={toggleDropdown} className="flex items-center text-gray-8000 focus:outline-none">
+                            {/* {userInfo ? (
                             <>
-                                <span className="text-white mx-2">{userInfo.name}</span> <span>▽</span>{' '}
+                            <span className="text-white mx-2">{userInfo.name}</span> <span>▽</span>{' '}
                             </>
-                        ) : ( */}
-                        <div>
-                            <AiOutlineUser size={26} className="text-white" />
-                        </div>
-                        {/* )}{' '} */}
-                    </button>
+                            ) : ( */}
+                            <div>
+                                <AiOutlineUser size={26} className="text-white" />
+                            </div>
+                            {/* )}{' '} */}
+                        </button>
 
-                    {/* </MenuHandler> */}
-                    <div className="relative mt-14 items-center" ref={menuRef}>
-                        {userInfo
-                            ? drowpDown && (
-                                  // <MenuList>
-                                  <ul className={`absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none rounded-lg`}>
-                                      {userInfo.role === 'admin' && (
-                                          <>
-                                              <li onClick={closeDropdown}>
-                                                  <Link to={'/admin/dashboard'} className="block p-2 hover:bg-slate-800 hover:rounded-md">
-                                                      Dashboard
-                                                  </Link>
-                                              </li>
-                                              <li onClick={closeDropdown}>
+                        {/* </MenuHandler> */}
+                        <div className="relative mt-14 items-center">
+                            {userInfo
+                                ? drowpDown && (
+                                      // <MenuList>
+                                      <ul className={`absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none rounded-lg`}>
+                                          {userInfo.role === 'admin' && (
+                                              <>
+                                                  <li onClick={closeDropdown}>
+                                                      <Link to={'/admin/dashboard'} className="flex items-center p-2 hover:bg-slate-800 hover:rounded-md">
+                                                          <AiFillDashboard className="mr-2 " size={26} />
+                                                          Dashboard
+                                                      </Link>
+                                                  </li>
+                                                  {/* <li onClick={closeDropdown}>
                                                   <Link to={'/admin/user-list'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Users
                                                   </Link>
-                                              </li>
+                                                  </li>
 
                                               <li onClick={closeDropdown}>
                                                   <Link to={'/admin/productlist'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
@@ -174,45 +175,55 @@ const Navigation = () => {
                                                   <Link to={'/admin/category'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
                                                       Catogory
                                                   </Link>
-                                              </li>
-                                          </>
-                                      )}
-                                      <li onClick={closeDropdown}>
-                                          <Link to={'/v1/me'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
-                                              Profile
-                                          </Link>
-                                      </li>
-                                      <li onClick={closeDropdown}>
-                                          <Link to={'/v1/change-password'} className="block p-2 hover:bg-gray-800 hover:rounded-md">
-                                              Change Password
-                                          </Link>
-                                      </li>
-                                      <li onClick={closeDropdown}>
-                                          <button to={'/'} onClick={logoutHandler} className="block text-left p-2 w-full hover:bg-gray-800 hover:rounded-md">
-                                              Logout
-                                          </button>
-                                      </li>
-                                  </ul>
-                              )
-                            : drowpDown && (
-                                  <ul className=" absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none py-2 px-3 rounded-lg">
-                                      <li onClick={closeDropdown}>
-                                          <Link to={'/login'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
-                                              <AiOutlineLogin className="mr-2 " size={26} />
-                                              <span className="">Login</span>{' '}
-                                          </Link>
-                                      </li>
-                                      <li onClick={closeDropdown}>
-                                          <Link to={'/register'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
-                                              <AiOutlineUserAdd className="mr-2 " size={26} />
-                                              <span className="">Register</span>{' '}
-                                          </Link>
-                                      </li>
-                                  </ul>
-                              )}
-                        {/* </MenuList> */}
+                                              </li> */}
+                                              </>
+                                          )}
+                                          <li onClick={closeDropdown}>
+                                              <Link to={'/v1/me'} className="flex items-center p-2 hover:bg-gray-800 hover:rounded-md">
+                                                  <BiSolidUserRectangle className="mr-2 " size={26} />
+                                                  Profile
+                                              </Link>
+                                          </li>
+                                          <li onClick={closeDropdown}>
+                                              <Link to={'/v1/order-details'} className="flex items-center p-2 hover:bg-gray-800 hover:rounded-md">
+                                                  <FaDropbox className="mr-2 " size={26} />
+                                                  My orders
+                                              </Link>
+                                          </li>
+                                          <li onClick={closeDropdown}>
+                                              <Link to={'/v1/change-password'} className="flex items-center p-2 hover:bg-gray-800 hover:rounded-md">
+                                                  <FaKey className="mr-2 " size={26} />
+                                                  Change Password
+                                              </Link>
+                                          </li>
+                                          <li onClick={closeDropdown}>
+                                              <button to={'/'} onClick={logoutHandler} className=" flex items-center text-left p-2 w-full hover:bg-gray-800 hover:rounded-md">
+                                                  <AiOutlineLogout className="mr-2 " size={26} />
+                                                  Logout
+                                              </button>
+                                          </li>
+                                      </ul>
+                                  )
+                                : drowpDown && (
+                                      <ul className=" absolute w-[10rem] -right-0 flex flex-col space-y-2 bg-gray-600 text-white border-none py-2 px-3 rounded-lg">
+                                          <li onClick={closeDropdown}>
+                                              <Link to={'/login'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
+                                                  <AiOutlineLogin className="mr-2 " size={26} />
+                                                  <span className="">Login</span>{' '}
+                                              </Link>
+                                          </li>
+                                          <li onClick={closeDropdown}>
+                                              <Link to={'/register'} className="flex items-center p-2 transition-transform transform hover:translate-x-2">
+                                                  <AiOutlineUserAdd className="mr-2 " size={26} />
+                                                  <span className="">Register</span>{' '}
+                                              </Link>
+                                          </li>
+                                      </ul>
+                                  )}
+                            {/* </MenuList> */}
+                        </div>
+                        {/* </Menu> */}
                     </div>
-                    {/* </Menu> */}
                 </div>
             </div>
             {/* <div className={`absolute md:hidden w-[50%]  bg-red-600 transition-all duration-300 ${showSidebar ? 'left-0' : '-left-[60%]'} `}>this is menu</div> */}

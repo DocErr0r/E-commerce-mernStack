@@ -29,6 +29,7 @@ export default function Shop() {
                 setAllProducts(data.products);
                 setCount(data.pages);
                 setLoading(false);
+                window.scrollTo(0, 0);
             } catch (error) {
                 console.log(error);
                 setLoading(false);
@@ -41,7 +42,15 @@ export default function Shop() {
         <div className="max-w-screen-xl mx-auto p-4">
             <div className="w-full flex mb-4 justify-center mx-auto gap-4 flex-wrap">
                 <div className="flex relative md:w-[50%] w-[100%]">
-                    <input type="text" placeholder="Serch products..." className="w-full block border border-solid p-2 rounded-xl" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+                    <input
+                        type="text"
+                        placeholder="Serch products..."
+                        className="w-full block border border-solid p-2 rounded-xl"
+                        value={keyword}
+                        onChange={(e) => {
+                            setPage(1), setKeyword(e.target.value);
+                        }}
+                    />
                     <FaSearch className="absolute right-2 cursor-pointer h-4 w-4 m-3" />
                 </div>
                 <select placeholder="sortBy" className="md:w-40 w-full p-2 text-sm rounded-xl" onChange={(e) => setSortby(e.target.value)}>
@@ -71,7 +80,7 @@ export default function Shop() {
                     {keyword && <p className="text-gray-300 mx-4">your search result for '{keyword}'</p>}
                     <div className="">
                         {/* <div className="w-[15rem] bg-red-300"><FilterSection setSortby={setSortby} sortby={sortBy} category={category} setCategory={setCategory} /></div> */}
-                        <div className={`${view ? 'flex' : ''} flex-wrap gap-1`}>
+                        <div className={`${view ? 'flex sm:flex-row flex-col' : ''} flex-wrap gap-1`}>
                             {allProducts?.map((p) => (
                                 <Card key={p._id} product={p} view={view} />
                             ))}
@@ -85,7 +94,7 @@ export default function Shop() {
                                     setPage(page - 1);
                                 }
                             }}>
-                        &lt; 
+                            &lt;
                         </button>
                         <p className="flex items-center">
                             {page}/{count}
@@ -95,7 +104,7 @@ export default function Shop() {
                             onClick={() => {
                                 if (page < count) setPage(page + 1);
                             }}>
-                             &gt;
+                            &gt;
                         </button>
                     </div>
                 </>

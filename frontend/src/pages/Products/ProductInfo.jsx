@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/features/Cart/cartSlice';
 import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
+import { Carousel } from '@material-tailwind/react';
 
 const ProductDetail = () => {
     const navigate = useNavigate();
@@ -62,13 +63,13 @@ const ProductDetail = () => {
     // Function to handle adding product to cart
     const handleAddToCart = () => {
         // console.log(`Added ${quantity} ${product.name} to cart`);
-        dispatch(addToCart({ ...product, qty: quantity }));
+        dispatch(addToCart({ ...product, image: product?.images[0]?.url, qty: quantity }));
         toast.info(product.name + ' sucessfully added to cart');
     };
 
     // Function to handle adding product to order
     const handelBuy = () => {
-        const orderproduct = [{ ...product, qty: quantity }];
+        const orderproduct = [{ ...product, qty: quantity, image: product?.images[0]?.url }];
         dispatch(setOrderProduct(orderproduct));
         navigate('/login?redirect=/shipping');
     };
@@ -82,7 +83,11 @@ const ProductDetail = () => {
     return (
         <div className="max-w-4xl mx-auto px-4 py-6">
             <div className="w-full px-2 mb-4">
-                <img src={product.image} alt={product.name} className="rounded-lg shadow-md w-full  md:object-cover" />
+                <Carousel>
+                    {product.images.map((image) => (
+                        <img src={image?.url} key={image?.public_id} alt={product.name} className="rounded-lg shadow-md w-full  md:object-cover" />
+                    ))}
+                </Carousel>
             </div>
             <h1 className="text-3xl font-bold text-gray-50">{product.name}</h1>
             <div className="flex flex-wrap -mx-2">

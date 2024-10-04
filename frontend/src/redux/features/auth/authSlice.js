@@ -3,7 +3,7 @@ import { login, logout, register, updatePass, updatecr } from "./userThunk";
 import { toast } from "react-toastify";
 
 const initialState = {
-    userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
+    userInfo: false,
     lodding: false,
     error: null,
 }
@@ -11,12 +11,20 @@ const initialState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        setUser: (state, action) => {
+            state.lodding = false
+            state.userInfo = action.payload
+        },
+        setloading: (state, action) => {
+            state.lodding = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => { state.lodding = true })
-            .addCase(login.fulfilled, (state, action) => { state.lodding = false, state.userInfo = action.payload,state.error=null })
-            .addCase(login.rejected, (state, action) => { state.lodding = false, state.error = action.payload  })
+            .addCase(login.fulfilled, (state, action) => { state.lodding = false, state.userInfo = action.payload, state.error = null })
+            .addCase(login.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
 
         builder
             .addCase(logout.pending, (state) => { state.lodding = true })
@@ -36,9 +44,10 @@ const authSlice = createSlice({
         builder
             .addCase(updatePass.pending, (state) => { state.lodding = true })
             .addCase(updatePass.fulfilled, (state, action) => { state.lodding = false, state.error = null })
-            .addCase(updatePass.rejected, (state, action) => { state.lodding = false, state.error = action.payload ;
+            .addCase(updatePass.rejected, (state, action) => {
+                state.lodding = false, state.error = action.payload;
                 // toast.error(state.error)
-             })
+            })
 
         // builder
         //     .addCase(getAllUser.pending, (state) => { state.lodding = true })
@@ -48,5 +57,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { } = authSlice.actions;
+export const { setUser,setloading } = authSlice.actions;
 export default authSlice.reducer;

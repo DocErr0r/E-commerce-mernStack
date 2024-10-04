@@ -17,9 +17,12 @@ export const updateCrUser = ({ name, email }) => {
 export const updatePassword = ({ password, newPassword, confirmPass }) => {
     return axiosInstace.put(`${USER_URL}/v1/me/updatepassword`, { password, newPassword, confirmPass },)
 }
-// export const getCrUser = () => {
-//     return axiosInstace.get(`${USER_URL}/v1/me`)
-// }
+export const forgotPassword = (body) => {
+    return axiosInstace.post(`${USER_URL}/forgot-password`,body)
+}
+export const getCrUser = () => {
+    return axiosInstace.get(`${USER_URL}/v1/me`)
+}
 
 
 // admin apis

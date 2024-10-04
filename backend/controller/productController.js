@@ -99,7 +99,7 @@ export const removeProduct = serverHandler(async (req, res) => {
         if (product.User.toString() !== req.user._id.toString()) {
             return res.status(400).send({ message: "you are unauthrize for this product" })
         }
-        product.image.map(async (image) => {
+        product.images.map(async (image) => {
             await cloudUploder.destroy(image.public_id)
         })
         await Product.findByIdAndDelete(req.params.id)
@@ -142,7 +142,7 @@ export const createProduct = serverHandler(async (req, res) => {
                 if (!quantity) throw new Error('Quantity is requried')
 
                 // console.log(tempPaths);
-                const product = new Product({ ...req.body, image: tempPaths })
+                const product = new Product({ ...req.body, images: tempPaths })
                 product.User = req.user._id
                 await product.save()
 

@@ -29,7 +29,7 @@ function SmallProduct({ product }) {
         product && (
             <div className="shadow-md max-md:mx-auto hover:shadow-lg transition-shadow duration-300 ease-in-out relative">
                 <Link to={`/product/${product._id}`}>
-                    <img src={product.image} alt={product.name} className="h-52 md:h-56 md:w-[18rem] w-[15rem] object-cover rounded-md hover:opacity-80" />
+                    <img src={product.images[0]?.url} alt={product.name} className="h-52 md:h-56 md:w-[18rem] w-[15rem] object-cover rounded-md hover:opacity-80" />
                 </Link>
                 <div className="absolute top-0 right-0 p-2 bg-white rounded-full m-2" onClick={handleLike}>
                     {/* <AiOutlineHeart size={20} /> */}

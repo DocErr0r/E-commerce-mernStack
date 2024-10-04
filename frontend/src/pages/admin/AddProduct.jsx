@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '@material-tailwind/react';
 import Loder from '../../components/Loder';
-import { createProduct, uploadImageFile } from '../../redux/api/ProductApi';
+import { createProduct } from '../../redux/api/ProductApi';
 import { getAllCategory } from '../../redux/api/cetegoryApi';
 import myContext from '../../contexts/myContext';
 
@@ -12,13 +12,13 @@ const AddProduct = () => {
     const { loading, setLoading } = useContext(myContext);
     const [productData, setProductData] = useState({
         name: '',
-        image: '',
+        images: '',
         description: '',
         price: 100,
         category: '',
         quantity: 0,
         brand: '',
-        countInStock: '0',
+        countInStock: 0,
     });
     const [categories, setCategories] = useState(null);
 
@@ -30,11 +30,14 @@ const AddProduct = () => {
         setProductData({ ...productData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async () => {
-        // setLoading(true);
         console.log(productData);
+        if (!productData.name || !productData.brand || !productData.category || !productData.countInStock || !productData.description || !productData.images || !productData.quantity || !productData.price) {
+            toast.error('please fill all the fileds');
+            return;
+        }
         const formdata = new FormData();
         formdata.append('name', productData.name);
-        productData.image.forEach((file) => {
+        productData.images.forEach((file) => {
             formdata.append('images', file); // Use 'images' if your backend expects an array
         });
         formdata.append('description', productData.description);
@@ -46,15 +49,16 @@ const AddProduct = () => {
         for (let [key, value] of formdata.entries()) {
             console.log(key, value);
         }
+        setLoading(true);
         try {
             const res = await createProduct(formdata);
             console.log(res);
             toast.success(`${res.data.name} is created succesfully`);
-            setLoading(false);
             navigate('/');
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || error.message);
+        } finally {
             setLoading(false);
         }
     };
@@ -71,24 +75,24 @@ const AddProduct = () => {
             setLoading(false);
         }
     };
-    const uploadFilehandler = async (e) => {
-        setLoading(true);
-        const formData = new FormData();
-        formData.append('image', e.target.files[0]);
-        console.log(formData);
-        try {
-            const res = await uploadImageFile(formData);
-            // console.log(res);
-            toast.success(res.data.message);
-            setProductData({ ...productData, image: res.data.image });
-            setImageurls(res.data.image);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.message || error.message);
-            setLoading(false);
-        }
-    };
+    // const uploadFilehandler = async (e) => {
+    //     setLoading(true);
+    //     const formData = new FormData();
+    //     formData.append('image', e.target.files[0]);
+    //     console.log(formData);
+    //     try {
+    //         const res = await uploadImageFile(formData);
+    //         // console.log(res);
+    //         toast.success(res.data.message);
+    //         setProductData({ ...productData, image: res.data.image });
+    //         setImageurls(res.data.image);
+    //         setLoading(false);
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(error?.response?.data?.message || error.message);
+    //         setLoading(false);
+    //     }
+    // };
 
     useEffect(() => {
         getCategories();
@@ -98,12 +102,9 @@ const AddProduct = () => {
         const files = Array.from(e.target.files);
         const imageUrls = files.map((file) => URL.createObjectURL(file));
         setImageurls(imageUrls);
-        setProductData({ ...productData, image: files });
+        setProductData({ ...productData, images: files });
     };
 
-    if (loading) {
-        return <Loder />;
-    }
     return (
         <div className="mx-auto max-w-7xl ">
             <div className="md:w-3/4 mx-auto bg-slate-800 p-4">
@@ -180,10 +181,14 @@ const AddProduct = () => {
                         <textarea type="text" name="description" className="rounded-lg p-3 border bg-gray-900" value={productData.description} onChange={changehandler}></textarea>
                     </div>
                 </div>
-                <Button onClick={handleSubmit} className="bg-pink-600 px-7 py-4">
-                    {' '}
-                    Submit
-                </Button>
+                {loading ? (
+                    <Loder />
+                ) : (
+                    <Button onClick={handleSubmit} className="bg-pink-600 px-7 py-4">
+                        {' '}
+                        Submit
+                    </Button>
+                )}
             </div>
         </div>
     );

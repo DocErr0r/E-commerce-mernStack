@@ -29,20 +29,20 @@ function Card({ product, view }) {
 
     const addtocartHendler = (e) => {
         e.preventDefault();
-        dispatch(addToCart({ ...product, qty: 1 }));
+        dispatch(addToCart({ ...product, qty: 1, image: product?.images[0]?.url }));
         toast.info(product.name + ' sucessfully added to cart');
     };
     return (
         product && (
-            <Link to={'/product/' + product._id} className="sm:w-[15rem] mx-auto">
+            <Link to={'/product/' + product._id} className="sm:w-[15rem] sm:mx-auto">
                 <div className={`${view ? '' : 'flex'} shadow-xl mb-3 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out`}>
                     <div className="relative">
                         <div className="p-2">
-                            <img src={product.image} alt={product.name} className="sm:w-72 w-full h-56 rounded-md object-cover hover:opacity-80" />
+                            <img src={product.images[0]?.url} alt={product.name} className="sm:w-72 w-full h-56 rounded-md object-cover hover:opacity-80" />
                         </div>
                         <div className="absolute top-0 right-0 p-4 bg-white rounded-full m-4" onClick={handleLike}>
                             {/* <AiOutlineHeart size={20} /> */}
-                            {!isliked ? <AiOutlineHeart  color='gray' size={20} /> : <AiFillHeart className='text-pink-500' size={20} />}
+                            {!isliked ? <AiOutlineHeart color="gray" size={20} /> : <AiFillHeart className="text-pink-500" size={20} />}
                         </div>
                     </div>
                     <div className="p-4 w-full">

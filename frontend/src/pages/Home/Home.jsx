@@ -3,8 +3,10 @@ import AllProducts from '../Products/AllProducts';
 import myContext from '../../contexts/myContext';
 import Loder from '../../components/Loder';
 import { Accordion, AccordionHeader, AccordionBody } from '@material-tailwind/react';
+import useFavoriate from '../../hooks/useFavoriate';
 
 function Home() {
+    useFavoriate()
     const { loading } = useContext(myContext);
     const [open, setOpen] = React.useState(0);
 

@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-// import { sendForgotPasswordEmail } from '../../redux/features/auth/userThunk'; // Assuming you have this action
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { forgotPassword } from '../../redux/api/userApiSlice';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
     const dispatch = useDispatch();
+    const navigate=useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        //     const result = await dispatch(sendForgotPasswordEmail(email));
-        //     if (result.error) {
-        //         toast.error(result.payload.message);
-            // } else {
-        //         toast.success('Password reset email sent. Please check your inbox.');
-            // }
-            alert("Reset password link has been sent on your email address plaese check inbox")
+            const result = await forgotPassword({ email });
+            console.log(result);
+            toast.success('Password reset email sent. Please check your inbox.');
+            alert('Reset password link has been sent on your email address plaese check inbox');
         } catch (error) {
-            toast.error('An error occurred. Please try again.');
+            // console.log(error);
+            toast.error(error?.response?.data?.message || error.message);
         }
     };
 
@@ -43,8 +42,8 @@ export default function ForgotPassword() {
                     <div className="mt-4">
                         <p>
                             Remembered your password?{' '}
-                            <Link to="/login" className="hover:underline text-pink-500">
-                                Sign In
+                            <Link onClick={()=>navigate(-1)} className="hover:underline text-pink-500">
+                                Go back
                             </Link>
                         </p>
                     </div>
