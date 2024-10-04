@@ -3,6 +3,7 @@ import Category from "../models/category.js";
 import Product from "../models/product.js";
 import fs from "fs";
 import { User } from "../models/user.js";
+import cloudUploder from "../config/Cloudy.js";
 import { uploadArrayImages } from "../routes/uploadRoute.js";
 
 export const getProducts = serverHandler(async (req, res) => {
@@ -98,6 +99,9 @@ export const removeProduct = serverHandler(async (req, res) => {
         if (product.User.toString() !== req.user._id.toString()) {
             return res.status(400).send({ message: "you are unauthrize for this product" })
         }
+        product.image.map(async (image) => {
+            await cloudUploder.destroy(image.public_id)
+        })
         await Product.findByIdAndDelete(req.params.id)
         res.status(200).send({ message: `${product.name} product is deleted` });
     }
@@ -115,12 +119,18 @@ export const createProduct = serverHandler(async (req, res) => {
         else if (req.files.length) {
             const { name, description, price, category, brand, quantity } = req.body;
 
-            req.files.forEach(file => {
-                tempPaths.push(file.path)
-            });
             // could opreation
-            // res.status(200).send({ message: "File uploaded successfully", images: tempPaths })
-            // console.log(tempPaths);
+            await Promise.all(req.files.map(async (file) => {
+                const result = await cloudUploder.upload(file.path, {
+                    folder: 'products'
+                })
+                // console.log(result);
+                // Logic to remove the files from the server, e.g., using fs.unlink
+                fs.unlink(file.path, (unlinkError) => {
+                    if (unlinkError) console.error('File delete error:', unlinkError);
+                });
+                tempPaths.push({ url: result.url, public_id: result.public_id })
+            }))
 
             try {
                 if (!name) throw new Error('Name is requried')
@@ -131,19 +141,18 @@ export const createProduct = serverHandler(async (req, res) => {
                 if (!brand) throw new Error('Brand is requried')
                 if (!quantity) throw new Error('Quantity is requried')
 
-                const product = new Product({ ...req.body })
+                // console.log(tempPaths);
+                const product = new Product({ ...req.body, image: tempPaths })
                 product.User = req.user._id
-                product.image = tempPaths;
                 await product.save()
 
                 res.send(product)
             } catch (error) {
-                tempPaths.forEach(filePath => {
-                    // Logic to remove the files from the server, e.g., using fs.unlink
-                    fs.unlink(filePath, (unlinkError) => {
-                        if (unlinkError) console.error('File delete error:', unlinkError);
-                    });
-                });
+                // req.files.map(file => {
+                //     fs.unlink(file.path, (unlinkError) => {
+                //         if (unlinkError) console.error('File delete error:', unlinkError);
+                //     });
+                // });
                 res.status(400).send({ message: error.message });
             }
         }

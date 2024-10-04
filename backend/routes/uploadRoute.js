@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from 'fs'
+import sharp from "sharp";
 
 
 const router = express.Router()
@@ -16,7 +17,23 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 // const uploadSingleImage = upload.single('profile')
-export const uploadArrayImages = upload.array('images',5)
+export const uploadArrayImages = upload.array('images', 5)
+
+// export const imageResize = async (req, res) => {
+//     if (!req.files) return
+//     await Promise.all(req.files.map(async (file) => {
+//         const newfile = await sharp(file.path)
+//             // .resize(300, 300) // Adjust width as needed
+//             .toFormat('jpeg')
+//             .jpeg({ quality: 30 }) // Adjust quality (0-100)
+//             .toFile(file.destination + file.fieldname + "-" + Date.now() + '.jpeg');
+//         console.log();
+//         fs.unlink(file.path, (err) => {
+//             console.log('temp file deleted');
+//         })
+//     }))
+//     console.log(req.files);
+// }
 
 
 router.route('/').post((req, res) => {
