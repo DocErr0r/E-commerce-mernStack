@@ -41,9 +41,9 @@ userSchema.methods.generateAuthToken = function () {
 }
 
 userSchema.methods.getResetPasswordToken = function () {
-    const resetToken = '123456'
+    const resetToken = crypto.randomBytes(32).toString('hex');
     const expireTime = Date.now() + (5 * 60 * 1000); // seconds
-    this.resetPasswordToken = resetToken; //save this using encryption technique
+    this.resetPasswordToken = crypto.hash('sha1', resetToken); //save this using encryption technique
     this.resetPasswordTokenExpire = expireTime;
     return resetToken;
 }

@@ -1,5 +1,6 @@
 import serverHandler from "../middlewares/serverhandler.js";
 import Order from "../models/Order.js";
+import { User } from "../models/user.js";
 
 const calculatePrice = (orderItems) => {
     const itemsPrice = orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -105,6 +106,32 @@ export const markAsDelivered = serverHandler(async (req, res) => {
         order.deliveredTime = Date.now()
         await order.save()
         res.status(200).send({ order })
+    } catch (error) {
+        res.status(500).send({ message: error.message })
+    }
+})
+
+export const adminDasboard = serverHandler(async (req, res) => {
+    try {
+        const order = await Order.find()
+        const totelOrders = order.length
+        const totelSales = order.reduce((sum, item) => sum + item.totelPrice, 0)
+        const totelUsers = await User.countDocuments()
+        const selesByDate = await Order.aggregate([
+            { $match: { paid: true } },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: { format: '%Y-%m-%d', date: '$paidTime' }
+                    },
+                    totelSales: { $sum: '$totelPrice' },
+                },
+            },
+            { $sort: { _id: 1 } }
+        ])
+        // console.log(selesByDate);
+
+        res.send({ dashboardData: { totelOrders, totelSales, selesByDate, totelUsers } })
     } catch (error) {
         res.status(500).send({ message: error.message })
     }

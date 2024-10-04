@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import setCookies from "../utils/setCookies.js";
 import Joi from "joi";
 import PasswordComplexity from "joi-password-complexity";
+import sendmail from "../utils/sendMail.js";
 
 
 export const createUser = serverhandler(async (req, res) => {
@@ -125,14 +126,14 @@ export const forgotPassword = serverhandler(async (req, res) => {
     //generate a reset token and save it to the database
     const resetToken = user.getResetPasswordToken();
     //onboard the user with the link
-    const resetUrl = `http://localhost:3000/resetpassword/${user.resetPasswordToken}`;
+    const resetUrl = process.env.FRONTEND_URL+`/resetpassword/${resetToken}`;
 
     try {
-        await user.save({ resetPasswordExpireToken: resetToken }, { validateBeforeSave: false });
+        await user.save({ validateBeforeSave: false });
         // send the mail
-        // Mailer.sendPasswordReset(email,resetUrl);
+        sendmail(email, resetUrl);
 
-        res.status(200).json({ message: 'Email has been sent', url: resetUrl })
+        res.status(200).json({ message: 'Email has been sent' })
     } catch {
         console.log(err);
         res.status(400).json({ message: 'Failed To Send The Email.' })
