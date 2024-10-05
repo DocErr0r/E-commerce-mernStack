@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/features/auth/userThunk';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Message from '../../components/Message';
 
 export default function Login() {
     const [showPass, setShowPass] = useState(false);
@@ -24,17 +25,18 @@ export default function Login() {
             navigate(redirect);
         }
     }, [userInfo, navigate]);
-    
+
     const submitHandeler = async (e) => {
         e.preventDefault();
         try {
             const result = await dispatch(login({ email, password }));
             // console.log(result);
-            toast.success('login successfully');
             if (result.error) {
                 console.log(error);
                 // console.log(result.payload)
                 toast.error(result.payload.message);
+            } else {
+                toast.success('login successfully');
             }
         } catch (error) {
             toast.error(error);
@@ -73,7 +75,7 @@ export default function Login() {
                                 </span>
                             </div>
                         </div>
-                        <div className='flex justify-end text-pink-400 hover:underline'>
+                        <div className="flex justify-end text-pink-400 hover:underline">
                             <Link to={'/forgotpassword'}>Forgot Password ?</Link>
                         </div>
                         <button disabled={!(email && password)} type="submit" className="bg-pink-500 px-4 py-2 cursor-pointer rounded my-4 disabled:bg-pink-700">
@@ -81,6 +83,7 @@ export default function Login() {
                         </button>
                         {lodding && <Loder />}
                     </form>
+                    {error && <Message className="bg-red-800 p-32">{error?.message}</Message>}
                     <div className="mt-2">
                         <p>
                             New customer ?{' '}
@@ -90,7 +93,6 @@ export default function Login() {
                         </p>
                     </div>
                 </div>
-                {/* {error && <div className="bg-red-800 p-32">{error}</div>} */}
             </section>
         </div>
     );

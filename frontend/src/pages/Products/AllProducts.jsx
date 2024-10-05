@@ -9,7 +9,7 @@ function AllProducts() {
     const [topPorducts, setTopProducts] = useState([]);
     const [newPorducts, setNewProducts] = useState([]);
     const favoriat = useSelector((state) => state.favoriat);
-    console.log(favoriat);
+    // console.log(favoriat);
     useEffect(() => {
         const fetchtop = async () => {
             try {

@@ -41,6 +41,9 @@ function AdminMenu() {
                     <MenuItem to="/admin/productlist" onClick={closeSidebar}>
                         All Products
                     </MenuItem>
+                    <MenuItem to="/admin/addproduct" onClick={closeSidebar}>
+                        Add product
+                    </MenuItem>
                     <MenuItem to="/admin/category" onClick={closeSidebar}>
                         All Categories
                     </MenuItem>

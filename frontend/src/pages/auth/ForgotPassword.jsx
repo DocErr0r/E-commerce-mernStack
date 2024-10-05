@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../../redux/api/userApiSlice';
+import Message from '../../components/Message';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
+    const [error, setError] = useState(null);
     const dispatch = useDispatch();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ export default function ForgotPassword() {
             alert('Reset password link has been sent on your email address plaese check inbox');
         } catch (error) {
             // console.log(error);
+            setError(error);
             toast.error(error?.response?.data?.message || error.message);
         }
     };
@@ -39,10 +42,11 @@ export default function ForgotPassword() {
                             Send Reset Link
                         </button>
                     </form>
+                    {error && <Message>{error?.response?.data?.message}</Message>}
                     <div className="mt-4">
                         <p>
                             Remembered your password?{' '}
-                            <Link onClick={()=>navigate(-1)} className="hover:underline text-pink-500">
+                            <Link onClick={() => navigate(-1)} className="hover:underline text-pink-500">
                                 Go back
                             </Link>
                         </p>

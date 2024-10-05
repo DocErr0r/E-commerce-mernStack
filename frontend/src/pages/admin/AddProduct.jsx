@@ -7,6 +7,7 @@ import Loder from '../../components/Loder';
 import { createProduct } from '../../redux/api/ProductApi';
 import { getAllCategory } from '../../redux/api/cetegoryApi';
 import myContext from '../../contexts/myContext';
+import Message from '../../components/Message';
 
 const AddProduct = () => {
     const { loading, setLoading } = useContext(myContext);
@@ -24,42 +25,72 @@ const AddProduct = () => {
 
     const navigate = useNavigate();
 
+    const [error, setError] = useState(null);
     const [imageurls, setImageurls] = useState([]);
 
     const changehandler = (e) => {
         setProductData({ ...productData, [e.target.name]: e.target.value });
     };
+    const validateProductData = (data) => {
+        if (!data.name.trim()) {
+            return 'Product name is required.';
+        }
+        if (data.price <= 0) {
+            return 'Price must be greater than zero.';
+        }
+        if (!data.brand.trim()) {
+            return 'Brand is required.';
+        }
+        if (data.quantity < 0) {
+            return 'Quantity cannot be negative.';
+        }
+        if (data.countInStock < 0) {
+            return 'Count in stock cannot be negative.';
+        }
+        if (!data.category.trim()) {
+            return 'Product category is required.';
+        }
+        if (!data.description.trim()) {
+            return 'Product description is required.';
+        }
+        if (!data.images || !Array.isArray(data.images) || data.images.length === 0) {
+            return 'At least one product image is required.';
+        }
+    };
+
     const handleSubmit = async () => {
         console.log(productData);
-        if (!productData.name || !productData.brand || !productData.category || !productData.countInStock || !productData.description || !productData.images || !productData.quantity || !productData.price) {
-            toast.error('please fill all the fileds');
-            return;
-        }
-        const formdata = new FormData();
-        formdata.append('name', productData.name);
-        productData.images.forEach((file) => {
-            formdata.append('images', file); // Use 'images' if your backend expects an array
-        });
-        formdata.append('description', productData.description);
-        formdata.append('price', productData.price);
-        formdata.append('category', productData.category);
-        formdata.append('quantity', productData.quantity);
-        formdata.append('brand', productData.brand);
-        formdata.append('countInStock', productData.countInStock);
-        for (let [key, value] of formdata.entries()) {
-            console.log(key, value);
-        }
-        setLoading(true);
-        try {
-            const res = await createProduct(formdata);
-            console.log(res);
-            toast.success(`${res.data.name} is created succesfully`);
-            navigate('/');
-        } catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.message || error.message);
-        } finally {
-            setLoading(false);
+        const validationError = validateProductData(productData);
+        if (validationError) {
+            setError(validationError);
+        } else {
+            setError(null)
+            const formdata = new FormData();
+            formdata.append('name', productData.name);
+            productData.images.forEach((file) => {
+                formdata.append('images', file); // Use 'images' if your backend expects an array
+            });
+            formdata.append('description', productData.description);
+            formdata.append('price', productData.price);
+            formdata.append('category', productData.category);
+            formdata.append('quantity', productData.quantity);
+            formdata.append('brand', productData.brand);
+            formdata.append('countInStock', productData.countInStock);
+            for (let [key, value] of formdata.entries()) {
+                console.log(key, value);
+            }
+            setLoading(true);
+            try {
+                const res = await createProduct(formdata);
+                console.log(res);
+                toast.success(`${res.data.name} is created succesfully`);
+                navigate('/');
+            } catch (error) {
+                console.log(error);
+                toast.error(error?.response?.data?.message || error.message);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -107,16 +138,16 @@ const AddProduct = () => {
 
     return (
         <div className="mx-auto max-w-7xl ">
-            <div className="md:w-3/4 mx-auto bg-slate-800 p-4">
+            <div className="md:w-3/4 mx-auto bg-sslate-800 p-4">
                 <button onClick={() => navigate(-1)}>
                     <FaArrowLeft />
                 </button>
                 <h1 className="text-3xl">create products</h1>
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col w-full p-3">
                     <label htmlFor="images" className="block text-white mb-1">
                         Images
                     </label>
-                    <input type="file" accept="images/*" multiple onChange={handleImageChange} className="rounded-lg p-3 border border-gray-600 w-full bg-gray-900 text-white" />
+                    <input type="file" accept="images/*" multiple onChange={handleImageChange} className="rounded-lg p-3 border border-gray-600 w-full bg-gray-950 text-white" />
                 </div>
                 {imageurls.length > 0 && (
                     <>
@@ -134,37 +165,37 @@ const AddProduct = () => {
                             <label htmlFor="name" className="block">
                                 Name
                             </label>
-                            <input type="text" name="name" className="rounded-lg p-3 border bg-gray-900" value={productData.name} onChange={changehandler} />
+                            <input type="text" name="name" className="rounded-lg p-3 border bg-gray-950" value={productData.name} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="price" className="block">
                                 Price
                             </label>
-                            <input type="number" name="price" className="rounded-lg p-3 border bg-gray-900" value={productData.price} onChange={changehandler} />
+                            <input type="number" name="price" className="rounded-lg p-3 border bg-gray-950" value={productData.price} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="brand" className="block">
                                 Brand
                             </label>
-                            <input type="text" name="brand" className="rounded-lg p-3 border bg-gray-900" value={productData.brand} onChange={changehandler} />
+                            <input type="text" name="brand" className="rounded-lg p-3 border bg-gray-950" value={productData.brand} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col  w-full">
                             <label htmlFor="quantity" className="block">
                                 Qunatity
                             </label>
-                            <input type="number" name="quantity" className="rounded-lg p-3 border bg-gray-900" value={productData.quantity} onChange={changehandler} />
+                            <input type="number" name="quantity" className="rounded-lg p-3 border bg-gray-950" value={productData.quantity} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="stock" className="block">
                                 Count in Stock
                             </label>
-                            <input type="number" name="countInStock" className="rounded-lg p-3 border bg-gray-900" value={productData.countInStock} onChange={changehandler} />
+                            <input type="number" name="countInStock" className="rounded-lg p-3 border bg-gray-950" value={productData.countInStock} onChange={changehandler} />
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="category" className="block">
                                 Category
                             </label>
-                            <select name="category" className="rounded-lg p-3 border bg-gray-900" onChange={changehandler}>
+                            <select name="category" className="rounded-lg p-3 border bg-gray-950" onChange={changehandler}>
                                 <option value="">-- select category --</option>
                                 {categories?.map((c) => (
                                     <option key={c._id} value={c._id}>
@@ -178,9 +209,10 @@ const AddProduct = () => {
                         <label htmlFor="description" className="block">
                             Description
                         </label>
-                        <textarea type="text" name="description" className="rounded-lg p-3 border bg-gray-900" value={productData.description} onChange={changehandler}></textarea>
+                        <textarea type="text" name="description" className="rounded-lg p-3 border bg-gray-950" value={productData.description} onChange={changehandler}></textarea>
                     </div>
                 </div>
+                {error && <Message>{error}</Message>}
                 {loading ? (
                     <Loder />
                 ) : (

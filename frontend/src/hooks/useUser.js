@@ -10,8 +10,8 @@ export default function useUser() {
 
     useEffect(() => {
         const getLoginuser = async () => {
+            dispatch(setloading(true))
             try {
-                dispatch(setloading())
                 const { data } = await getCrUser();
                 console.log(data);
                 dispatch(setUser(data.data))
@@ -19,6 +19,7 @@ export default function useUser() {
 
             } catch (error) {
                 console.log(error);
+            } finally {
                 dispatch(setloading(false))
             }
         }

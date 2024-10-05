@@ -3,16 +3,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
-    const { userInfo, loading, error } = useSelector((state) => state.user);
+    const { userInfo, loading } = useSelector((state) => state.user);
 
     if (loading) {
         return <div className="text-center text-gray-400">Loading...</div>;
     }
-
-    if (error) {
-        return <div className="text-center text-red-500">Error: {error}</div>;
-    }
-
+    
     return (
         <div className="mx-auto max-w-4xl p-4 mt-10">
             <h2 className="text-2xl font-semibold mb-4">Your Profile</h2>

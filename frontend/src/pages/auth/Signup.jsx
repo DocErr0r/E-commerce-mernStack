@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { register } from '../../redux/features/auth/userThunk';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Message from '../../components/Message';
 
 export default function Signup() {
     const [showPass, setShowPass] = useState(false);
@@ -20,7 +21,6 @@ export default function Signup() {
     useEffect(() => {
         if (userInfo) {
             // console.log(userInfo);
-            toast('register successfully');
             navigate('/');
         }
     }, [navigate, userInfo]);
@@ -36,7 +36,10 @@ export default function Signup() {
                 if (result.error) {
                     // console.log(error);
                     // console.log(result.payload);
-                    toast.error(result.payload.message || result.payload);
+                    // toast.error(result.payload.message|| result.payload);
+                    toast.error("somthing wrong..."|| result.payload);
+                } else {
+                    toast('register successfully');
                 }
             } catch (error) {
                 toast.error(error);
@@ -83,11 +86,12 @@ export default function Signup() {
                             </label>
                             <input type={showPass ? 'text' : 'password'} id="cpassword" placeholder="Conform Password" className="border rounded w-full mt-1 p-2" value={cpassword} onChange={(e) => setCpassword(e.target.value)} autoComplete="true" />
                         </div>
-                        <button disabled={!(name && email && password && cpassword)} type="submit" className="bg-pink-500 px-4 py-2 cursor-pointer rounded my-4 disabled:bg-pink-800">
+                        <button disabled={!(name && email && password && cpassword)} onClick={submitHandler} type="submit" className="bg-pink-500 px-4 py-2 cursor-pointer rounded my-4 disabled:bg-pink-800">
                             {'Sign In'}
                         </button>
                         {loading && <Loder />}
                     </form>
+                    {error && <Message>{error.split('.')[0]}</Message>}
                     <div className="mt-2">
                         <p>
                             Already have account?{' '}

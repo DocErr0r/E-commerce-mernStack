@@ -59,6 +59,8 @@ export default function UsersList() {
             setUpdateUser(!updateUser);
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);
+        } finally {
+            setOpenModal(false);
         }
     };
 
@@ -67,95 +69,84 @@ export default function UsersList() {
         setEditableName('');
         setEditableEmail('');
         setEditableRole('');
+        setOpenModal(false);
     };
 
     return (
-        <div className="p-4 mx-auto max-w-7xl bg-gray-900 text-white">
-            <h1 className="text-3xl font-semibold mb-6">Users</h1>
+        <div className="p-4 mx-auto max-w-7xl  text-white">
+            <h1 className="text-3xl font-semibold mb-6">Users ({users?.length})</h1>
             <div className="overflow-x-auto">
-                <table className="w-full bg-gray-800 shadow-md rounded-lg">
-                    <thead>
-                        <tr className="bg-gray-700">
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">#</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">ID</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Name</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Email</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Role</th>
-                            {/* <th className="px-4 py-3 text-left text-xs font-semibold uppercase">Actions</th> */}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user, index) => (
-                            <tr key={user._id} className="hover:bg-gray-700 transition duration-200">
-                                <td className="px-4 py-3">{index + 1}</td>
-                                <td className="px-4 py-3">{user._id}</td>
-                                <td className="px-4 py-3">
+                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {users.map((user, index) => (
+                        <div key={user._id} className="p-4 hover:bg-gray-700 border rounded-lg shadow-md">
+                            <div className="flex justify-between items-center">
+                                <div className="flex flex-col">
+                                    <span className="font">Name: {user.name}</span>
+                                    <span className="text-sm">ID: {user._id}</span>
+                                    <span className="text-sm text-gray-400">Email: {user.email}</span>
+                                    <span className="text-sm text-gray-400">Role: {user.role}</span>
+                                </div>
+                                <div className="flex justify-center gap-3 flex-wrap items-center">
                                     {editableId === user._id ? (
-                                        <div className="flex items-center">
-                                            <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
-                                            <button className="ml-2 p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(user._id)}>
-                                                <FaCheck />
-                                            </button>
-                                            <button className="ml-2 p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center justify-between">
-                                            <div className="truncate">{user.name}</div>
-                                            <button className="ml-2 p-1 bg-blue-600 text-white rounded hover:bg-blue-700" onClick={() => toggleEdit(user._id, user.name, user.email, user.role)}>
-                                                <FaEdit />
-                                            </button>
-                                        </div>
-                                    )}
-                                </td>
-                                <td className="px-4 py-3">
-                                    {editableId === user._id ? (
-                                        <div className="flex items-center">
+                                        <>
+                                            {/* <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
                                             <input type="email" className="p-2 rounded border bg-gray-600 text-white" value={editableEmail} onChange={(e) => setEditableEmail(e.target.value)} />
-                                            <button className="ml-2 p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(user._id)}>
+                                            <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
+                                                <option value="user">User</option>
+                                                <option value="admin">Admin</option>
+                                            </select>
+                                            <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(user._id)}>
                                                 <FaCheck />
                                             </button>
-                                            <button className="ml-2 p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
+                                            <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
                                                 Cancel
-                                            </button>
-                                        </div>
+                                            </button> */}
+                                        </>
                                     ) : (
-                                        <div className="flex items-center justify-between">
-                                            <div className="truncate">{user.email}</div>
-                                            <button className="ml-2 p-1 bg-blue-600 text-white rounded hover:bg-blue-700" onClick={() => toggleEdit(user._id, user.name, user.email, user.role)}>
+                                        <>
+                                            <button
+                                                className="p-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                                onClick={() => {
+                                                    toggleEdit(user._id, user.name, user.email, user.role), setOpenModal(true);
+                                                }}>
                                                 <FaEdit />
                                             </button>
-                                        </div>
+                                            {/* {user.role !== 'admin' && (
+                                            <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={() => deleteUser(user._id)}>
+                                                <FaTrash />
+                                            </button>
+                                        )} */}
+                                        </>
                                     )}
-                                </td>
-                                <td className="px-4 py-3">
-                                    {editableId === user._id ? (
-                                        <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
-                                            <option value="user">User</option>
-                                            <option value="admin">Admin</option>
-                                        </select>
-                                    ) : (
-                                        <div className="truncate">{user.role}</div>
-                                    )}
-                                </td>
-                                {/* <td className="px-4 py-3">
-                                    {user.role !== 'admin' && (
-                                        <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={() => deleteUser(user._id)}>
-                                            <FaTrash />
-                                        </button>
-                                    )}
-                                </td> */}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
             {openModal && (
-                <Modal isopen={openModal} onclose={() => setOpenModal(false)}>
-                    <UserModal user={userDetail} />
+                <Modal isopen={openModal} onclose={cancelEdit}>
+                    <div className="flex flex-col justify-center gap-3 items-center">
+                        <h2 className="underline text-2xl">Edit user role</h2>
+                        {/* <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
+                        <input type="email" className="p-2 rounded border bg-gray-600 text-white" value={editableEmail} onChange={(e) => setEditableEmail(e.target.value)} /> */}
+                        <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <div className="flex gap-2">
+                            <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(editableId)}>
+                                <FaCheck />
+                            </button>
+                            <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
                 </Modal>
             )}
+
+            {/* <UserModal user={userDetail}/> */}
         </div>
     );
 }

@@ -63,7 +63,9 @@ export default function Shop() {
                 </select>
             </div>
             {loading ? (
-                <Loder />
+                <div className="h-32 w-full flex items-center justify-center">
+                    <Loder />
+                </div>
             ) : allProducts?.length ? (
                 <>
                     <div className="flex justify-between">

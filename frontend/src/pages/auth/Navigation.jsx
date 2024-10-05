@@ -34,7 +34,7 @@ const Navigation = () => {
         setShowSidebar(!showSidebar);
     }
     function closeSidebar() {
-        setShowSidebar(!showSidebar);
+        setShowSidebar(false);
     }
     async function logoutHandler() {
         try {

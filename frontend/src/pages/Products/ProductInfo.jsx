@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addReview, getProductById } from '../../redux/api/ProductApi';
 import { FaStar, FaCartPlus, FaStore, FaBox, FaClock } from 'react-icons/fa'; // Importing star and cart icons from react-icons
+import Slider from 'react-slick';
 import myContext from '../../contexts/myContext';
 import Loader from '../../components/Loder';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/features/Cart/cartSlice';
 import { setOrderProduct } from '../../redux/features/order/productOrderSlice';
-import { Carousel } from '@material-tailwind/react';
 
 const ProductDetail = () => {
     const navigate = useNavigate();
@@ -21,6 +21,17 @@ const ProductDetail = () => {
     const [newReview, setNewReview] = useState('');
     const [quantity, setQuantity] = useState(1); // Default quantity for add to cart
     const [userRating, setUserRating] = useState(null); // User's rating state
+
+    const setting = {
+        dots: false,
+        infinte: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidsToScroll: 1,
+        arrows: true,
+        autoplay: true,
+        autoplaySpeed: 3000,
+    };
 
     // Fetch product details
     const fetchProduct = async () => {
@@ -79,15 +90,22 @@ const ProductDetail = () => {
     }
 
     // console.log(product);
+    product.images.map((i) => {
+        console.log(i);
+    });
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-6">
             <div className="w-full px-2 mb-4">
-                <Carousel>
-                    {product.images.map((image) => (
-                        <img src={image?.url} key={image?.public_id} alt={product.name} className="rounded-lg shadow-md w-full  md:object-cover" />
-                    ))}
-                </Carousel>
+                {product.images.length === 1 ? (
+                    <img src={product?.images[0]?.url} alt={product.name} className="rounded-lg mx-auto h-80 shadow-md object-contain" />
+                ) : (
+                    <Slider {...setting} className="">
+                        {product.images.map((image) => (
+                            <img src={image?.url} key={image?.public_id} alt={product.name} className="rounded-lg h-80 shadow-md object-contain" />
+                        ))}
+                    </Slider>
+                )}
             </div>
             <h1 className="text-3xl font-bold text-gray-50">{product.name}</h1>
             <div className="flex flex-wrap -mx-2">

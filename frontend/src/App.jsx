@@ -104,7 +104,11 @@ function App() {
     const { userInfo, lodding } = useSelector((state) => state.user);
 
     if (lodding) {
-        return <Loder />; // Show loading spinner while fetching user info
+        return (
+            <div className='h-[100vh] w-full flex items-center justify-center'>
+                <Loder />
+            </div>
+        ); // Show loading spinner while fetching user info
     }
 
     return (
