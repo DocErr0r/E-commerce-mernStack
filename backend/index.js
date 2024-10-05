@@ -11,7 +11,7 @@ import path from "path";
 import { configCloudinary } from './config/Cloudy.js';
 // import { fileURLToPath } from 'url';
 
-// import cors from "cors";
+import cors from "cors";
 
 dotenv.config({ path: './.env' });
 dotenv.config();
@@ -25,7 +25,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-// app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
 
 app.get('/', (req, res) => {
     res.send('Hello World!')

@@ -3,6 +3,8 @@ import Jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Joi from 'joi';
 import PasswordComplexity from "joi-password-complexity";
+import crypto from "crypto";
+
 
 
 // Declare the Schema of the Mongo model
@@ -43,7 +45,7 @@ userSchema.methods.generateAuthToken = function () {
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex');
     const expireTime = Date.now() + (5 * 60 * 1000); // seconds
-    this.resetPasswordToken = crypto.hash('sha1', resetToken); //save this using encryption technique
+    this.resetPasswordToken = crypto.createHmac('sha256', "secret").update(resetToken).digest('hex')
     this.resetPasswordTokenExpire = expireTime;
     return resetToken;
 }

@@ -5,6 +5,7 @@ import setCookies from "../utils/setCookies.js";
 import Joi from "joi";
 import PasswordComplexity from "joi-password-complexity";
 import sendmail from "../utils/sendMail.js";
+import crypto from "crypto";
 
 
 export const createUser = serverhandler(async (req, res) => {
@@ -126,12 +127,12 @@ export const forgotPassword = serverhandler(async (req, res) => {
     //generate a reset token and save it to the database
     const resetToken = user.getResetPasswordToken();
     //onboard the user with the link
-    const resetUrl = process.env.FRONTEND_URL+`/resetpassword/${resetToken}`;
+    const resetUrl = process.env.FRONTEND_URL + `/resetpassword/${resetToken}`;
 
     try {
         await user.save({ validateBeforeSave: false });
         // send the mail
-        sendmail(email, resetUrl);
+        await sendmail(email, resetUrl);
 
         res.status(200).json({ message: 'Email has been sent' })
     } catch {
@@ -141,25 +142,30 @@ export const forgotPassword = serverhandler(async (req, res) => {
 });
 
 export const resetPassword = serverhandler(async (req, res) => {
-    const resetToken = req.params.token; // encrypt token because token is encypted
+    const resetToken = req.params.token;
+    const hashToken = crypto.createHmac('sha256', "secret").update(resetToken).digest('hex')
     const user = await User.findOne({
-        resetPasswordToken: resetToken,
+        resetPasswordToken: hashToken,
         resetPasswordTokenExpire: { $gt: Date.now() }
     });
-
     if (!user) {
         return res.status(400).json({ message: 'Invalid or Expired Token' })
     }
 
     const password = req.body.password;
-    const confirmPassword = req.body.confirm_password;
-
+    const confirmPassword = req.body.confirmPassword;
     if (!password || !confirmPassword) {
         return res.status(400).json({ message: "Please Fill All Field" })
     }
     if (password !== confirmPassword) {
         throw new Error("password not match")
     }
+    const obj = Joi.object({
+        password: PasswordComplexity().required(),
+        confirmPassword: PasswordComplexity().required(),
+    })
+    const { error } = obj.validate(req.body);
+    if (error) return res.status(400).send({ message: error.message });
 
     try {
         user.password = password;

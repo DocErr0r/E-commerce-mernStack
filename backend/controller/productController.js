@@ -235,17 +235,20 @@ export const addReview = serverHandler(async (req, res) => {
             res.status(400)
             throw new Error("product not found")
         }
-        // const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())
-        // if (alreadyReviewed) {
-        //     res.status(403)
-        //     throw new Error("you already reviewed on this product")
-        // }
-        const review = { user: req.user._id, name: req.user.name, rating: Number(rating), comment }
-        product.reviews.push(review)
+        const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())
+        if (alreadyReviewed) {
+            alreadyReviewed.comment=comment
+            alreadyReviewed.rating = Number(rating)
+            // res.status(403)
+            // throw new Error("you already reviewed on this product")
+        } else {
+            const review = { user: req.user._id, name: req.user.name, rating: Number(rating), comment }
+            product.reviews.push(review)
+        }
         product.numOfReviews = product.reviews.length
         product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
         await product.save()
-        res.status(201).send({ message: "review added successfully", review })
+        res.status(201).send({ message: "review added successfully" })
     } catch (error) {
         console.log(error);
         res.status(400).send({ message: error.message })

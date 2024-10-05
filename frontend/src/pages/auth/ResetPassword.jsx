@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { resetPassword } from '../../redux/api/userApiSlice';
 // import { resetPassword } from '../../redux/api/UserApi'; // Make sure this API function exists
 
 function ResetPassword() {
@@ -19,17 +20,12 @@ function ResetPassword() {
             toast.error('Passwords do not match!');
             return;
         }
-
-        if (password.length < 6) {
-            toast.error('Password must be at least 6 characters long!');
-            return;
-        }
-
         setLoading(true);
 
         try {
-            // await resetPassword(token, password); // Adjust this function to match your API
+            const res = await resetPassword({ token, password, confirmPassword }); // Adjust this function to match your API
             toast.success('Password reset successfully!');
+            console.log(res);
             navigate('/login'); // Redirect to login page after success
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message);

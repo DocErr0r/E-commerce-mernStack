@@ -1,24 +1,24 @@
 import nodemailer from 'nodemailer';
 
-// Create a transporter object using your email service (e.g., Gmail)
-const transporter = nodemailer.createTransport({
-    host: "smtp.sendgrid.net",
-    port: 587,
-    secure: false, // true for port 465, false for other ports
-    auth: {
-        user: "octanetjs@gmail.com",
-        pass: "Nitin@123",
-    },
-});
 
 
 // Send the email
+const sendmail = (to, resetLink) => {
+    // Create a transporter object using your email service (e.g., Gmail)
+    const transporter = nodemailer.createTransport({
+        host: "gmail",
+        port: 587,
+        secure: false, // true for port 465, false for other ports
+        auth: {
+            user: process.env.NODE_EMAIL,
+            pass: process.env.NODE_EMAIL_PASS,
+        },
+    });
 
-const sendmail = (to,resetLink) => {
     // const resetLink = `https://your-website.com/reset-password?token=${token}`;
     // Email options
     const mailOptions = {
-        from: '<maddison53@ethereal.email>', // sender address
+        from: `<${process.env.NODE_EMAIL}>`, // sender address
         to, // List of receivers
         subject: 'Password Reset Request',
         text: `To reset your password, please click the link below:\n${resetLink}`,
