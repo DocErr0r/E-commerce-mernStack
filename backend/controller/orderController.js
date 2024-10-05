@@ -131,7 +131,43 @@ export const adminDasboard = serverHandler(async (req, res) => {
         ])
         // console.log(selesByDate);
 
-        res.send({ dashboardData: { totelOrders, totelSales, selesByDate, totelUsers } })
+        // Get sales by category
+        const salesByCategory = await Order.aggregate([
+            { $unwind: '$orderItems' }, // Unwind orderItems array
+            {
+                $lookup: {
+                    from: 'products', // Collection name for products
+                    localField: 'orderItems._id',
+                    foreignField: '_id',
+                    as: 'productDetails',
+                },
+            },
+            { $unwind: '$productDetails' }, // Unwind productDetails
+            {
+                $lookup: {
+                    from: 'categories', // Collection name for categories
+                    localField: 'productDetails.category', // Assuming category is a field in productDetails
+                    foreignField: '_id',
+                    as: 'categoryDetails',
+                },
+            },
+            { $unwind: '$categoryDetails' }, // Unwind categoryDetails
+            {
+                $group: {
+                    _id: '$categoryDetails.name', // Group by category name
+                    totalSales: { $sum: { $multiply: ['$orderItems.price', '$orderItems.qty'] } },
+                },
+            },
+            { $sort: { totalSales: -1 } }, // Sort by total sales descending
+        ]);
+
+        const recentActivity = await Order.find()
+            .sort({ createdAt: -1 }) // Assuming there's a createdAt field
+            .limit(5)
+            .populate('orderedBy', 'name email') // Populate user info if needed
+            .select('totelPrice createdAt orderedBy'); // Select necessary fields
+
+        res.send({ dashboardData: { totelOrders, totelSales, selesByDate, totelUsers, salesByCategory, recentActivity } })
     } catch (error) {
         res.status(500).send({ message: error.message })
     }

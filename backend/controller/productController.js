@@ -72,7 +72,7 @@ export const searchProducts = serverHandler(async (req, res) => {
         res.status(200).send({ products, page: Number(page), pages: Math.ceil(count / limit) });
     }
     catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).send({ message: "Internal server error" });
     }
 })
