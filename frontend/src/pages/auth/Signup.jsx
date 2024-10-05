@@ -91,7 +91,7 @@ export default function Signup() {
                         </button>
                         {loading && <Loder />}
                     </form>
-                    {error && <Message>{error.split('.')[0]}</Message>}
+                    {error && <Message>{error?.split('.')[0]}</Message>}
                     <div className="mt-2">
                         <p>
                             Already have account?{' '}

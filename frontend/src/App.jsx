@@ -100,12 +100,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
-    useUser();
-    const { userInfo, lodding } = useSelector((state) => state.user);
+    const { isLoggedIn, loading } = useUser();
 
-    if (lodding) {
+    if (loading) {
         return (
-            <div className='h-[100vh] w-full flex items-center justify-center'>
+            <div className="h-[100vh] w-full flex items-center justify-center">
                 <Loder />
             </div>
         ); // Show loading spinner while fetching user info
