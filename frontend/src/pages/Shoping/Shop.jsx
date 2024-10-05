@@ -53,7 +53,9 @@ export default function Shop() {
                     />
                     <FaSearch className="absolute right-2 cursor-pointer h-4 w-4 m-3" />
                 </div>
-                <select placeholder="sortBy" className="md:w-40 w-full p-2 text-sm rounded-xl" onChange={(e) => setSortby(e.target.value)}>
+                <select placeholder="sortBy" className="md:w-40 w-full p-2 text-sm rounded-xl" onChange={(e) => {
+                    setPage(1), setSortby(e.target.value);
+                }}>
                     <option value="">Sort-By</option>
                     <option value="name">A-Z</option>
                     <option value="-name">Z-A</option>

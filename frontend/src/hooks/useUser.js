@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCrUser } from "../redux/api/userApiSlice";
 import { setloading, setUser } from "../redux/features/auth/authSlice";
-import { toast } from "react-toastify";
 
 export default function useUser() {
     const dispatch = useDispatch()

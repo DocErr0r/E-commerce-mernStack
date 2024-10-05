@@ -5,7 +5,6 @@ import { getProducts } from "../redux/api/ProductApi";
 
 
 function useAllProduct() {
-    // const { products } = useSelector(state => state.product)
     const dispatch = useDispatch()
     useEffect(() => {
         const funcCall = async () => {
