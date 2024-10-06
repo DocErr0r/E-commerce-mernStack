@@ -33,6 +33,12 @@ const OrderSchema = new mongoose.Schema({
             type: String,
             required: true,
         },
+        phone: {
+            type: String,
+            required: true,
+            minlength: 10,
+            maxlength: 15
+        },
     },
     paymentMethod: { type: String, required: true },
     paymentResult: {
