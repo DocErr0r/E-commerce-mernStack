@@ -10,7 +10,30 @@ const OrderSchema = new mongoose.Schema({
         price: { type: Number, required: true },
         image: { type: String, required: true },
     }],
-    address: { type: String, required: true },
+    address: {
+        country: {
+            type: String,
+            required: true,
+        },
+        state: {
+            type: String,
+            required: true,
+        },
+        city: {
+            type: String,
+            required: true,
+        },
+        pinCode: {
+            type: String,
+            required: true,
+            minlength: 5,
+            maxlength: 10
+        },
+        homeAddress: {
+            type: String,
+            required: true,
+        },
+    },
     paymentMethod: { type: String, required: true },
     paymentResult: {
         id: { type: String },
