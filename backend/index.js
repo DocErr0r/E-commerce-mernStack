@@ -25,7 +25,26 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }))
+const allowedOrigins = [
+    process.env.LOCALURL, // Local development URL
+    process.env.FRONTEND_URL, // Deployed frontend URL from environment variable
+];
+
+// CORS options
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Check if the origin is in the allowed origins list
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS')); // Block the request
+        }
+    },
+    credentials: true, // Allow credentials
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
