@@ -56,15 +56,3 @@ export const logout = createAsyncThunk('userlogout', async (_, { rejectWithValue
         return rejectWithValue(error.response.data || error.message);
     }
 })
-
-
-// admin thunks
-// export const getAllUser = createAsyncThunk('getalluser', async (_, { rejectWithValue }) => {
-//     try {
-//         const data  = await getUsers()
-//         console.log(data);
-
-//     } catch (error) {
-//         return rejectWithValue(error.response.data || error.message)
-//     }
-// })

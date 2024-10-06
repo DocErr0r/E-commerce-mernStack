@@ -86,22 +86,25 @@ export default function UsersList() {
                                     <span className="text-sm text-gray-400">Email: {user.email}</span>
                                     <span className="text-sm text-gray-400">Role: {user.role}</span>
                                 </div>
-                                <div className="flex justify-center gap-3 flex-wrap items-center">
+                                <div className=" flex justify-center gap-3 flex-wrap items-center">
                                     {editableId === user._id ? (
-                                        <>
-                                            {/* <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
-                                            <input type="email" className="p-2 rounded border bg-gray-600 text-white" value={editableEmail} onChange={(e) => setEditableEmail(e.target.value)} />
-                                            <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
-                                                <option value="user">User</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                            <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(user._id)}>
-                                                <FaCheck />
-                                            </button>
-                                            <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
-                                                Cancel
-                                            </button> */}
-                                        </>
+                                        <></>
+                                        // <div className="flex flex-col gap-1">
+                                        //     <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
+                                        //     <input type="email" className="p-2 rounded border bg-gray-600 text-white" value={editableEmail} onChange={(e) => setEditableEmail(e.target.value)} />
+                                        //     <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
+                                        //         <option value="user">User</option>
+                                        //         <option value="admin">Admin</option>
+                                        //     </select>
+                                        //     <div className="flex gap-2">
+                                        //         <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(user._id)}>
+                                        //             <FaCheck />
+                                        //         </button>
+                                        //         <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>
+                                        //             Cancel
+                                        //         </button>
+                                        //     </div>
+                                        // </div>
                                     ) : (
                                         <>
                                             <button
@@ -117,7 +120,7 @@ export default function UsersList() {
                                             </button>
                                         )} */}
                                         </>
-                                    )}
+                                     )}
                                 </div>
                             </div>
                         </div>
@@ -126,16 +129,16 @@ export default function UsersList() {
             </div>
             {openModal && (
                 <Modal isopen={openModal} onclose={cancelEdit}>
-                    <div className="flex flex-col justify-center gap-3 items-center">
+                    <div className="flex flex-col gap-1  items-center">
                         <h2 className="underline text-2xl">Edit user role</h2>
                         {/* <input type="text" className="p-2 rounded border bg-gray-600 text-white" value={editableName} onChange={(e) => setEditableName(e.target.value)} />
                         <input type="email" className="p-2 rounded border bg-gray-600 text-white" value={editableEmail} onChange={(e) => setEditableEmail(e.target.value)} /> */}
-                        <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 bg-gray-600 text-white rounded border">
+                        <select value={editableRole} onChange={(e) => setEditableRole(e.target.value)} className="p-2 w-full bg-gray-600 text-white rounded border">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
-                        <div className="flex gap-2">
-                            <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700" onClick={() => updateHandler(editableId)}>
+                        <div className="flex gap-2 w-full">
+                            <button className="p-2 bg-green-600 text-white rounded w-full  flex justify-center items-center hover:bg-green-700" onClick={() => updateHandler(editableId)}>
                                 <FaCheck />
                             </button>
                             <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={cancelEdit}>

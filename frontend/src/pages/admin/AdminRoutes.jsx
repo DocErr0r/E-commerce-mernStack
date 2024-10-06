@@ -5,19 +5,14 @@ import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
 
 function AdminRoutes() {
-    const { userInfo, lodding } = useSelector((state) => state.user);
+    const { userInfo } = useSelector((state) => state.user);
     const navigate = useNavigate();
     useEffect(() => {
-        if (lodding) return;
         if (!(userInfo.role === 'admin')) {
             toast.warning('plaese login as admin...');
             navigate('/');
         }
-    }, [userInfo,navigate]);
-
-    if (lodding) {
-        return <Loder />;
-    }
+    }, [userInfo, navigate]);
 
     return userInfo && userInfo.role === 'admin' ? (
         <>

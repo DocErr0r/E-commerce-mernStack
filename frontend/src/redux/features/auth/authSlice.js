@@ -28,7 +28,7 @@ const authSlice = createSlice({
 
         builder
             .addCase(logout.pending, (state) => { state.lodding = true })
-            .addCase(logout.fulfilled, (state, action) => { state.lodding = false, state.error = null, state.userInfo = null })
+            .addCase(logout.fulfilled, (state, action) => { state.lodding = false, state.error = null, state.userInfo = false })
             .addCase(logout.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
 
         builder
@@ -48,12 +48,6 @@ const authSlice = createSlice({
                 state.lodding = false, state.error = action.payload;
                 // toast.error(state.error)
             })
-
-        // builder
-        //     .addCase(getAllUser.pending, (state) => { state.lodding = true })
-        //     .addCase(getAllUser.fulfilled, (state, action) => { state.lodding = false, state.error = null })
-        //     .addCase(getAllUser.rejected, (state, action) => { state.lodding = false, state.error = action.payload })
-
     }
 })
 

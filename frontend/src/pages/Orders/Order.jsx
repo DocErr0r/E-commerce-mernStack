@@ -17,7 +17,7 @@ function Order() {
         try {
             const { data } = await createOrder({
                 orderItems: OProduct.orderProduct,
-                address: cart.shopingAdress.address,
+                address: cart.shopingAdress,
                 paymentMethod: 'upi',
                 itemsPrice: OProduct.itemsPrice,
             });
@@ -34,10 +34,31 @@ function Order() {
         <div className="max-w-screen-xl mx-auto p-4">
             <ProgressStep step1 />
             <h2 className=" mt-4 text-2xl font-bold my-2">Order summary</h2>
-            <div className="shadow-xl p-4 rounded-lg my-2 flex flex-wrap gap-5 border border-gray-600">
+            <div className="shadow-xl p-4 rounded-lg my-2  gap-5 border border-gray-600">
+                <h3 className="text-xl font-bold">Address information : </h3>
                 <div className="flex gap-2">
-                    <strong>address: </strong>
-                    <p>{cart.shopingAdress.address}</p>
+                    <strong>Country:</strong>
+                    <p>{cart.shopingAdress.country}</p>
+                </div>
+                <div className="flex gap-2">
+                    <strong>State:</strong>
+                    <p>{cart.shopingAdress.state}</p>
+                </div>
+                <div className="flex gap-2">
+                    <strong>City:</strong>
+                    <p>{cart.shopingAdress.city}</p>
+                </div>
+                <div className="flex gap-2">
+                    <strong>Pin Code:</strong>
+                    <p>{cart.shopingAdress.pinCode}</p>
+                </div>
+                <div className="flex gap-2">
+                    <strong>Home Address:</strong>
+                    <p>{cart.shopingAdress.homeAddress}</p>
+                </div>
+                <div className="flex gap-2">
+                    <strong>Phone:</strong>
+                    <p>{cart.shopingAdress.phone}</p>
                 </div>
             </div>
             {OProduct ? (

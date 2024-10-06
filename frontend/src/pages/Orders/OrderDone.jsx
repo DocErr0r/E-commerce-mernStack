@@ -112,7 +112,7 @@ function OrderDone() {
             {order && (
                 <>
                     <div className="p-4 md:w-2/3">
-                        <div className="overflow-x-auto mb-2">
+                        <div className="overflow-x-auto mb-2 sticky top-[6rem]">
                             <table className="w-full mx-auto border">
                                 <thead className="border ">
                                     <tr>
@@ -152,11 +152,19 @@ function OrderDone() {
                                 <strong className="text-pink-500">Email:</strong> {order.orderedBy.email}
                             </p>
                             <p>
-                                <strong className="text-pink-500">Address:</strong> {order.address}
-                            </p>
-                            <p>
                                 <strong className="text-pink-500">Payment Method:</strong> {order.paymentMethod}
                             </p>
+                            <div className="flex flex-col">
+                                <strong className="text-pink-500">Address:</strong>
+                                <div className="ml-4 flex flex-col">
+                                    <span>Country: {order.address.country}</span>
+                                    <span>State: {order.address.state}</span>
+                                    <span>City: {order.address.city}</span>
+                                    <span>Pin Code: {order.address.pinCode}</span>
+                                    <span>Home Address: {order.address.homeAddress}</span>
+                                    <span>Phone Number : {order.address.phone}</span>
+                                </div>
+                            </div>
                             {order.paid ? (
                                 <div className="border px-2 bg-green-600 py-2 my-4 rounded-md">
                                     Paid on: {new Date(order.paidTime).toLocaleString()}

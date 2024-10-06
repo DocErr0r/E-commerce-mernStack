@@ -39,7 +39,7 @@ const cartSlice = createSlice({
             localStorage.removeItem('cart')
         },
         setShippingAddress: (state, action) => {
-            state.shopingAdress.address = action.payload
+            state.shopingAdress = action.payload
             localStorage.setItem('cart', JSON.stringify(state))
         }
     },

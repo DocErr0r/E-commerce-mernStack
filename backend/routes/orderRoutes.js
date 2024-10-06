@@ -12,7 +12,7 @@ router.route('/:id/paid').put([verifyuser, validId], markAsPaid)
 router.route('/:id/deliver').put([admin, validId], markAsDelivered)
 
 // dashborad
-router.route('/admin/dashboard').get(adminDasboard)
+router.route('/admin/dashboard').get(admin, adminDasboard)
 
 // // user
 // 1.create
