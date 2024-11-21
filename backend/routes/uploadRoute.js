@@ -4,11 +4,15 @@ import path from "path";
 import fs from 'fs'
 import sharp from "sharp";
 
+const pathToTempFolder = path.resolve() + '/public/temp/';
 
 const router = express.Router()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,path.resolve()+ '/public/temp/');
+        if (!fs.existsSync(pathToTempFolder)) {
+            fs.mkdirSync(pathToTempFolder, { recursive: true });
+        }
+        cb(null, pathToTempFolder);
     },
     filename: (req, file, cb) => {
         cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname)); // generate unique filename
