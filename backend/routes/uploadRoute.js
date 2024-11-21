@@ -8,7 +8,7 @@ import sharp from "sharp";
 const router = express.Router()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './public/temp/');
+        cb(null,path.resolve()+ './public/temp/');
     },
     filename: (req, file, cb) => {
         cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname)); // generate unique filename
