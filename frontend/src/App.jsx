@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'react-toastify/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider, useLocation } from 'react-router-dom';
 // import { Route, RouterProvider, createRoutesFromElements } from 'react-router';
 import Navigation from './pages/auth/Navigation';
@@ -40,9 +40,11 @@ import UpdateProduct from './pages/admin/UpdateProduct';
 import useUser from './hooks/useUser';
 import { useSelector } from 'react-redux';
 import Loder from './components/Loder';
+import myContext from './contexts/myContext';
 
 const Root = () => {
     const { pathname } = useLocation();
+    const {loading}=useContext(myContext)
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -52,6 +54,10 @@ const Root = () => {
             <Navigation />
             <main className="pt-24 pb-4 min-h-[80vh]">
                 <Outlet />
+                {loading && <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="fixed inset-0 bg-black opacity-50"></div>
+                        <Loder />
+                </div>}
             </main>
             <Footer />
         </>

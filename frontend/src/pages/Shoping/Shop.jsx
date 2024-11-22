@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getAllProducts, getProducts } from '../../redux/api/ProductApi';
-import { toast } from 'react-toastify';
 // import SmallProduct from '../Products/SmallProduct';
 import Card from '../Products/Card';
 // import FilterSection from '../../components/FilterSection';
 import { IoGrid, IoMenu } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
-import myContext from '../../contexts/myContext';
 import Loder from '../../components/Loder';
 
 export default function Shop() {
-    const { loading, setLoading } = useContext(myContext);
+    const [ loading, setLoading ] = useState(false);
     const [allProducts, setAllProducts] = useState(null);
     const [change, setChange] = useState(false);
     // const [category, setCategory] = useState('');

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { register } from '../../redux/features/auth/userThunk';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Message from '../../components/Message';
+import Loder from '../../components/Loder';
 
 export default function Signup() {
     const [showPass, setShowPass] = useState(false);
@@ -16,7 +17,7 @@ export default function Signup() {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const { userInfo, error, loading } = useSelector((state) => state.user);
+    const { userInfo, error, lodding } = useSelector((state) => state.user);
 
     useEffect(() => {
         if (userInfo) {
@@ -89,9 +90,9 @@ export default function Signup() {
                         <button disabled={!(name && email && password && cpassword)} onClick={submitHandler} type="submit" className="bg-pink-500 px-4 py-2 cursor-pointer rounded my-4 disabled:bg-pink-800">
                             {'Sign In'}
                         </button>
-                        {loading && <Loder />}
+                        {lodding && <Loder />}
                     </form>
-                    {error && <Message>{error?.split('.')[0]}</Message>}
+                    {error && <Message>{error?.split('.')[0] || error}</Message>}
                     <div className="mt-2">
                         <p>
                             Already have account?{' '}

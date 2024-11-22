@@ -10,7 +10,7 @@ const EditProfile = () => {
     const [email, setEmail] = useState('');
     // const [password, setPassword] = useState('');
 
-    const { userInfo,error, loading } = useSelector((state) => state.user);
+    const { userInfo,error, lodding } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -81,7 +81,11 @@ const EditProfile = () => {
                             </div>
                         </form>
                     </div>
-                    {loading && <Loder />}
+                    {lodding && (
+                        <div className='flex justify-center'>
+                            <Loder />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

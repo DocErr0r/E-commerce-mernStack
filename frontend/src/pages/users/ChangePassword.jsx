@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { updatePass } from '../../redux/features/auth/userThunk';
 import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Loder from '../../components/Loder';
 
 function ChangePassword() {
     const [showPass, setShowPass] = useState(false);
@@ -11,7 +12,7 @@ function ChangePassword() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
 
-    const { loading, error } = useSelector((state) => state.user);
+    const { lodding, error } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const handelSubmit = async (e) => {
@@ -73,8 +74,8 @@ function ChangePassword() {
                         </div>
                         {/* Add more form fields for other profile information */}
                         <div className="flex items-center justify-between">
-                            <button type="submit" className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded">
-                                Save Changes
+                            <button type="submit" className="bg-pink-500 w-32 hover:bg-pink-600 text-white px-4 py-2 rounded">
+                                {lodding ? 'Laoding':'save changes'}
                             </button>
                             <Link to="/forgotpassword" className="text-pink-400 hover:underline">
                                 Forgot Password?
@@ -83,7 +84,6 @@ function ChangePassword() {
                     </form>
                     {error && <div className="m-2 sm:w-[25rem] mx-auto text-red-500 text-center">{error.split('.')[0]}</div>}
                 </div>
-                {loading && <Loder />}
             </div>
         </div>
     );

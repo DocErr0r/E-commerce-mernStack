@@ -16,6 +16,7 @@ function ProductList() {
     const [products, setProducts] = useState(null);
 
     const fetchProducts = async () => {
+        setLoading(true)
         try {
             const result = await getAdminProducts();
             // console.log(result);
@@ -24,13 +25,16 @@ function ProductList() {
             console.log(error);
             toast.error(error.response.data.message || error.message);
         }
+        finally{
+            setLoading(false)
+        }
     };
     useEffect(() => {
         fetchProducts();
     }, []);
 
     return loading ? (
-        <Loder />
+        <></>
     ) : (
         <div className="mx-auto max-w-7xl p-4 bg-graay-900 ">
             <div className="flex justify-between items-center">

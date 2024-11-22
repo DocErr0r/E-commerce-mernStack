@@ -110,10 +110,6 @@ function UpdateProduct() {
 
     console.log(productData);
 
-    if (loading) {
-        return <Loder />;
-    }
-
     return (
         <div className="max-w-screen-xl mx-auto">
             <div className="md:w-3/4 mx-auto bg-slate-950 p-4">
@@ -162,7 +158,7 @@ function UpdateProduct() {
                             <label htmlFor="category" className="block">
                                 Category
                             </label>
-                            <select name="category" className="rounded-lg p-3 border bg-gray-900" onChange={changehandler}>
+                            <select name="category" className="rounded-lg p-3 border bg-gray-900" value={productData.category} onChange={changehandler}>
                                 <option value="">-- select category --</option>
                                 {categories?.map((c) => (
                                     <option key={c._id} value={c._id}>

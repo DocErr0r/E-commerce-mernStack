@@ -64,7 +64,7 @@ const AddProduct = () => {
         if (validationError) {
             setError(validationError);
         } else {
-            setError(null)
+            setError(null);
             const formdata = new FormData();
             formdata.append('name', productData.name);
             productData.images.forEach((file) => {
@@ -213,14 +213,11 @@ const AddProduct = () => {
                     </div>
                 </div>
                 {error && <Message>{error}</Message>}
-                {loading ? (
-                    <Loder />
-                ) : (
-                    <Button onClick={handleSubmit} className="bg-pink-600 px-7 py-4">
-                        {' '}
-                        Submit
-                    </Button>
-                )}
+                
+                <Button onClick={handleSubmit} className="bg-pink-600 px-7 py-4">
+                    {' '}
+                    Submit
+                </Button>
             </div>
         </div>
     );

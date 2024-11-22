@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deliverOrder, getClientId, getOrderDetail, payOrder } from '../../redux/api/orderApi';
@@ -6,9 +6,11 @@ import { useSelector } from 'react-redux';
 import Payment from './Payment';
 import Modal from '../../components/Modal';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import myContext from '../../contexts/myContext';
 
 function OrderDone() {
     const { id } = useParams();
+    const { setLoading } = useContext(myContext);
     const [order, setOrder] = useState(null);
     const [modal, setModel] = useState(false);
     const [change, setChange] = useState(false);
@@ -20,12 +22,14 @@ function OrderDone() {
     };
     useEffect(() => {
         const getOrders = async () => {
+            setLoading(true);
             try {
                 const res = await getOrderDetail(id);
                 setOrder(res.data.order);
             } catch (error) {
                 toast.error('something worng...');
             }
+            setLoading(false);
         };
         getOrders();
         getPaypalId();

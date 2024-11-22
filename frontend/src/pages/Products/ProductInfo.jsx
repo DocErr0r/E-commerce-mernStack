@@ -55,8 +55,6 @@ const ProductDetail = () => {
     // Example function to handle submitting a new review
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
-
-        console.log(userRating);
         if (!newReview && !userRating) {
             return toast.error('Please fill in all fields');
         }
@@ -86,7 +84,7 @@ const ProductDetail = () => {
     };
 
     if (loading || !product) {
-        return <Loader />;
+        return <div className='text-center'>Loading for product...</div>
     }
 
     // console.log(product);
@@ -158,7 +156,7 @@ const ProductDetail = () => {
                 <div className="flex items-center mb-2">
                     <p className="mr-2">Your Rating:</p>
                     {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} className={`cursor-pointer ${i < userRating ? 'text-yellow-500' : 'text-gray-400'}`} onClick={() => setUserRating(i + 1)} />
+                        <FaStar key={i} className={`cursor-pointer ${i < userRating ? 'text-yellow-500' : 'text-gray-400'}`} onMouseMove={() => setUserRating(i + 1)} />
                     ))}
                 </div>
                 <button type="submit" className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg">

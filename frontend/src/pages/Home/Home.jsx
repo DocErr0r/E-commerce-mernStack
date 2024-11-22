@@ -7,7 +7,6 @@ import useFavoriate from '../../hooks/useFavoriate';
 
 function Home() {
     useFavoriate()
-    const { loading } = useContext(myContext);
     const [open, setOpen] = React.useState(0);
 
     const handleOpen = (value) => setOpen(open === value ? 0 : value);
@@ -19,8 +18,6 @@ function Home() {
             </svg>
         );
     }
-
-    if (loading) return <Loder />;
 
     return (
         <div className="space-y-8">
