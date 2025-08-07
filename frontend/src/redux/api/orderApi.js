@@ -1,6 +1,12 @@
 import { DASHBOARD_URL, ORDER_URL, PAYMENT_URL } from "../contsants"
 import axiosInstace from "./apiSlice"
 
+export const getRazorpayKey=()=>{
+    return axiosInstace.get(`${ORDER_URL}/razorpay-key`)
+}
+export const createRazorOrder=(amount)=>{
+    return axiosInstace.post(`${ORDER_URL}/crate-razororder`,{amount})
+}
 export const createOrder = (body) => {
     return axiosInstace.post(ORDER_URL, body)
 }

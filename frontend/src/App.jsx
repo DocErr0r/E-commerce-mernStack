@@ -44,7 +44,7 @@ import myContext from './contexts/myContext';
 
 const Root = () => {
     const { pathname } = useLocation();
-    const {loading}=useContext(myContext)
+    const { loading } = useContext(myContext);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -54,10 +54,12 @@ const Root = () => {
             <Navigation />
             <main className="pt-24 pb-4 min-h-[80vh]">
                 <Outlet />
-                {loading && <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="fixed inset-0 bg-black opacity-50"></div>
+                {loading && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="fixed inset-0 bg-black opacity-50"></div>
                         <Loder />
-                </div>}
+                    </div>
+                )}
             </main>
             <Footer />
         </>

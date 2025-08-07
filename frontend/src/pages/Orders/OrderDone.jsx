@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { deliverOrder, getClientId, getOrderDetail, payOrder } from '../../redux/api/orderApi';
+import { createRazorOrder, deliverOrder, getClientId, getOrderDetail, getRazorpayKey, payOrder } from '../../redux/api/orderApi';
 import { useSelector } from 'react-redux';
 import Payment from './Payment';
 import Modal from '../../components/Modal';
@@ -110,6 +110,60 @@ function OrderDone() {
         return <div>Loading...</div>;
     }
 
+    const getRazorKey = async () => {
+        const res = await getRazorpayKey();
+        const key = await res.data.key;
+        return key;
+    };
+    const createRazorpayOrder = async () => {
+        const res = await createRazorOrder(order.totelPrice);
+        return res;
+    };
+    const createRazorPayment = async () => {
+        const key = await getRazorKey();
+        const response = await createRazorpayOrder();
+        const { id: order_id, amount, currency } = response.data.order;
+
+        // Set up RazorPay options
+        const options = {
+            key: key,
+            amount: amount,
+            currency: currency,
+            name: 'Eshop',
+            description: 'Test Transaction',
+            order_id: order_id,
+            handler: (response) => {
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature);
+            },
+            prefill: {
+                name: 'john deo',
+                email: 'john.doe@example.com',
+                contact: '9999999999',
+                method:'upi'
+            },
+            notes: {
+                address: 'Razorpay Corporate Office',
+            },
+            theme: {
+                color: '#3399cc',
+            },
+        };
+
+        const razor = new window.Razorpay(options);
+        razor.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+        razor.open();
+    };
+
     return (
         <div className="max-w-screen-xl mx-auto md:flex">
             {/* {modal && <Payment onclose={() => setModel(false)} productId={id} />} */}
@@ -196,6 +250,10 @@ function OrderDone() {
                         </div>
                         {userInfo._id === order.orderedBy._id && !order.paid && (
                             <div className="mt-3 relative z-0">
+                                <button className="border w-full bg-pink-500 text-center py-2 my-4 rounded-full" onClick={createRazorPayment}>
+                                    Pay Now
+                                </button>
+
                                 <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons>
                             </div>
                             // <div className="border bg-pink-500 text-center py-2 my-4 rounded-full" onClick={() => setModel(true)}>
