@@ -132,7 +132,7 @@ export const forgotPassword = serverhandler(async (req, res) => {
     try {
         await user.save({ validateBeforeSave: false });
         // send the mail
-        await sendmail(email, resetUrl);
+        // await sendmail(email, resetUrl);
 
         res.status(200).json({ message: 'Email has been sent' })
     } catch {

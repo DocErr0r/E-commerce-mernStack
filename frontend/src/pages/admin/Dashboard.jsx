@@ -53,7 +53,7 @@ const Dashboard = () => {
                             <label htmlFor="" className="text-xl">
                                 Totel sals{' '}
                             </label>
-                            <h1 className="text-xl font-bold">${data?.totelSales.toFixed(2)}</h1>
+                            <h1 className="text-xl font-bold">₹{data?.totelSales.toFixed(2)}</h1>
                         </div>
                     </div>
                     <div className="rounded-lg bg-black p-5 w-[10rem] sm:w-[20rem]">

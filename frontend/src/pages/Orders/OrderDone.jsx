@@ -187,7 +187,7 @@ function OrderDone() {
                         <h2 className="text-xl font-semibold">Order Summery</h2>
                         <div className="w-full">
                             <div className="flex justify-between flex-wrap items-center">
-                                Items price:<p>₹ {order.itemsPrice}</p>
+                                Items price:<p>₹ {order.itemsPrice.toFixed(2)}</p>
                             </div>
                             <div className="flex justify-between flex-wrap items-center">
                                 shipping price: <p>₹ {order.shippingPrice}</p>
