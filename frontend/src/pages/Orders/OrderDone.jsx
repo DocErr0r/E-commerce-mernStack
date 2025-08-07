@@ -111,6 +111,7 @@ function OrderDone() {
             razor.open();
         } catch (err) {
             console.error(err);
+            setPaymentLoading(false)
             toast.error('Somthing wrong with payment. Try again...');
         }
     };
