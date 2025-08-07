@@ -2,8 +2,15 @@ import express from "express";
 import verifyuser from "../middlewares/verifyuser.js";
 import admin from "../middlewares/admin.js";
 import validId from "../middlewares/validId.js";
-import { adminDasboard, createOrder, getAllOrders, getMyOrders, getOrderById, markAsDelivered, markAsPaid } from "../controller/orderController.js";
+import { adminDasboard, createOrder, getAllOrders, getMyOrders, getOrderById, markAsDelivered, markAsPaid, razorpayOrder } from "../controller/orderController.js";
 const router = express.Router();
+
+router.post('/crate-razororder', verifyuser, razorpayOrder)
+router.get('/razorpay-key', async (req, res) => {
+    res.json({
+        key: process.env.RAZORPAY_KEYID
+    })
+});
 
 router.route('/').post(verifyuser, createOrder).get(admin, getAllOrders)
 router.route('/me/orders').get(verifyuser, getMyOrders)

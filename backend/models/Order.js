@@ -41,11 +41,19 @@ const OrderSchema = new mongoose.Schema({
         },
     },
     paymentMethod: { type: String, required: true },
-    paymentResult: {
-        id: { type: String },
-        status: { type: String },
-        updateTime: { type: Date },
-        email: { type: String }
+    paymentInfo: {
+        razorpay_payment_id: {
+            type: String,
+            // required: true,
+        },
+        razorpay_order_id: {
+            type: String,
+            // required: true,
+        },
+        razorpay_signature: {
+            type: String,
+            // required: true,
+        },
     },
     itemsPrice: { type: Number, default: 0.0, required: true, },
     texPrice: { type: Number, default: 0.0, required: true, },

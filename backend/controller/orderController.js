@@ -2,6 +2,8 @@ import serverHandler from "../middlewares/serverhandler.js";
 import Order from "../models/Order.js";
 import { User } from "../models/user.js";
 
+import Razorpay from 'razorpay'
+
 const calculatePrice = (orderItems) => {
     const itemsPrice = orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     const shippingPrice = itemsPrice > 500 ? 0 : 40
@@ -9,6 +11,37 @@ const calculatePrice = (orderItems) => {
     const totelPrice = (itemsPrice + shippingPrice + parseFloat(texPrice)).toFixed(2);
     return { itemsPrice, shippingPrice, texPrice, totelPrice }
 }
+
+export const razorpayOrder = serverHandler(async (req, res) => {
+    const instance = new Razorpay({ key_id: process.env.RAZORPAY_KEYID, key_secret: process.env.RAZORPAY_KEYSECRET })
+    
+    // instance.orders.create({
+    //     amount: 50000,
+    //     currency: "<currency>",
+    //     receipt: "receipt#1",
+    //     notes: {
+    //         key1: "value3",
+    //         key2: "value2"
+    //     }
+    // })
+    const { amount } = req.body;
+
+    const options = {
+        amount: amount * 100, // Convert amount to smallest currency unit
+        currency: 'INR',
+    };
+    try {
+        const order = await instance.orders.create(options);
+        res.status(200).json({
+            order,
+            message: "Order Created Successfully.",
+            status: true
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error creating RazorPay order');
+    }
+});
 
 export const createOrder = serverHandler(async (req, res) => {
     const { orderItems, address, paymentMethod } = req.body;
