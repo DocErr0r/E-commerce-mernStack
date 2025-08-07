@@ -86,7 +86,6 @@ function OrderDone() {
                     name: 'john deo',
                     email: 'john.doe@example.com',
                     contact: '9999999999',
-                    method: 'upi',
                 },
                 notes: {
                     address: 'Razorpay Corporate Office',

@@ -19,7 +19,7 @@ export const razorpayOrder = serverHandler(async (req, res) => {
     const { amount } = req.body;
 
     const options = {
-        amount: amount * 100, // Convert amount to smallest currency unit
+        amount: parseInt(amount * 100), // Convert amount to smallest currency unit
         currency: 'INR',
     };
     try {
