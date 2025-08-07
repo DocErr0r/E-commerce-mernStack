@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createRazorOrder, deliverOrder, getClientId, getOrderDetail, getRazorpayKey, payOrder } from '../../redux/api/orderApi';
 import { useSelector } from 'react-redux';
-import Payment from './Payment';
-import Modal from '../../components/Modal';
+// import Payment from './Payment';
+// import Modal from '../../components/Modal';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import myContext from '../../contexts/myContext';
 
@@ -12,14 +12,15 @@ function OrderDone() {
     const { id } = useParams();
     const { setLoading } = useContext(myContext);
     const [order, setOrder] = useState(null);
-    const [modal, setModel] = useState(false);
+    // const [modal, setModel] = useState(false);
     const [change, setChange] = useState(false);
-    const [paypalId, setPaypalId] = useState('');
+    // const [paypalId, setPaypalId] = useState('');
     const { userInfo } = useSelector((state) => state.user);
-    const getPaypalId = async () => {
-        const { data } = await getClientId();
-        setPaypalId(data.clientId);
-    };
+    const [paymentLoading, setPaymentLoading] = useState(false);
+    // const getPaypalId = async () => {
+    //     const { data } = await getClientId();
+    //     setPaypalId(data.clientId);
+    // };
     useEffect(() => {
         const getOrders = async () => {
             setLoading(true);
@@ -32,8 +33,8 @@ function OrderDone() {
             setLoading(false);
         };
         getOrders();
-        getPaypalId();
-    }, [id, modal, change]);
+        // getPaypalId();
+    }, [id, change]);
 
     const setDeliverd = async () => {
         try {
@@ -46,69 +47,69 @@ function OrderDone() {
         }
     };
 
-    const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-    const createOrder = (data, actions) => {
-        return actions.order
-            .create({
-                purchase_units: [
-                    {
-                        amount: {
-                            currency: 'USD',
-                            value: order.totelPrice,
-                        },
-                    },
-                ],
-            })
-            .then((orderID) => {
-                return orderID;
-            });
-    };
-    const onApprove = (data, actions) => {
-        return actions.order.capture().then(async (details) => {
-            try {
-                const paymentId = details.id;
-                const payer = details.payer.email_address;
-                const status = details.status;
-                // console.log(details);
-                await payOrder({ id, body: { id: paymentId, status, update_time: Date.now(), payer_email: payer } });
-                toast.success('order is paid');
-                setChange(!change);
-            } catch (error) {
-                console.log(error);
-            }
-        });
-    };
-    function onError(err) {
-        toast.error(err.message);
-    }
+    // const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+    // const createOrder = (data, actions) => {
+    //     return actions.order
+    //         .create({
+    //             purchase_units: [
+    //                 {
+    //                     amount: {
+    //                         currency: 'USD',
+    //                         value: order.totelPrice,
+    //                     },
+    //                 },
+    //             ],
+    //         })
+    //         .then((orderID) => {
+    //             return orderID;
+    //         });
+    // };
+    // const onApprove = (data, actions) => {
+    //     return actions.order.capture().then(async (details) => {
+    //         try {
+    //             const paymentId = details.id;
+    //             const payer = details.payer.email_address;
+    //             const status = details.status;
+    //             // console.log(details);
+    //             await payOrder({ id, body: { id: paymentId, status, update_time: Date.now(), payer_email: payer } });
+    //             toast.success('order is paid');
+    //             setChange(!change);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     });
+    // };
+    // function onError(err) {
+    //     toast.error(err.message);
+    // }
 
-    useEffect(() => {
-        if (paypalId) {
-            try {
-                const loadingpaypal = async () => {
-                    paypalDispatch({
-                        type: 'resetOptions',
-                        value: {
-                            'client-id': paypalId,
-                            currency: 'USD',
-                        },
-                    });
-                    paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
-                };
-                if (order && !order.paid) {
-                    if (!window.paypal) {
-                        loadingpaypal();
-                    }
-                }
-            } catch (error) {
-                console.log('worng');
-            }
-        }
-    }, [order, paypalId]);
+    // useEffect(() => {
+    //     if (paypalId) {
+    //         try {
+    //             const loadingpaypal = async () => {
+    //                 paypalDispatch({
+    //                     type: 'resetOptions',
+    //                     value: {
+    //                         'client-id': paypalId,
+    //                         currency: 'USD',
+    //                     },
+    //                 });
+    //                 paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+    //             };
+    //             if (order && !order.paid) {
+    //                 if (!window.paypal) {
+    //                     loadingpaypal();
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.log('worng');
+    //         }
+    //     }
+    // }, [order, paypalId]);
 
-    if (isPending) {
-        return <div>Loading...</div>;
-    }
+    // if (isPending) {
+    //     return <div>Loading...</div>;
+    // }
 
     const getRazorKey = async () => {
         const res = await getRazorpayKey();
@@ -120,48 +121,72 @@ function OrderDone() {
         return res;
     };
     const createRazorPayment = async () => {
-        const key = await getRazorKey();
-        const response = await createRazorpayOrder();
-        const { id: order_id, amount, currency } = response.data.order;
+        try {
+            setPaymentLoading(true);
+            const key = await getRazorKey();
+            const response = await createRazorpayOrder();
+            const { id: order_id, amount, currency } = response.data.order;
+            setPaymentLoading(false);
 
-        // Set up RazorPay options
-        const options = {
-            key: key,
-            amount: amount,
-            currency: currency,
-            name: 'Eshop',
-            description: 'Test Transaction',
-            order_id: order_id,
-            handler: (response) => {
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature);
-            },
-            prefill: {
-                name: 'john deo',
-                email: 'john.doe@example.com',
-                contact: '9999999999',
-                method:'upi'
-            },
-            notes: {
-                address: 'Razorpay Corporate Office',
-            },
-            theme: {
-                color: '#3399cc',
-            },
-        };
+            // Set up RazorPay options
+            const options = {
+                key: key,
+                amount: amount,
+                currency: currency,
+                name: 'Eshop',
+                description: 'Test Transaction',
+                order_id: order_id,
+                handler: async (response) => {
+                    // alert(response.razorpay_payment_id);
+                    // alert(response.razorpay_order_id);
+                    // alert(response.razorpay_signature);
+                    const paymentInfo = {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                    };
+                    try {
+                        const res = await payOrder({ id, body: { paymentInfo, update_time: Date.now() } });
+                        console.log(res);
 
-        const razor = new window.Razorpay(options);
-        razor.on('payment.failed', function (response) {
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
-        });
-        razor.open();
+                        toast.success('order is paid');
+                        setChange(!change);
+                    } catch (error) {
+                        setPaymentLoading(false);
+                        toast.error(error.message);
+                    }
+                },
+                prefill: {
+                    name: 'john deo',
+                    email: 'john.doe@example.com',
+                    contact: '9999999999',
+                    method: 'upi',
+                },
+                notes: {
+                    address: 'Razorpay Corporate Office',
+                },
+                theme: {
+                    color: '#3399cc',
+                },
+            };
+
+            const razor = new window.Razorpay(options);
+            razor.on('payment.failed', function (response) {
+                setPaymentLoading(false);
+                toast.error('Payment faild. Try again...', response.error.description);
+                // alert(response.error.code);
+                // alert(response.error.description);
+                // alert(response.error.source);
+                // alert(response.error.step);
+                // alert(response.error.reason);
+                // alert(response.error.metadata.order_id);
+                // alert(response.error.metadata.payment_id);
+            });
+            razor.open();
+        } catch (err) {
+            console.error(err);
+            toast.error('Somthing wrong with payment. Try again...');
+        }
     };
 
     return (
@@ -226,7 +251,7 @@ function OrderDone() {
                             {order.paid ? (
                                 <div className="border px-2 bg-green-600 py-2 my-4 rounded-md">
                                     Paid on: {new Date(order.paidTime).toLocaleString()}
-                                    <div>By: {order.paymentResult.email}</div>
+                                    {/* <div>By: {order.paymentResult.email}</div> */}
                                     {order.delivered && <div>Delivered on: {Date(order.deliveredTime).toString()}</div>}
                                 </div>
                             ) : (
@@ -251,10 +276,10 @@ function OrderDone() {
                         {userInfo._id === order.orderedBy._id && !order.paid && (
                             <div className="mt-3 relative z-0">
                                 <button className="border w-full bg-pink-500 text-center py-2 my-4 rounded-full" onClick={createRazorPayment}>
-                                    Pay Now
+                                    {paymentLoading ? 'Loading...' : 'Pay Now'}
                                 </button>
 
-                                <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons>
+                                {/* <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError}></PayPalButtons> */}
                             </div>
                             // <div className="border bg-pink-500 text-center py-2 my-4 rounded-full" onClick={() => setModel(true)}>
                             //     Pay Now

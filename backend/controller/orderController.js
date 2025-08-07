@@ -1,4 +1,5 @@
 import serverHandler from "../middlewares/serverhandler.js";
+import crypto from 'crypto'
 import Order from "../models/Order.js";
 import { User } from "../models/user.js";
 
@@ -14,16 +15,7 @@ const calculatePrice = (orderItems) => {
 
 export const razorpayOrder = serverHandler(async (req, res) => {
     const instance = new Razorpay({ key_id: process.env.RAZORPAY_KEYID, key_secret: process.env.RAZORPAY_KEYSECRET })
-    
-    // instance.orders.create({
-    //     amount: 50000,
-    //     currency: "<currency>",
-    //     receipt: "receipt#1",
-    //     notes: {
-    //         key1: "value3",
-    //         key2: "value2"
-    //     }
-    // })
+
     const { amount } = req.body;
 
     const options = {
@@ -113,16 +105,25 @@ export const markAsPaid = serverHandler(async (req, res) => {
             res.status(404)
             throw new Error("orders not found")
         }
-        order.paid = true
-        order.paidTime = Date.now()
-        order.paymentResult = {
-            id: req.body.id,
-            status: req.body.status,
-            email: req.body.payer_email,
-            updateTime: req.body.update_time
+        let body = req.body.paymentInfo.razorpay_order_id + "|" + req.body.paymentInfo.razorpay_payment_id;
+        let expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY)
+            .update(body.toString())
+            .digest('hex');
+
+        if (req.body.response.razorpay_signature === expectedSignature) {
+            order.paid = true
+            order.paidTime = Date.now()
+            order.paymentInfo = req.body.paymentInfo;
+            await order.save()
+            res.status(200).send({ order })
         }
-        await order.save()
-        res.status(200).send({ order })
+        else {
+            res.status(206).json({
+                success: false,
+                message: 'Wrong payment...!'
+            })
+        }
+
     } catch (error) {
         res.status(500).send({ message: error.message })
     }
