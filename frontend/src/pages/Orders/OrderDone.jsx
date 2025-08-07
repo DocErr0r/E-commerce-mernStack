@@ -1,26 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createRazorOrder, deliverOrder, getClientId, getOrderDetail, getRazorpayKey, payOrder } from '../../redux/api/orderApi';
+import { createRazorOrder, deliverOrder, getOrderDetail, getRazorpayKey, payOrder } from '../../redux/api/orderApi';
 import { useSelector } from 'react-redux';
-// import Payment from './Payment';
-// import Modal from '../../components/Modal';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import myContext from '../../contexts/myContext';
 
 function OrderDone() {
     const { id } = useParams();
     const { setLoading } = useContext(myContext);
     const [order, setOrder] = useState(null);
-    // const [modal, setModel] = useState(false);
     const [change, setChange] = useState(false);
-    // const [paypalId, setPaypalId] = useState('');
     const { userInfo } = useSelector((state) => state.user);
     const [paymentLoading, setPaymentLoading] = useState(false);
-    // const getPaypalId = async () => {
-    //     const { data } = await getClientId();
-    //     setPaypalId(data.clientId);
-    // };
     useEffect(() => {
         const getOrders = async () => {
             setLoading(true);
@@ -33,7 +24,6 @@ function OrderDone() {
             setLoading(false);
         };
         getOrders();
-        // getPaypalId();
     }, [id, change]);
 
     const setDeliverd = async () => {
@@ -46,70 +36,6 @@ function OrderDone() {
             toast.error(error.message);
         }
     };
-
-    // const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-    // const createOrder = (data, actions) => {
-    //     return actions.order
-    //         .create({
-    //             purchase_units: [
-    //                 {
-    //                     amount: {
-    //                         currency: 'USD',
-    //                         value: order.totelPrice,
-    //                     },
-    //                 },
-    //             ],
-    //         })
-    //         .then((orderID) => {
-    //             return orderID;
-    //         });
-    // };
-    // const onApprove = (data, actions) => {
-    //     return actions.order.capture().then(async (details) => {
-    //         try {
-    //             const paymentId = details.id;
-    //             const payer = details.payer.email_address;
-    //             const status = details.status;
-    //             // console.log(details);
-    //             await payOrder({ id, body: { id: paymentId, status, update_time: Date.now(), payer_email: payer } });
-    //             toast.success('order is paid');
-    //             setChange(!change);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     });
-    // };
-    // function onError(err) {
-    //     toast.error(err.message);
-    // }
-
-    // useEffect(() => {
-    //     if (paypalId) {
-    //         try {
-    //             const loadingpaypal = async () => {
-    //                 paypalDispatch({
-    //                     type: 'resetOptions',
-    //                     value: {
-    //                         'client-id': paypalId,
-    //                         currency: 'USD',
-    //                     },
-    //                 });
-    //                 paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
-    //             };
-    //             if (order && !order.paid) {
-    //                 if (!window.paypal) {
-    //                     loadingpaypal();
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.log('worng');
-    //         }
-    //     }
-    // }, [order, paypalId]);
-
-    // if (isPending) {
-    //     return <div>Loading...</div>;
-    // }
 
     const getRazorKey = async () => {
         const res = await getRazorpayKey();
